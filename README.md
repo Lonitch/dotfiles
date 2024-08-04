@@ -29,18 +29,17 @@ stow <foldername>
 
 Other than the tools listed above, you may consider install the tools below as well:
 
-- `fzf`
-- `bat`
-- `ripgrep`
+- fuzzy search/preview: `fzf` and `bat`
+- live text grep: `ripgrep`
+- screenshot: `maim`, `xclip`, and `copyq`
 - [`rustfmt`](https://github.com/rust-lang/rustfmt)
-- `bun`, `node`, and `npm`
-- `eslint` ( if using LSP for TS/JS in your project )
-- [ `python-mode` ](https://github.com/python-mode/python-mode.git)(formatting python)
-- [ `pyright` ](https://github.com/microsoft/pyright) for LSP support and auto-completion
-- `vscode-langservers-extracted` (install via npm/bun)
-- [ `quarto` ](https://quarto.org) if you need to generate Quarto-based reports
-- codelldb debugging by following the steps [here](<https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)>)
-- you need to change the absolute path to `codelldb` in [debugging.lua](/lua/plugins/debugging.lua)
+- JS/TS runtime/pkg mgmt: `bun`, `node`, and `npm`
+- JS/TS Linting: `eslint` and `vscode-langservers-extracted`
+- Python Linting: [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `pyright` ](https://github.com/microsoft/pyright) 
+- Code-block report generator: [ `quarto` ](https://quarto.org) 
+- MD to Presentation: [`marp-cli`](https://github.com/marp-team/marp-cli?tab=readme-ov-file#readme)
+- [ codelldb debugging ](<https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)>)
+  - you need to change the absolute path to `codelldb` in [debugging.lua](/lua/plugins/debugging.lua)
 
 ## Cheat Sheet (`nvim` and `tmux`)
 
