@@ -1,10 +1,10 @@
-# dotfiles for Neovim-based dev. env.
+# dotfiles for nvim/tmux/i3-based dev
 
 <!-- mtoc-start -->
 
 * [Intro](#intro)
 * [Prerequisites](#prerequisites)
-* [Cheats sheet](#cheats-sheet)
+* [Cheat Sheet (`nvim` and `tmux`)](#cheat-sheet-nvim-and-tmux)
 
 <!-- mtoc-end -->
 
@@ -46,7 +46,7 @@ You can find an un-tested [shell script](./dotfile-setup.sh) to install all the 
 - you need to change the absolute path to `codelldb` in [debugging.lua](/lua/plugins/debugging.lua)
 
 
-## Cheats sheet
+## Cheat Sheet (`nvim` and `tmux`)
 
 <details><summary>Change Surrounds</summary>
 
