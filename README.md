@@ -38,6 +38,7 @@ Other than the tools listed above, you may consider install the tools below as w
 - Python Linting: [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `pyright` ](https://github.com/microsoft/pyright) 
 - Code-block report generator: [ `quarto` ](https://quarto.org) 
 - MD to Presentation: [`marp-cli`](https://github.com/marp-team/marp-cli?tab=readme-ov-file#readme)
+- Vim-like PDF viewer: [sioyek](https://sioyek-documentation.readthedocs.io/en/latest/)
 - [ codelldb debugging ](<https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)>)
   - you need to change the absolute path to `codelldb` in [debugging.lua](/lua/plugins/debugging.lua)
 
