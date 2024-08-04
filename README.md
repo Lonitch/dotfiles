@@ -20,23 +20,20 @@ Managed by [GNU Stow](https://www.gnu.org/software/stow/), this repo gives confi
 - `utils` for shell scripts that improve life quality
 
 To use config for anyone of the tools above, simply run the following:
+
 ```shell
 stow <foldername>
 ```
 
 ## Prerequisites
 
-You can find an un-tested [shell script](./dotfile-setup.sh) to install all the prerequisites and copy/paste dotfiles.
+Other than the tools listed above, you may consider install the tools below as well:
 
-- `zsh`
 - `fzf`
 - `bat`
 - `ripgrep`
-- `tmux`( if session management is important )
-- `rust` and [`rustfmt`](https://github.com/rust-lang/rustfmt)
-  - a reasonable `rustfmt` config can be found in [`.rustfmt.toml`](./.rustfmt.toml)
-- `leptosfmt`( if use `leptos` )
-- `node` and `npm`
+- [`rustfmt`](https://github.com/rust-lang/rustfmt)
+- `bun`, `node`, and `npm`
 - `eslint` ( if using LSP for TS/JS in your project )
 - [ `python-mode` ](https://github.com/python-mode/python-mode.git)(formatting python)
 - [ `pyright` ](https://github.com/microsoft/pyright) for LSP support and auto-completion
@@ -44,7 +41,6 @@ You can find an un-tested [shell script](./dotfile-setup.sh) to install all the 
 - [ `quarto` ](https://quarto.org) if you need to generate Quarto-based reports
 - codelldb debugging by following the steps [here](<https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)>)
 - you need to change the absolute path to `codelldb` in [debugging.lua](/lua/plugins/debugging.lua)
-
 
 ## Cheat Sheet (`nvim` and `tmux`)
 
@@ -234,29 +230,29 @@ In `telescope`(either `<leader>ff`, or `<leader>lg`), you can
 - exit copy mode: `<C-c>`
 - Simple workflow with `tmux`
 
-    ```bash
-    # in terminal, create a new session
-    tmux new -s sessionName
-    # detach from a session
-    tmux detach
-    # attach to a session
-    tmux attach -t sessionName
-    # kill a session/window
-    tmux kill-session -t sessionName
-    # if you have pre-stored session, simply run
-    tmux
+  ```bash
+  # in terminal, create a new session
+  tmux new -s sessionName
+  # detach from a session
+  tmux detach
+  # attach to a session
+  tmux attach -t sessionName
+  # kill a session/window
+  tmux kill-session -t sessionName
+  # if you have pre-stored session, simply run
+  tmux
 
-    # create a horizontal pane using <C-a>+-
-    # adjust the height of the two panes using j/k
-    # switch between panes using <C-a>+↑/↓
-    # close pane by typing 'exit'
-    # open neovim in upper pane, run terminal cmd in lower pane
+  # create a horizontal pane using <C-a>+-
+  # adjust the height of the two panes using j/k
+  # switch between panes using <C-a>+↑/↓
+  # close pane by typing 'exit'
+  # open neovim in upper pane, run terminal cmd in lower pane
 
-    # for full-stack dev., it's useful to create 2 windows in a session
-    # create a new window: <C-a>+c
-    # switch between windows: <C-a>+w
-    # <C-a>+c to create new window
-    ```
+  # for full-stack dev., it's useful to create 2 windows in a session
+  # create a new window: <C-a>+c
+  # switch between windows: <C-a>+w
+  # <C-a>+c to create new window
+  ```
 
 </details>
 
@@ -269,4 +265,3 @@ A workspace is a folder containing multiple git repositories. Here we use [`proj
 - automatically save current `neovim` session. Next time when you are at a project folder, the latest session is restored.
 
 </details>
-
