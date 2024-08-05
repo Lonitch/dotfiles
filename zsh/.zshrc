@@ -2,7 +2,7 @@
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export DISPLAY=:1.0
+# export DISPLAY=:1.0
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -104,36 +104,31 @@ source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 # Fuzzy search for file using bat preview to open it in nvim
 alias inv="nvim \$(fzf -m --preview='batcat --color=always {}')"
-alias ide="tmux has-session -t ide 2>/dev/null && tmux attach-session -t ide || tmux new-session -s ide -d \; split-window -v -p 15 \; attach-session -t ide"
+
+# IDE-like tmux split
+alias ide="tmux has-session -t ide 2>/dev/null && tmux attach-session -t ide || tmux new-session -s ide -d \; split-window -v -p 10 \; attach-session -t ide"
 
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/sizhe/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/$USER/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/sizhe/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/sizhe/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/$USER/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/$USER/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/sizhe/anaconda3/bin:$PATH"
+        export PATH="/home/$USER/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-source /opt/ros/humble/setup.zsh
-export GZ_VERSION=fortress
-export IGN_GAZEBO_SYSTEM_PLUGIN_PATH="$IGN_GAZEBO_SYSTEM_PLUGIN_PATH:$LD_LIBRARY_PATH"
-export GZ_SIM_PLUGIN_PATH="$GZ_SIM_PLUGIN_PATH:$LD_LIBRARY_PATH"
-export IGN_FILE_PATH="$IGN_FILE_PATH:$HOME/ppl-for-cobot/mir_ros2_ws/src/mir100_humble:$HOME/ppl-for-cobot/mir_ros2_ws/src/mir100_galactic"
-export IGN_GAZEBO_RESOURCE_PATH="$HOME/ppl-for-cobot/mir_ros2_ws/src/mir100_humble:$HOME/ppl-for-cobot/mir_ros2_ws/src/mir100_humble/robot_description/models:$HOME/ppl-for-cobot/mir_ros2_ws/src/mir100_humble/robot_gazebo/worlds"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/VHACD/build/linux/test:$PATH"
 export PATH="$HOME/VHACD/com.unity.robotics.vhacd/Runtime:$PATH"
-
 
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
@@ -144,11 +139,11 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
 # fly.io
-export FLYCTL_INSTALL="/home/sizhe/.fly"
+export FLYCTL_INSTALL="/home/$USER/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 # Turso
-export PATH="/home/sizhe/.turso:$PATH"
+export PATH="/home/$USER/.turso:$PATH"
 . "$HOME/.cargo/env"
 
 # Snap
@@ -157,12 +152,10 @@ export PATH="/snap/bin:$PATH"
 # enable legacy openssl provider 
 unset NODE_OPTIONS
 
-# Alias for nb2qmd
-alias nb2qmd="python3 /home/sizhe/fit-cnice/tdr2profile/tdr2profile/get_nb_img.py"
-
 # bun completions
-[ -s "/home/sizhe/.bun/_bun" ] && source "/home/sizhe/.bun/_bun"
+[ -s "/home/$USER/.bun/_bun" ] && source "/home/$USER/.bun/_bun"
 
+# quarto
 qc() {
     if [ "$#" -ne 2 ]; then
         echo "Usage: qc <template_folder> <target_project_folder>
