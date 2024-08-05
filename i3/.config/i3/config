@@ -47,6 +47,10 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
+# split terminal beneath 
+bindsym $mod+minus split v; exec /home/$USER/.new-term-same-dir.sh
+# split terminal at right
+bindsym $mod+bar split h; exec /home/$USER/.new-term-same-dir.sh
 
 # kill focused window
 bindsym $mod+Shift+q kill
