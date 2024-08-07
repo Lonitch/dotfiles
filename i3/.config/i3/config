@@ -25,7 +25,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id picom
 # exec --no-startup-id ibus-daemon -drx
 
-exec --no-startup-id fcitx -d
+exec --no-startup-id fcitx5 -d
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
