@@ -172,4 +172,3 @@ qc() {
     echo "New Quarto Project created at $2"
 }
 
-
