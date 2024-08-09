@@ -17,6 +17,10 @@ Managed by [GNU Stow](https://www.gnu.org/software/stow/), this repo gives confi
 - `zsh` for zsh(and oh-my-zsh)
 - `kitty` for kitty terminal emulator
 - `i3` for i3wm
+- `picom` for stopping screen tearing
+- `blueman` for bluetooth mgmt gui
+- `fcitx5` for dual input method
+- `yazi` for previewer-enabled file explorer
 - `utils` for shell scripts that improve life quality
 
 To use config for anyone of the tools above, simply run the following:
