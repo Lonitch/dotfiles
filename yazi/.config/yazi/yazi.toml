@@ -1,5 +1,5 @@
 [manager]
-sort_by = "alphabatical"
+sort_by = "alphabetical"
 sort_sensitive = true
 sort_dir_first = true
 linemode = "size_and_mtime"
