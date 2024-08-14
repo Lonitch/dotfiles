@@ -1,5 +1,5 @@
 [manager]
-sort_by = "modified"
+sort_by = "alphabatical"
 sort_sensitive = true
 sort_dir_first = true
 linemode = "size_and_mtime"
@@ -9,7 +9,22 @@ show_symlink = true
 [preview]
 tab_size = 200
 
+
+[open]
+prepend_rules = [
+	{ name = "*.json", use = "edit" },
+	{ name = "*.mp3", use = "play" },
+	{ name = "*.avi", use = "watch" },
+	{ name = "*.mov", use = "watch" },
+]
+
 [opener]
 edit = [
 	{ run = 'nvim "$@"', block = true },
+]
+play = [
+	{ run = 'mpg123 "$@"', block = true, for = "unix" },
+]
+watch = [
+	{ run = 'vlc "$@"', block = true, desc = "Open a video" },
 ]

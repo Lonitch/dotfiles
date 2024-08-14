@@ -1,0 +1,22 @@
+{
+	"name": "Vimium C",
+	"@time": "8/14/2024, 12:27:30 PM",
+	"time": 1723656450476,
+	"environment": {
+		"extension": "1.99.997",
+		"platform": "linux",
+		"firefox": 129
+	},
+	"exclusionRules": [],
+	"keyLayout": 2,
+	"keyMappings": [
+		"#!no-check",
+		"map bba addBookmark folder=\"AI\"",
+		"map bbj addBookmark folder=\"JS/TS\"",
+		"map bbr addBookmark folder=\"Rust\"",
+		"map + zoomIn",
+		"map _ zoomOut",
+		""
+	],
+	"vimSync": true
+}
