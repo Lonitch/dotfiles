@@ -29,6 +29,8 @@ To use config for anyone of the tools above, simply run the following:
 stow <foldername>
 ```
 
+>**Mod1** versus **Mod4**: The window key is **Mod1** on my slightly malfunctional keyboard, you might want to change it to **Mod4** in `i3/.config/i3/config` as your command prefix in i3wm.
+
 ## Prerequisites
 
 Other than the tools listed above, you may consider install the tools below as well:
