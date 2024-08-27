@@ -39,7 +39,7 @@ Other than the tools listed above, you may consider install the tools below as w
 - live text grep: `ripgrep`
 - screenshot: `maim`, `xclip`, and `copyq`
 - [`rustfmt`](https://github.com/rust-lang/rustfmt)
-- JS/TS runtime/pkg mgmt: `bun`, `node`, and `npm`
+- JS/TS runtime/pkg mgmt: `bun` (see [lsp config](./nvim/.config/nvim/lua/plugins/lsp-config.lua))
 - JS/TS Linting: `eslint` and `vscode-langservers-extracted`
 - Python Linting: [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `pyright` ](https://github.com/microsoft/pyright) 
 - Code-block report generator: [ `quarto` ](https://quarto.org) 

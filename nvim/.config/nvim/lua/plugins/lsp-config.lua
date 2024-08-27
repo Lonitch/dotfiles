@@ -30,9 +30,9 @@ return {
 			lspconfig.pyright.setup({
 				capabilities = capabilities,
 			})
-			lspconfig.tailwindcss.setup({
-				capabilities = capabilities,
-			})
+			-- lspconfig.tailwindcss.setup({
+			-- 	capabilities = capabilities,
+			-- })
 			lspconfig.cssls.setup({
 				capabilities = capabilities,
 			})
@@ -44,6 +44,7 @@ return {
 			})
 			lspconfig.tsserver.setup({
 				capabilities = capabilities,
+				cmd = { "bun", "run", "typescript-language-server", "--stdio" },
 			})
 			-- lspconfig.rust_analyzer.setup({
 			-- 	capabilities = capabilities,
