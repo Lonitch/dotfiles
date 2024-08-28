@@ -29,6 +29,7 @@ return {
 			local lspconfig = require("lspconfig")
 			lspconfig.pyright.setup({
 				capabilities = capabilities,
+				cmd = { "bun", "run", "pyright-langserver", "--stdio" },
 			})
 			-- lspconfig.tailwindcss.setup({
 			-- 	capabilities = capabilities,
@@ -36,9 +37,9 @@ return {
 			lspconfig.cssls.setup({
 				capabilities = capabilities,
 			})
-			lspconfig.html.setup({
-				capabilities = capabilities,
-			})
+			-- lspconfig.html.setup({
+			-- 	capabilities = capabilities,
+			-- })
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
 			})
