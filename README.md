@@ -37,7 +37,7 @@ Other than the tools listed above, you may consider install the tools below as w
 
 - fuzzy search/preview: `fzf` and `bat`
 - live text grep: `ripgrep`
-- screenshot: `maim`, `xclip`, and `copyq`
+- screenshot: `flameshot`, `maim`, `xclip`, and `copyq`
 - [`rustfmt`](https://github.com/rust-lang/rustfmt)
 - JS/TS runtime/pkg mgmt: `bun` (see [lsp config](./nvim/.config/nvim/lua/plugins/lsp-config.lua))
 - JS/TS Linting: `eslint` and `vscode-langservers-extracted`
