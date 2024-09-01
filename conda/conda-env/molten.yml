@@ -13,7 +13,6 @@ dependencies:
   - numpy
   - pandas
   - pillow
-  - pnglatex
   - pyperclip
   - pynvim
   - scikit-build
@@ -26,3 +25,5 @@ dependencies:
   - pip:
     - grip
     - jupyter-client
+    - pnglatex
+    - jupytext

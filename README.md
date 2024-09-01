@@ -12,7 +12,8 @@
 
 Managed by [GNU Stow](https://www.gnu.org/software/stow/), this repo gives configs for the following tools:
 
-- `nvim` for Neovim
+- `nvim` for Neovim(>0.9.4)
+- `tmux` TMUX (>=3.3)
 - `rust` for Rust dev(formatting)
 - `zsh` for zsh(and oh-my-zsh)
 - `kitty` for kitty terminal emulator
