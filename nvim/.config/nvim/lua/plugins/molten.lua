@@ -18,7 +18,7 @@ return {
 			-- this will make it so the output shows up below the \`\`\` cell delimiter
 			vim.g.molten_virt_lines_off_by_1 = true
 			vim.g.molten_output_win_max_height = 20
-			vim.keymap.set("n", "<leader>mi", function()
+			vim.keymap.set("n", "<leader>bi", function()
 				local venv = os.getenv("VIRTUAL_ENV")
 				if venv ~= nil then
 					-- in the form of /home/benlubas/.virtualenvs/VENV_NAME
@@ -30,19 +30,19 @@ return {
 			end, { desc = "Initialize Molten for python3", silent = true })
 			vim.keymap.set(
 				"n",
-				"<leader>me",
+				"<leader>be",
 				":MoltenEvaluateOperator<CR>",
 				{ desc = "evaluate operator", silent = true }
 			)
 			vim.keymap.set(
 				"n",
-				"<leader>mo",
+				"<leader>bw",
 				":noautocmd MoltenEnterOutput<CR>",
 				{ desc = "open output window", silent = true }
 			)
-			vim.keymap.set("n", "<leader>mv", ":MoltenEvaluateVisual<CR>", { desc = "re-eval cell", silent = true })
-			vim.keymap.set("n", "<leader>mh", ":MoltenHideOutput<CR>", { desc = "close output window", silent = true })
-			vim.keymap.set("n", "<leader>md", ":MoltenDelete<CR>", { desc = "delete Molten cell", silent = true })
+			vim.keymap.set("n", "<leader>bv", ":MoltenEvaluateVisual<CR>", { desc = "re-eval cell", silent = true })
+			vim.keymap.set("n", "<leader>bh", ":MoltenHideOutput<CR>", { desc = "close output window", silent = true })
+			vim.keymap.set("n", "<leader>bd", ":MoltenDelete<CR>", { desc = "delete Molten cell", silent = true })
 		end,
 	},
 	{
