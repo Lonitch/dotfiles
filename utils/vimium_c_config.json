@@ -1,7 +1,7 @@
 {
 	"name": "Vimium C",
-	"@time": "8/14/2024, 12:27:30 PM",
-	"time": 1723656450476,
+	"@time": "9/2/2024, 2:00:04 PM",
+	"time": 1725303604190,
 	"environment": {
 		"extension": "1.99.997",
 		"platform": "linux",
@@ -12,6 +12,9 @@
 	"keyMappings": [
 		"#!no-check",
 		"map bba addBookmark folder=\"AI\"",
+		"map bbm addBookmark folder=\"Math\"",
+		"map bbp addBookmark folder=\"Physics\"",
+		"map bbt addBookmark folder=\"Typst\"",
 		"map bbj addBookmark folder=\"JS/TS\"",
 		"map bbr addBookmark folder=\"Rust\"",
 		"map + zoomIn",
