@@ -44,7 +44,7 @@ Other than the tools listed above, you may consider install the tools below as w
 - [`rustfmt`](https://github.com/rust-lang/rustfmt)
 - JS/TS runtime/pkg mgmt: `bun` (see [lsp config](./nvim/.config/nvim/lua/plugins/lsp-config.lua))
 - JS/TS Linting: `eslint` and `vscode-langservers-extracted`
-- Python Linting: [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `pyright` ](https://github.com/microsoft/pyright) 
+- Python Linting: [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `jedi-languaga-server` ](https://github.com/pappasam/jedi-language-server)
 - Code-block report generator: [ `quarto` ](https://quarto.org) 
 - MD to Presentation: [`marp-cli`](https://github.com/marp-team/marp-cli?tab=readme-ov-file#readme)
 - Vim-like PDF viewer: [sioyek](https://sioyek-documentation.readthedocs.io/en/latest/)
