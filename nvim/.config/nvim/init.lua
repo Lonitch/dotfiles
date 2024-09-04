@@ -131,12 +131,7 @@ end, {})
 -- LSP KEY REMAPPING
 -- <space> + k to show documentation of hovered word
 vim.keymap.set("n", "<leader>k", function()
-  local filetype = vim.bo.filetype
-  if filetype == "quarto" then
-    vim.cmd("QuartoHover")
-  else
     vim.lsp.buf.hover()
-  end
 end, {})
 -- <space>+g+d: go to definition
 -- custom function to toggle pymode_rope and trigger goto_definition
