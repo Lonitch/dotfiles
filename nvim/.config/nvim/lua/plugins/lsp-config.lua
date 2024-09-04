@@ -11,7 +11,7 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				-- define LSP servers here for LUA, RUST, JS/TS, and PYTHON
-				ensure_installed = { "lua_ls", "rust_analyzer", "tsserver", "pyright" },
+				ensure_installed = { "lua_ls", "rust_analyzer", "tsserver", "jedi_language_server" },
 			})
 		end,
 	},
@@ -27,10 +27,13 @@ return {
 			-- Capabilities required for the visualstudio lsps (css, html, etc)
 			capabilities.textDocument.completion.completionItem.snippetSupport = true
 			local lspconfig = require("lspconfig")
-			lspconfig.pyright.setup({
+      lspconfig.jedi_language_server.setup({
 				capabilities = capabilities,
-				cmd = { "bun", "run", "pyright-langserver", "--stdio" },
-			})
+      })
+			-- lspconfig.pyright.setup({
+			-- 	capabilities = capabilities,
+      --  cmd = { "bun", "run", "pyright-langserver", "--stdio" },
+			-- })
 			-- lspconfig.tailwindcss.setup({
 			-- 	capabilities = capabilities,
 			-- })
