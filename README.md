@@ -4,7 +4,8 @@
 
 * [Intro](#intro)
 * [Prerequisites](#prerequisites)
-* [Cheat Sheet (`nvim` and `tmux`)](#cheat-sheet-nvim-and-tmux)
+* [Cheat sheet for fcixit 5](#cheat-sheet-for-fcixit-5)
+* [Cheat Sheet for Neovim and Tmux](#cheat-sheet-for-neovim-and-tmux)
 
 <!-- mtoc-end -->
 
@@ -19,10 +20,6 @@ Managed by [GNU Stow](https://www.gnu.org/software/stow/), this repo gives confi
 - `kitty` for kitty terminal emulator
 - `i3` for i3wm
 - `picom` for stopping screen tearing
-- `blueman` for bluetooth mgmt gui
-- `bun` for running lint exec
-- `node` for tree-sitter-cli
-- `fcitx5` for dual input method
 - `yazi` for previewer-enabled file explorer
 - `utils` for shell scripts that improve life quality
 
@@ -38,20 +35,28 @@ stow <foldername>
 
 Other than the tools listed above, you may consider install the tools below as well:
 
-- fuzzy search/preview: `fzf` and `bat`
-- live text grep: `ripgrep`
-- screenshot: `flameshot`, `maim`, `xclip`, and `copyq`
+- `blueman` for bluetooth mgmt gui
+- `node` for tree-sitter-cli
+- `fcitx5` for dual input method
+- `fzf` and `bat` for fuzzy search/preview
+- `ripgrep` for live text grep
+- `flameshot` for screenshot
 - [`rustfmt`](https://github.com/rust-lang/rustfmt)
-- JS/TS runtime/pkg mgmt: `bun` (see [lsp config](./nvim/.config/nvim/lua/plugins/lsp-config.lua))
-- JS/TS Linting: `eslint` and `vscode-langservers-extracted`
-- Python Linting: [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `jedi-languaga-server` ](https://github.com/pappasam/jedi-language-server)
-- Code-block report generator: [ `quarto` ](https://quarto.org) 
-- MD to Presentation: [`marp-cli`](https://github.com/marp-team/marp-cli?tab=readme-ov-file#readme)
-- Vim-like PDF viewer: [sioyek](https://sioyek-documentation.readthedocs.io/en/latest/)
+- `bun` (see [lsp config](./nvim/.config/nvim/lua/plugins/lsp-config.lua)) for JS/TS runtime/pkg mgmt
+- `eslint` and `vscode-langservers-extracted` for JS/TS Linting
+- [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `jedi-languaga-server` ](https://github.com/pappasam/jedi-language-server) for Python Linting
+- [ `quarto` ](https://quarto.org)  for Code-block report generator
+- [`marp-cli`](https://github.com/marp-team/marp-cli?tab=readme-ov-file#readme) for MD to Presentation
+- [sioyek](https://sioyek-documentation.readthedocs.io/en/latest/) for Vim-like PDF viewer
 - [ codelldb debugging ](<https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)>)
   - you need to change the absolute path to `codelldb` in [debugging.lua](/lua/plugins/debugging.lua)
 
-## Cheat Sheet (`nvim` and `tmux`)
+## Cheat sheet for fcixit 5
+
+- `<C-space>` switch btw different input methods
+- `<C-shift-f>` while on Chinese input to switch btw simplified and traditional
+
+## Cheat Sheet for Neovim and Tmux
 
 <details><summary>Change Surrounds</summary>
 
