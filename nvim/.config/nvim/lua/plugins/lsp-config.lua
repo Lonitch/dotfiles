@@ -11,7 +11,7 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         -- define LSP servers here for LUA, RUST, JS/TS, and PYTHON
-        ensure_installed = { "lua_ls", "rust_analyzer", "tsserver", "jedi_language_server", "typst_lsp" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "tsserver", "jedi_language_server", "typst_lsp", "vscode-langservers-extracted" },
       })
     end,
   },
