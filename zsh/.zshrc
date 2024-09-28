@@ -206,12 +206,33 @@ venv() {
 }
 
 mkvenv() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please provide venv name"
-    else
-      python3 -m venv $VENV_HOME/$1
+  if [ $# -eq 0 ]; then
+    echo "Usage: mkvenv <venv_name> [requirements_file]"
+    return 1
   fi
+
+  if [ -d "$VENV_HOME/$1" ]; then
+    echo "Virtual environment '$1' already exists. Use 'venv $1' to activate it."
+    return 1
+  fi
+
+  echo "Creating virtual environment '$1'..."
+  python3 -m venv "$VENV_HOME/$1"
+
+  echo "Activating virtual environment '$1'..."
+  source "$VENV_HOME/$1/bin/activate"
+
+  if [ $# -eq 2 ]; then
+    if [ -f "$2" ]; then
+      echo "Installing requirements from '$2'..."
+      pip install -r "$2"
+    else
+      echo "Requirements file not found: $2"
+    fi
+  fi
+
+  echo "Virtual environment '$1' created and activated."
+  echo "Use 'deactivate' to exit the virtual environment."
 }
 
 rmvenv() {
