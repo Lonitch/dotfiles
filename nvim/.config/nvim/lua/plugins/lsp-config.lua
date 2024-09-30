@@ -11,7 +11,7 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				-- define LSP servers here for LUA, RUST, JS/TS, and PYTHON
-				ensure_installed = { "lua_ls", "rust_analyzer", "tsserver", "jedi_language_server", "typst_lsp" },
+				ensure_installed = { "lua_ls", "rust_analyzer", "jedi_language_server", "typst_lsp" },
 			})
 		end,
 	},
@@ -36,21 +36,25 @@ return {
 					-- serverPath = "" -- Normally, there is no need to uncomment it.
 				},
 			})
-			-- lspconfig.tailwindcss.setup({
-			-- 	capabilities = capabilities,
-			-- })
+			lspconfig.tailwindcss.setup({
+				capabilities = capabilities,
+        cmd = { "bun", "run", "--bun", "tailwindcss-language-server", "--stdio" },
+        filetypes = {"javascriptreact", "typescriptreact"}
+			})
 			lspconfig.cssls.setup({
 				capabilities = capabilities,
+        cmd = { "bun", "run", "--bun", "vscode-css-language-server", "--stdio" },
 			})
 			lspconfig.html.setup({
 				capabilities = capabilities,
+        cmd = { "bun", "run", "--bun", "vscode-html-language-server", "--stdio" },
 			})
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
 			})
-			lspconfig.tsserver.setup({
+			lspconfig.ts_ls.setup({
 				capabilities = capabilities,
-				cmd = { "bun", "run", "typescript-language-server", "--stdio" },
+        cmd = { "bun", "run", "--bun", "typescript-language-server", "--stdio" }
 			})
 		end,
 	},
