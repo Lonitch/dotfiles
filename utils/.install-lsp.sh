@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-bun install -g vscode-langservers-extracted @tailwindcss/language-server typescript typescript-language-server
+bun install -g vscode-langservers-extracted @tailwindcss/language-server typescript typescript-language-server prettier
