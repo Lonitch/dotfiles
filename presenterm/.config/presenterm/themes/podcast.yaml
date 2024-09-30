@@ -115,8 +115,8 @@ typst:
 
 footer:
   style: template
-  left: "Weekly Update"
-  center: "Sizhe Liu"
+  left: "Sitricate"
+  center: ""
   right: "{current_slide} / {total_slides}"
 
 modals:
