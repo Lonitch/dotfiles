@@ -107,11 +107,10 @@ block_quote:
 typst:
   ppi: 400
   colors:
-    foreground: "f0f0f0"
-    background: "545c7e"
-  # In points
-  horizontal_margin: 2
-  vertical_margin: 2
+    foreground: "303b69"
+    background: "303b69"
+  horizontal_margin: 6
+  vertical_margin: 6
 
 footer:
   style: template
