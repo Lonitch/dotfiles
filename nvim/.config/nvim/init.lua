@@ -71,7 +71,8 @@ end
 
 -- lazy.vim set up plugins with options here
 require("lazy").setup("plugins")
-
+require('avante_lib').load()
+vim.opt.laststatus = 3
 -- run leptosfmt before saving .rs files
 local function format_with_leptosfmt()
   -- Save the current cursor position

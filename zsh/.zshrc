@@ -105,8 +105,8 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 # Fuzzy search for file using bat preview to open it in nvim
 alias inv="nvim \$(fzf -m --preview='batcat --color=always {}')"
 
-# IDE-like tmux split
-alias ide="tmux has-session -t ide 2>/dev/null && tmux attach-session -t ide || tmux new-session -s ide -d \; split-window -v -p 10 \; attach-session -t ide"
+# use bun to run mermaid
+alias mmdc="bun run --bun mmdc"
 
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
