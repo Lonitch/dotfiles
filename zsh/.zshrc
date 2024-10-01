@@ -4,22 +4,14 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 # export DISPLAY=:1.0
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# Set name of the theme to load 
 ZSH_THEME="robbyrussell"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
-# Uncomment the following line to use hyphen-insensitive completion.
+# Uncomment the following to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
@@ -105,7 +97,7 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 # Fuzzy search for file using bat preview to open it in nvim
 alias inv="nvim \$(fzf -m --preview='batcat --color=always {}')"
 
-# use bun to run mermaid
+# use bun to run mermaid cli
 alias mmdc="bun run --bun mmdc"
 
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -242,4 +234,89 @@ rmvenv() {
     else
       rm -r $VENV_HOME/$1
   fi
+}
+
+# marp terminal tool
+marpterm() {
+    local input_file=""
+    local output_format=""
+    local preview=true
+    local allow_local=false
+    local help=false
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            *.md)
+                input_file="$1"
+                ;;
+            --pdf)
+                output_format="--pdf"
+                preview=false
+                ;;
+            --pptx)
+                output_format="--pptx"
+                preview=false
+                ;;
+            --local)
+                allow_local=true
+                ;;
+            -h)
+                help=true
+                ;;
+            *)
+                echo "Unknown option: $1"
+                return 1
+                ;;
+        esac
+        shift
+    done
+
+    # Display help
+    if $help; then
+        echo "Usage: marpterm [filename.md] [--pdf] [--pptx] [--local] [-h]"
+        echo "  filename.md : Input markdown file (optional)"
+        echo "  --pdf       : Render to PDF"
+        echo "  --pptx      : Render to PPTX"
+        echo "  --local     : Allow local file access"
+        echo "  -h          : Display this help message"
+        return 0
+    fi
+
+    # Find latest markdown file if not specified
+    if [[ -z "$input_file" ]]; then
+        input_file=$(ls -t *.md | head -n1)
+        if [[ -z "$input_file" ]]; then
+            echo "No markdown file found in the current directory."
+            return 1
+        fi
+    fi
+
+    # Read theme from YAML header
+    local theme=$(sed -n '/^---/,/^---/p' "$input_file" | grep 'theme:' | awk '{print $2}')
+    local theme_option=""
+    if [[ -n "$theme" ]]; then
+        local theme_file="$HOME/.config/marp/themes/${theme}.css"
+        if [[ -f "$theme_file" ]]; then
+            theme_option="--theme $theme_file"
+        else
+            echo "Warning: Theme file $theme_file not found. Using default theme."
+        fi
+    fi
+
+    # Construct Marp command
+    local marp_cmd="marp --html $theme_option"
+    
+    if $preview; then
+        marp_cmd+=" --preview"
+    fi
+    
+    if $allow_local; then
+        marp_cmd+=" --allow-local-files"
+    fi
+    
+    marp_cmd+=" $output_format $input_file"
+
+    # Execute Marp command
+    eval $marp_cmd
 }

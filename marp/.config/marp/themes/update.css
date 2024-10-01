@@ -1,0 +1,196 @@
+/* @theme slice-theme */
+@import 'base';
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap");
+
+:root {
+  background-color: #e6f3ff;
+  /* Pale blue background */
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  padding: 30px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
+}
+
+h2 {
+  margin-top: 0em;
+  margin-bottom: 0.5em;
+  font-size: 26px;
+}
+
+h3 {
+  margin-top: 0em;
+  margin-bottom: 0.5em;
+  font-size: 24px;
+}
+
+header {
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: #666666;
+}
+
+ol {
+  padding-left: 0.5em;
+  margin-bottom: 0.4em;
+  margin-top: 0em;
+}
+
+ul {
+  padding-left: 0.5em;
+  font-size: 22px;
+  margin-bottom: 0.2em;
+  margin-top: 0em;
+}
+
+li>ul {
+  margin-left: 0.5em;
+}
+
+li {
+  position: relative;
+  padding-left: 0.5em;
+  margin-bottom: 0em;
+  margin-top: 0em;
+  font-size: 20px;
+}
+
+ol {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+
+ol li {
+  position: relative;
+  padding-left: 0.5em;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+li>ul>li {
+  font-size: 16px;
+}
+
+li>ul>li>ul>li {
+  font-size: 12px;
+}
+
+li>ol>li {
+  font-weight: normal;
+  font-size: 12px;
+}
+
+table,
+th,
+td {
+  border-collapse: collapse;
+  border: 1px, solid;
+}
+
+td {
+  font-size: 16px;
+}
+
+.green-check {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  border: 2px solid #4caf50;
+  border-radius: 3px;
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  line-height: 1em;
+  font-weight: bold;
+}
+
+.empty-check {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  border: 2px solid #000;
+  border-radius: 3px;
+  background-color: white;
+  text-align: center;
+  line-height: 1em;
+}
+
+section.front-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.front-page h1,
+.front-page h2,
+.front-page h3 {
+  text-align: center;
+  margin: 0.2em 0;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.collapsible {
+  cursor: pointer;
+}
+
+.collapsible::before {
+  content: '▶';
+  display: inline-block;
+  margin-right: 5px;
+  transition: transform 0.3s;
+}
+
+.collapsible.open::before {
+  transform: rotate(90deg);
+}
+
+.added {
+  color: #4CAF50;
+  /* Green color */
+  font-weight: bold;
+  background-color: #E8F5E9;
+  /* Light green background */
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.todo {
+  color: #FF9800;
+  /* Orange color */
+  font-style: italic;
+  background-color: #FFF3E0;
+  /* Light orange background */
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.deleted {
+  color: #F44336;
+  /* Red color */
+  text-decoration: line-through;
+  background-color: #FFEBEE;
+  /* Light red background */
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.tiny {
+  font-size: 12px
+}

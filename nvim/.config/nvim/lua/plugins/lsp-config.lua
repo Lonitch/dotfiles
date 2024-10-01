@@ -60,6 +60,11 @@ return {
 				capabilities = capabilities,
         cmd = { "bun", "run", "--bun", "typescript-language-server", "--stdio" }
 			})
+			lspconfig.bashls.setup({
+				capabilities = capabilities,
+        cmd = { "bun", "run", "--bun", "bash-language-server", "start" },
+        filetypes = {"sh", "zsh"}
+			})
 		end,
 	},
 }

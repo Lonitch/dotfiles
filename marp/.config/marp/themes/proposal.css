@@ -1,0 +1,133 @@
+/* General slide style */
+section {
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  background-color: #f4f4f9;
+  text-align: left;
+  padding: 40px;
+}
+
+h1, h2 {
+  color: #004080;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 22px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+p, li {
+  font-size: 20px;
+  line-height: 1.2;
+  padding: 0em;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+ul>li>ol>li {
+  font-size: 18px;
+}
+
+/* Slide title styling */
+section h1::before {
+  content: '';
+  display: block;
+  height: 4px;
+  width: 80px;
+  background-color: #004080;
+  margin: 0 auto 20px;
+}
+
+/* Footer */
+footer {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+}
+
+/* Slide transitions */
+section {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Slide numbers */
+section::after {
+  content: counter(section);
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 18px;
+  color: #777;
+}
+
+/* Header or logo (optional) */
+header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 22px;
+  color: #004080;
+  font-weight: bold;
+}
+
+section.front-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+section.front-page h1,
+section.front-page h2,
+section.front-page h3,
+section.front-page h4 {
+  text-align: center;
+  margin: 0.2em 0;
+}
+section.front-page h2 {
+  margin-top: 3em;
+  font-size: 20px
+}
+.added {
+  color: #4CAF50;  /* Green color */
+  font-weight: bold;
+  background-color: #E8F5E9;  /* Light green background */
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.todo {
+  color: #FF9800;  /* Orange color */
+  font-style: italic;
+  background-color: #FFF3E0;  /* Light orange background */
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.deleted {
+  color: #F44336;  /* Red color */
+  text-decoration: line-through;
+  background-color: #FFEBEE;  /* Light red background */
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.tiny {
+  font-size: 15px;
+  line-height: 100% 
+}

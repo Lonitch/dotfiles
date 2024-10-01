@@ -36,15 +36,17 @@ stow <foldername>
 Other than the tools listed above, you may consider install the tools below as well:
 
 - `blueman` for bluetooth mgmt gui
-- `node` for tree-sitter-cli
+- `node` for running mermaid-cli and tree-sitter-cli
 - `fcitx5` for dual input method
 - `fzf` and `bat` for fuzzy search/preview
 - `ripgrep` for live text grep
 - `flameshot` for screenshot
 - [`rustfmt`](https://github.com/rust-lang/rustfmt)
 - `bun` (see [lsp config](./nvim/.config/nvim/lua/plugins/lsp-config.lua)) for JS/TS runtime/pkg mgmt
-- `eslint` and `vscode-langservers-extracted` for JS/TS Linting
-- [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `jedi-languaga-server` ](https://github.com/pappasam/jedi-language-server) for Python Linting
+- `vscode-langservers-extracted` for JS/TS Linting
+- `bash-language-server` for sh linting
+- `stylua` for lua formatting
+- [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `jedi-languaga-server` ](https://github.com/pappasam/jedi-language-server) for Python Linting and LSP
 - [ `quarto` ](https://quarto.org)  for Code-block report generator
 - [`marp-cli`](https://github.com/marp-team/marp-cli?tab=readme-ov-file#readme) for MD to Presentation
 - [sioyek](https://sioyek-documentation.readthedocs.io/en/latest/) for Vim-like PDF viewer
@@ -53,10 +55,17 @@ Other than the tools listed above, you may consider install the tools below as w
 
 ## Cheat sheet for fcixit 5
 
-- `<C-space>` switch btw different input methods
+- Use keybinding `<C-shift>` to switch btw different input methods
 - `<C-shift-f>` while on Chinese input to switch btw simplified and traditional
 
 ## Cheat Sheet for Neovim and Tmux
+
+<details><summary>Avante</summary>
+
+- `<space>aa`: open avante chatbot
+- `<space>at`: toggle avante chatbot
+
+</details>
 
 <details><summary>Change Surrounds</summary>
 
