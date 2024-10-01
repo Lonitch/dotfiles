@@ -49,6 +49,10 @@ return {
 				capabilities = capabilities,
         cmd = { "bun", "run", "--bun", "vscode-html-language-server", "--stdio" },
 			})
+			lspconfig.eslint.setup({
+				capabilities = capabilities,
+        cmd = { "bun", "run", "--bun", "vscode-eslint-language-server", "--stdio" },
+			})
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
 			})
