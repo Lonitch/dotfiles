@@ -243,6 +243,7 @@ marpterm() {
     local preview=true
     local allow_local=false
     local help=false
+    local list_themes=false
 
     # Parse arguments
     while [[ $# -gt 0 ]]; do
@@ -261,6 +262,9 @@ marpterm() {
             --local)
                 allow_local=true
                 ;;
+            --list)
+                list_themes=true
+                ;;
             -h)
                 help=true
                 ;;
@@ -274,12 +278,20 @@ marpterm() {
 
     # Display help
     if $help; then
-        echo "Usage: marpterm [filename.md] [--pdf] [--pptx] [--local] [-h]"
+        echo "Usage: marpterm [filename.md] [--pdf] [--pptx] [--local] [--list] [-h]"
         echo "  filename.md : Input markdown file (optional)"
         echo "  --pdf       : Render to PDF"
         echo "  --pptx      : Render to PPTX"
         echo "  --local     : Allow local file access"
+        echo "  --list      : List available theme CSS files"
         echo "  -h          : Display this help message"
+        return 0
+    fi
+
+    # List theme CSS files
+    if $list_themes; then
+        echo "Available theme CSS files:"
+        ls -1 "$HOME/.config/marp/themes/"*.css 2>/dev/null | sed 's/.*\///' | sed 's/\.css$//'
         return 0
     fi
 
