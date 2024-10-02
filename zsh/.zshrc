@@ -65,6 +65,7 @@ ZSH_THEME="robbyrussell"
 plugins=(git zsh-history-substring-search zsh-autosuggestions exercism)
 
 source $ZSH/oh-my-zsh.sh
+source $HOME/.api_keys
 
 # User configuration
 
