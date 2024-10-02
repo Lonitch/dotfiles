@@ -147,14 +147,26 @@ unset NODE_OPTIONS
 
 # bun completions
 [ -s "/home/$USER/.bun/_bun" ] && source "/home/$USER/.bun/_bun"
-
-# quarto
+# quarto cli wrapper
 qc() {
     local templates_dir="$HOME/.config/quarto/templates"
 
-    if [ "$#" -ne 1 ]; then
-        echo "Usage: qc [--list | template-name]"
-        return 1
+    # Function to display help message
+    show_help() {
+        echo "Usage: qc [OPTION] [TEMPLATE_NAME]"
+        echo "Options:"
+        echo "  --ipt FILE       Specify input file (default: latest modified .qmd file)"
+        echo "  --list           List all available templates"
+        echo "  --pdf            Convert latest modified .qmd to PDF"
+        echo "  --preview        Watch latest modified .qmd"
+        echo "  --copy TEMPLATE  Copy the specified template to the current directory"
+        echo "  -h               Display this help message"
+    }
+
+    # Check for no arguments or -h
+    if [ "$#" -eq 0 ] || [ "$1" = "-h" ]; then
+        show_help
+        return 0
     fi
 
     if [ "$1" = "--list" ]; then
@@ -163,17 +175,76 @@ qc() {
         return 0
     fi
 
-    local template_name="$1"
-    local template_path="$templates_dir/$template_name"
+    local input_file=""
+    local template_name=""
+    local copy_mode=false
+    local pdf_mode=false
+    local preview_mode=false
 
-    if [ ! -d "$template_path" ]; then
-        echo "Template '$template_name' not found in $templates_dir"
-        return 1
+    # Parse arguments
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            --ipt)
+                shift
+                input_file="$1"
+                ;;
+            --copy)
+                copy_mode=true
+                shift
+                template_name="$1"
+                ;;
+            --list)
+                echo "Available Quarto templates:"
+                ls -1 "$templates_dir"
+                return 0
+                ;;
+            --pdf)
+                pdf_mode=true
+                ;;
+            --preview)
+                preview_mode=true
+                ;;
+            *)
+                template_name="$1"
+                ;;
+        esac
+        shift
+    done
+
+    # If no input file specified, use latest modified .qmd file
+    if [ -z "$input_file" ]; then
+        input_file=$(ls -t *.qmd 2>/dev/null | head -n1)
+        if $copy_mode; then
+            if [ -z "$template_name" ]; then
+                echo "Error: No template name provided for copy mode."
+                show_help
+                return 1
+            fi
+    
+            local template_path="$templates_dir/$template_name"
+    
+            if [ ! -d "$template_path" ]; then
+                echo "Template '$template_name' not found in $templates_dir"
+                return 1
+            fi
+    
+            echo "Copying template '$template_name' to current directory..."
+            cp -R "$template_path"/* .
+            echo "Template copied successfully."
+        elif [ -z "$input_file" ]; then
+            echo "Error: No .qmd file found in the current directory."
+            return 1
+        elif $pdf_mode; then
+            echo "Converting $input_file to PDF..."
+            quarto render "$input_file" --to pdf
+        elif $preview_mode; then
+            echo "Watching $input_file..."
+            quarto preview "$input_file"
+        else
+            echo "No action specified. Use -h for help."
+            return 1
+        fi
     fi
-
-    echo "Copying template '$template_name' to current directory..."
-    cp -R "$template_path"/* .
-    echo "Template copied successfully."
 }
 
 # yazi
@@ -335,7 +406,7 @@ marpterm() {
     local marp_cmd="marp --html $theme_option"
     
     if $preview; then
-        marp_cmd+=" --preview"
+        marp_cmd+=" --preview --watch"
     fi
     
     if $allow_local; then
