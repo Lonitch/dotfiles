@@ -1,0 +1,5 @@
+name: Chinese Python Quarto Template
+description: A Quarto template for Chinese documents with Python scripts
+version: 1.0.0
+author: Sizhe Liu
+path: python-chn-template

@@ -1,0 +1,49 @@
+project:
+  type: default
+  output-dir: _output
+
+mainfont: Lato Light
+
+format:
+  html:
+    toc: true
+    toc-title: "Table of Contents"
+    toc-depth: 3
+    number-sections: true
+    theme:
+      light: cosmo
+      dark: cyborg
+    code-fold: true
+    code-tools: true
+  pdf:
+    documentclass: article
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    colorlinks: true
+    code-block-bg: "#ffe9d2" 
+    highlight-style: github
+    keep-tex: true
+    template-partials: 
+      - title.tex
+    include-in-header:
+      text: |
+        \usepackage[noblocks]{authblk}
+        \renewcommand*{\Authsep}{, }
+        \renewcommand*{\Authand}{, }
+        \renewcommand*{\Authands}{, }
+        \renewcommand\Affilfont{\small}
+        \usepackage{ctex}
+        \usepackage[margin=1in]{geometry}
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[LE,RO]{Foxconn Interconnect Technology Ltd.}
+
+execute:
+  cache: true
+  echo: false
+  output: asis
+  daemon: 60
+  warning: false
+
+bibliography: references.bib

@@ -149,19 +149,30 @@ unset NODE_OPTIONS
 
 # quarto
 qc() {
-    if [ "$#" -ne 2 ]; then
-        echo "Usage: qc <template_folder> <target_project_folder>
- Example: qc ./template ./newproj"
+    local templates_dir="$HOME/.config/quarto/templates"
+
+    if [ "$#" -ne 1 ]; then
+        echo "Usage: qc [--list | template-name]"
         return 1
     fi
 
-    # Run quarto use template command
-    quarto use template "$1" <<< "$2"
+    if [ "$1" = "--list" ]; then
+        echo "Available Quarto templates:"
+        ls -1 "$templates_dir"
+        return 0
+    fi
 
-    # Copy .gitignore to the target folder
-    cp "$1/".gitignore "$2/"
+    local template_name="$1"
+    local template_path="$templates_dir/$template_name"
 
-    echo "New Quarto Project created at $2"
+    if [ ! -d "$template_path" ]; then
+        echo "Template '$template_name' not found in $templates_dir"
+        return 1
+    fi
+
+    echo "Copying template '$template_name' to current directory..."
+    cp -R "$template_path"/* .
+    echo "Template copied successfully."
 }
 
 # yazi

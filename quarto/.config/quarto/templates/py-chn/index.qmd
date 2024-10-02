@@ -1,0 +1,125 @@
+---
+title: Your Title
+author: 
+  - name: Sizhe Liu
+    affil-id: 1,2 
+    affiliations:
+      - ref: 1
+      - ref: 2
+    email: sizhe.liu@fit-foxconn.com
+affiliations:
+  - name: FIT-USRD
+    id: 1
+  - name: Center for Networked Intelligent Components and Environments(C-NICE)
+    id: 2
+thanks: thanks to myself for being useful.
+date: 2024-04-29
+execute:
+  cache: true
+---
+
+::: {.content-visible unless-format="pdf"}
+```{ojs}
+import { wrap_code } from "./code-wrap.js";
+tmps= await FileAttachment("tmp.json").json();
+filler = wrap_code()tmps;
+```
+:::
+
+# Introduction
+
+This is an example of using Python to render plots in a Quarto document.
+
+这是一个利用Quarto生成的文档，并且支持中文显示。
+
+To create new project using this template, run:
+```
+quarto use template /path/to/python-chn-template
+```
+To preview the project in browser, run:
+```
+quarto preview index.qmd
+```
+To render the report as HTML, run:
+```
+quarto render index.qmd --to html
+```
+To render the report as PDF, run:
+```
+quarto render index.qmd --to pdf
+```
+
+You can customize the rendering options in the YAML header of this file or in the `_quarto.yml` configuration file.
+
+# Dynamic Rendering of Global Variables
+
+In HTML, You can refer to variables saved to `tmp.json` anywhere you want. For example, the value of `var1` defined below can be referred inline here as `{ojs} tmps.var1`.
+
+```{python}
+#| echo: true
+from utils import *
+var1 = 1
+var2json(var1=var1)
+```
+
+When rendering PDF, however, we cannot use `js` dynamic rendering. Instead, you need to **turn off** the **cache** option in the header, and replace all the inline `ojs` blocks into normal `python` blocks. For example, when no cache is used, `{{ojs}} tmps.var1` might be replaced by `{{python}} var1` after the code block in which `var1` is defined.
+
+# Other Kernel Support
+## Rust `evcxr` jupyter kernel
+If you have [evcxr_jupyter](https://github.com/evcxr/evcxr/blob/main/evcxr_jupyter/README.md) installed, you can code Rust interactively by adding the follwing in your `yml` header.
+```yaml
+jupyter:
+  kernelspec:
+    name: "rust"
+    language: "rust"
+    display_name: "Rust"
+```
+And you can write Rust code block like the following:
+
+```{{rust}}
+let r=1;
+```
+
+# Plotting Support
+
+With Python, you can adjust figure size in HTML through `dpi`^[this trick does not work in PDF], see the examples below(@fig-example-0 and @fig-example-1):
+
+```{python}
+#| label: fig-example-0
+#| fig-cap: "Example Python Plot with dpi=20"
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 20, 100)
+y = np.cos(x)
+
+plt.figure(figsize=(12, 4),dpi=20)
+plt.plot(x, y)
+plt.xlabel('x')
+plt.ylabel('sin(x)')
+plt.title('Example Plot')
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+#| label: fig-example-1
+#| fig-cap: "Example Python Plot with dpi=80"
+#| out-width: 50%
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+plt.figure(figsize=(12, 4),dpi=80)
+plt.plot(x, y)
+plt.xlabel('x')
+plt.ylabel('sin(x)')
+plt.title('Example Plot')
+plt.tight_layout()
+plt.show()
+```
+

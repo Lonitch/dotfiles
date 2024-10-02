@@ -1,0 +1,25 @@
+\newcommand{\emailsymbol}{
+\raisebox{0.2ex}{\scalebox{0.6}{\fbox{\texttt{e}}}}
+}
+
+$if(title)$
+\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+$endif$
+
+$if(subtitle)$
+\subtitle{$subtitle$}
+$endif$
+
+$for(by-author)$
+\author$if(it.metadata.affil-id)$[$it.metadata.affil-id$ $if(it.email)$\href{mailto:$it.email$}{\emailsymbol}$endif$]$endif${$it.name.literal$}
+$endfor$
+
+$if(by-affiliation)$
+$for(by-affiliation)$
+\affil[$it.id$]{\small{ $it.name$ }}
+$endfor$
+$endif$
+
+
+\date{$date$}
+

@@ -1,0 +1,11 @@
+/.quarto/
+/_output/
+/__pycache__/
+/index_files/
+/.jupyter_cache/
+/.ipynb_checkpoints/
+*.tex
+!title.tex
+*.csv 
+*.xlsx
+*.json
