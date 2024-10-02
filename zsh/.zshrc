@@ -305,10 +305,13 @@ marpterm() {
     fi
 
     # Read theme from YAML header
-    local theme=$(sed -n '/^---/,/^---/p' "$input_file" | grep 'theme:' | awk '{print $2}')
+    local yaml_header=$(sed -n '/^---/,/^---/p' "$input_file")
+    local marp_theme=$(echo "$yaml_header" | grep 'marp-theme:' | awk '{print $2}')
+    local theme=$(echo "$yaml_header" | grep 'theme:' | awk '{print $2}')
+    local final_theme=${marp_theme:-$theme}
     local theme_option=""
-    if [[ -n "$theme" ]]; then
-        local theme_file="$HOME/.config/marp/themes/${theme}.css"
+    if [[ -n "$final_theme" ]]; then
+        local theme_file="$HOME/.config/marp/themes/${final_theme}.css"
         if [[ -f "$theme_file" ]]; then
             theme_option="--theme $theme_file"
         else
