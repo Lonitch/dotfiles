@@ -1,5 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/.local/bin:$PATH"
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 # export DISPLAY=:1.0
@@ -65,45 +66,44 @@ ZSH_THEME="robbyrussell"
 plugins=(git zsh-history-substring-search zsh-autosuggestions exercism)
 
 source $ZSH/oh-my-zsh.sh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# .api_keys should be created separately
+# EXAMPLE
+# export ANTHROPIC_API_KEY=XXXX
 source $HOME/.api_keys
 
 # User configuration
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # Set up fzf key bindings and fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Alias
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# for a full list of active aliases, run `alias`.
+
 # Fuzzy search for file using bat preview to open it in nvim
-alias inv="nvim \$(fzf -m --preview='batcat --color=always {}')"
+alias bvim="nvim \$(fzf -m --preview='bat --color=always {}')"
 
 # use bun to run mermaid cli
 alias mmdc="bun run --bun mmdc"
 
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-
+# Application Settings
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/$USER/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -119,7 +119,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export PATH="$HOME/.local/bin:$PATH"
+# VHACD
 export PATH="$HOME/VHACD/build/linux/test:$PATH"
 export PATH="$HOME/VHACD/com.unity.robotics.vhacd/Runtime:$PATH"
 
@@ -130,6 +130,8 @@ export PATH="$HOME/gems/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
+# bun completions
+[ -s "/home/$USER/.bun/_bun" ] && source "/home/$USER/.bun/_bun"
 
 # fly.io
 export FLYCTL_INSTALL="/home/$USER/.fly"
@@ -145,8 +147,55 @@ export PATH="/snap/bin:$PATH"
 # enable legacy openssl provider 
 unset NODE_OPTIONS
 
-# bun completions
-[ -s "/home/$USER/.bun/_bun" ] && source "/home/$USER/.bun/_bun"
+# toggle the use of laptop keyboard
+toggle_keyboard() {
+    # Replace this with your internal keyboard's exact name
+    local DEVICE_NAME="AT Translated Set 2 keyboard"
+    # Fetch the device ID based on the device name
+    local DEVICE_ID
+    DEVICE_ID=$(xinput list --id-only "$DEVICE_NAME")
+    # Check if the device was found
+    if [[ -z "$DEVICE_ID" ]]; then
+        echo "Error: Device '$DEVICE_NAME' not found."
+        return 1
+    fi
+    # Get the current state of the device (1 = enabled, 0 = disabled)
+    local STATE
+    STATE=$(xinput list-props "$DEVICE_ID" | grep "Device Enabled" | awk '{print $NF}')
+    # Toggle the device state
+    if [[ "$STATE" -eq 1 ]]; then
+        xinput disable "$DEVICE_ID"
+        echo "Internal keyboard disabled."
+    else
+        xinput enable "$DEVICE_ID"
+        echo "Internal keyboard enabled."
+    fi
+}
+# convert ppt to pdf
+ppt2pdf() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: ppt2pdf <inputfile.pptx>"
+        return 1
+    fi
+
+    input_file="$1"
+    output_file="${input_file%.*}.pdf"
+
+    if [ ! -f "$input_file" ]; then
+        echo "Error: Input file '$input_file' not found."
+        return 1
+    fi
+
+    soffice --headless --convert-to pdf "$input_file"
+
+    if [ -f "$output_file" ]; then
+        echo "Conversion successful. Output file: $output_file"
+    else
+        echo "Conversion failed."
+        return 1
+    fi
+}
+
 # quarto cli wrapper
 qc() {
     local templates_dir="$HOME/.config/quarto/templates"
