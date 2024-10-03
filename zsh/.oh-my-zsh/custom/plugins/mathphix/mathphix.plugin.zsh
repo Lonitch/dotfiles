@@ -3,18 +3,83 @@
 # Function: pdf2md
 # Description: Converts a PDF file to Markdown using Mathpix API by uploading the file,
 # checking the conversion status, and downloading the Markdown result.
+# Supports -h/--help for help and --page-ranges to specify pages to convert.
 
 pdf2md() {
-    # Check if the user provided a PDF file
+    # Default values
+    local OUTPUT_FILE=""
+    local PAGE_RANGE=""
+    local MAX_RETRIES=100         # Maximum number of status checks
+    local RETRY_INTERVAL=5        # Seconds between retries
+
+    # Function to display help message
+    local show_help
+    show_help() {
+        echo "Usage: pdf2md [options] <path_to_pdf> [output_markdown_file]"
+        echo
+        echo "Options:"
+        echo "  -h, --help               Show this help message and exit."
+        echo "  --page-ranges <range>     Specify the page range to convert (e.g., '1-5,7,9-12')."
+        echo
+        echo "Arguments:"
+        echo "  <path_to_pdf>            Path to the input PDF file."
+        echo "  [output_markdown_file]   (Optional) Path to save the output Markdown file."
+        echo "                           Defaults to the input file name with .md extension."
+    }
+
+    # Parse options
+    local POSITIONAL=()
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                show_help
+                return 0
+                ;;
+            --page-ranges | -pr)
+                if [[ -n "$2" && ! "$2" =~ ^- ]]; then
+                    PAGE_RANGE="$2"
+                    shift 2
+                else
+                    echo "Error: --page-ranges requires a non-empty option argument."
+                    return 1
+                fi
+                ;;
+            --page-ranges=* | -pr=*)
+                PAGE_RANGE="${1#*=}"
+                shift
+                ;;
+            -*|--*)
+                echo "Error: Unknown option: $1"
+                show_help
+                return 1
+                ;;
+            *)
+                POSITIONAL+=("$1")
+                shift
+                ;;
+        esac
+    done
+
+    # Restore positional parameters
+    set -- "${POSITIONAL[@]}"
+
+    # Check for at least one positional argument (input PDF)
     if [[ $# -lt 1 ]]; then
-        echo "Usage: pdf2md <path_to_pdf> [output_markdown_file]"
+        echo "Error: Missing required argument <path_to_pdf>."
+        show_help
         return 1
     fi
 
     local INPUT_FILE="$1"
     local OUTPUT_FILE="${2:-${INPUT_FILE%.pdf}.md}"
-    local MAX_RETRIES=300          # Maximum number of status checks
-    local RETRY_INTERVAL=5         # Seconds between retries
+
+    # Validate page range format (basic validation)
+    if [[ -n "$PAGE_RANGE" ]]; then
+        if [[ ! "$PAGE_RANGE" =~ ^([0-9]+(-[0-9]+)?)(,[0-9]+(-[0-9]+)?)*$ ]]; then
+            echo "Error: Invalid page range format. Expected format like '1-5,7,9-12'."
+            return 1
+        fi
+    fi
 
     # Check if the input file exists
     if [[ ! -f "$INPUT_FILE" ]]; then
@@ -35,6 +100,15 @@ pdf2md() {
         return 1
     fi
 
+    # Construct options_json
+    local OPTIONS_JSON='{"conversion_formats": {"md": true}, "math_inline_delimiters": ["$", "$"], "rm_spaces": true}'
+    if [[ -n "$PAGE_RANGE" ]]; then
+        OPTIONS_JSON=$(jq -n \
+            --arg cr "$PAGE_RANGE" \
+            --argjson options '{"conversion_formats": {"md": true}, "math_inline_delimiters": ["$", "$"], "rm_spaces": true}' \
+            '$options + { "page_ranges": $cr }')
+    fi
+
     # Upload the PDF file
     echo "Uploading '$INPUT_FILE' to Mathpix API..."
     local UPLOAD_RESPONSE
@@ -42,7 +116,7 @@ pdf2md() {
         -H "app_id: $MATHPIX_APP_ID" \
         -H "app_key: $MATHPIX_APP_KEY" \
         -F "file=@$INPUT_FILE" \
-        -F 'options_json={"conversion_formats": {"md": true}, "math_inline_delimiters": ["$", "$"], "rm_spaces": true}')
+        -F "options_json=$OPTIONS_JSON")
 
     # Extract pdf_id from the response
     local PDF_ID
@@ -98,7 +172,7 @@ pdf2md() {
         -H "app_id: $MATHPIX_APP_ID" \
         -H "app_key: $MATHPIX_APP_KEY")
 
-    # Check if the download was successful by verifying if the file is not empty
+    # Check if the download was successful by verifying if the response is not empty
     if [[ -z "$DOWNLOAD_RESPONSE" ]]; then
         echo "Error: Failed to download the Markdown content."
         return 1
