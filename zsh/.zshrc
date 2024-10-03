@@ -63,7 +63,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-history-substring-search zsh-autosuggestions exercism)
+plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathphix)
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -179,7 +179,8 @@ ppt2pdf() {
     fi
 
     input_file="$1"
-    output_file="${input_file%.*}.pdf"
+    output_file="${input_file// /_}"
+    output_file="${output_file%.*}.pdf"
 
     if [ ! -f "$input_file" ]; then
         echo "Error: Input file '$input_file' not found."
@@ -187,6 +188,7 @@ ppt2pdf() {
     fi
 
     soffice --headless --convert-to pdf "$input_file"
+    mv "${input_file%.*}.pdf" "$output_file"
 
     if [ -f "$output_file" ]; then
         echo "Conversion successful. Output file: $output_file"
