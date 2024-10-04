@@ -63,7 +63,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathphix)
+plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathphix quarto)
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -148,7 +148,7 @@ export PATH="/snap/bin:$PATH"
 unset NODE_OPTIONS
 
 # toggle the use of laptop keyboard
-toggle_keyboard() {
+function toggle_keyboard() {
     # Replace this with your internal keyboard's exact name
     local DEVICE_NAME="AT Translated Set 2 keyboard"
     # Fetch the device ID based on the device name
@@ -172,7 +172,7 @@ toggle_keyboard() {
     fi
 }
 # convert ppt to pdf
-ppt2pdf() {
+function ppt2pdf() {
     if [ $# -eq 0 ]; then
         echo "Usage: ppt2pdf <inputfile.pptx>"
         return 1
@@ -198,105 +198,6 @@ ppt2pdf() {
     fi
 }
 
-# quarto cli wrapper
-qc() {
-    local templates_dir="$HOME/.config/quarto/templates"
-
-    # Function to display help message
-    show_help() {
-        echo "Usage: qc [OPTION] [TEMPLATE_NAME]"
-        echo "Options:"
-        echo "  --ipt FILE       Specify input file (default: latest modified .qmd file)"
-        echo "  --list           List all available templates"
-        echo "  --pdf            Convert latest modified .qmd to PDF"
-        echo "  --preview        Watch latest modified .qmd"
-        echo "  --copy TEMPLATE  Copy the specified template to the current directory"
-        echo "  -h               Display this help message"
-    }
-
-    # Check for no arguments or -h
-    if [ "$#" -eq 0 ] || [ "$1" = "-h" ]; then
-        show_help
-        return 0
-    fi
-
-    if [ "$1" = "--list" ]; then
-        echo "Available Quarto templates:"
-        ls -1 "$templates_dir"
-        return 0
-    fi
-
-    local input_file=""
-    local template_name=""
-    local copy_mode=false
-    local pdf_mode=false
-    local preview_mode=false
-
-    # Parse arguments
-    while [ "$#" -gt 0 ]; do
-        case "$1" in
-            --ipt)
-                shift
-                input_file="$1"
-                ;;
-            --copy)
-                copy_mode=true
-                shift
-                template_name="$1"
-                ;;
-            --list)
-                echo "Available Quarto templates:"
-                ls -1 "$templates_dir"
-                return 0
-                ;;
-            --pdf)
-                pdf_mode=true
-                ;;
-            --preview)
-                preview_mode=true
-                ;;
-            *)
-                template_name="$1"
-                ;;
-        esac
-        shift
-    done
-
-    # If no input file specified, use latest modified .qmd file
-    if [ -z "$input_file" ]; then
-        input_file=$(ls -t *.qmd 2>/dev/null | head -n1)
-        if $copy_mode; then
-            if [ -z "$template_name" ]; then
-                echo "Error: No template name provided for copy mode."
-                show_help
-                return 1
-            fi
-    
-            local template_path="$templates_dir/$template_name"
-    
-            if [ ! -d "$template_path" ]; then
-                echo "Template '$template_name' not found in $templates_dir"
-                return 1
-            fi
-    
-            echo "Copying template '$template_name' to current directory..."
-            cp -R "$template_path"/* .
-            echo "Template copied successfully."
-        elif [ -z "$input_file" ]; then
-            echo "Error: No .qmd file found in the current directory."
-            return 1
-        elif $pdf_mode; then
-            echo "Converting $input_file to PDF..."
-            quarto render "$input_file" --to pdf
-        elif $preview_mode; then
-            echo "Watching $input_file..."
-            quarto preview "$input_file"
-        else
-            echo "No action specified. Use -h for help."
-            return 1
-        fi
-    fi
-}
 
 # yazi
 function yy() {
@@ -309,67 +210,111 @@ function yy() {
 }
 
 # python3 venv wrapper
-# usage
-# $ mkvenv myvirtualenv # creates venv under ~/.virtualenvs/
-# $ venv myvirtualenv   # activates venv
-# $ deactivate          # deactivates venv
-# $ rmvenv myvirtualenv # removes venv
-
 export VENV_HOME="$HOME/.virtualenvs"
 [[ -d $VENV_HOME ]] || mkdir $VENV_HOME
 
-lsvenv() {
-  ls -1 $VENV_HOME
+function venv() {
+  local action=""
+  local venv_name=""
+  local requirements_file=""
+
+  # Parse arguments
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --list|-l)
+        action="list"
+        shift
+        ;;
+      --create|-c)
+        action="create"
+        venv_name="$2"
+        shift 2
+        ;;
+      --remove|-r)
+        action="remove"
+        venv_name="$2"
+        shift 2
+        ;;
+      --activate|-a)
+        action="activate"
+        venv_name="$2"
+        shift 2
+        ;;
+      -h|--help)
+        action="help"
+        shift
+        ;;
+      *)
+        requirements_file="$1"
+        shift
+        ;;
+    esac
+  done
+
+  case "$action" in
+    list)
+      ls -1 $VENV_HOME
+      ;;
+    create)
+      if [ -z "$venv_name" ]; then
+        echo "Usage: venv --create <venv_name> [requirements_file]"
+        return 1
+      fi
+
+      if [ -d "$VENV_HOME/$venv_name" ]; then
+        echo "Virtual environment '$venv_name' already exists. Use 'venv --activate $venv_name' to activate it."
+        return 1
+      fi
+
+      echo "Creating virtual environment '$venv_name'..."
+      python3 -m venv "$VENV_HOME/$venv_name"
+
+      echo "Activating virtual environment '$venv_name'..."
+      source "$VENV_HOME/$venv_name/bin/activate"
+
+      if [ -n "$requirements_file" ]; then
+        if [ -f "$requirements_file" ]; then
+          echo "Installing requirements from '$requirements_file'..."
+          pip install -r "$requirements_file"
+        else
+          echo "Requirements file not found: $requirements_file"
+        fi
+      fi
+
+      echo "Virtual environment '$venv_name' created and activated."
+      echo "Use 'deactivate' to exit the virtual environment."
+      ;;
+    remove)
+      if [ -z "$venv_name" ]; then
+        echo "Usage: venv --remove <venv_name>"
+        return 1
+      fi
+      rm -r "$VENV_HOME/$venv_name"
+      echo "Virtual environment '$venv_name' removed."
+      ;;
+    activate)
+      if [ -z "$venv_name" ]; then
+        echo "Usage: venv --activate <venv_name>"
+        return 1
+      fi
+      source "$VENV_HOME/$venv_name/bin/activate"
+      echo "Virtual environment '$venv_name' activated."
+      ;;
+    help)
+      echo "Usage: venv [--list|-l] [--create|-c <venv_name>] [--remove|-r <venv_name>] [--activate|-a <venv_name>] [-h|--help]"
+      echo "Options:"
+      echo "  --list, -l                       List all virtual environments"
+      echo "  --create, -c [requirements.txt]  Create a new virtual environment"
+      echo "  --remove, -r                     Remove a virtual environment"
+      echo "  --activate, -a                   Activate a virtual environment"
+      echo "  -h, --help                       Display this help message"
+      ;;
+    *)
+      echo "Usage: venv [--list|-l] [--create|-c <venv_name>] [--remove|-r <venv_name>] [--activate|-a <venv_name>] [-h|--help]"
+      return 1
+      ;;
+  esac
 }
-
-venv() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please provide venv name"
-    else
-      source "$VENV_HOME/$1/bin/activate"
-  fi
-}
-
-mkvenv() {
-  if [ $# -eq 0 ]; then
-    echo "Usage: mkvenv <venv_name> [requirements_file]"
-    return 1
-  fi
-
-  if [ -d "$VENV_HOME/$1" ]; then
-    echo "Virtual environment '$1' already exists. Use 'venv $1' to activate it."
-    return 1
-  fi
-
-  echo "Creating virtual environment '$1'..."
-  python3 -m venv "$VENV_HOME/$1"
-
-  echo "Activating virtual environment '$1'..."
-  source "$VENV_HOME/$1/bin/activate"
-
-  if [ $# -eq 2 ]; then
-    if [ -f "$2" ]; then
-      echo "Installing requirements from '$2'..."
-      pip install -r "$2"
-    else
-      echo "Requirements file not found: $2"
-    fi
-  fi
-
-  echo "Virtual environment '$1' created and activated."
-  echo "Use 'deactivate' to exit the virtual environment."
-}
-
-rmvenv() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please provide venv name"
-    else
-      rm -r $VENV_HOME/$1
-  fi
-}
-
 # marp terminal tool
 marpterm() {
     local input_file=""
