@@ -14,10 +14,10 @@ return {
     },
     openai = {
       endpoint = "https://api.openai.com/v1",
-      model = "gpt-4o",
-      timeout = 30000, -- Timeout in milliseconds
+      model = "gpt-4o-2024-08-06",
+      timeout = 80000, -- Timeout in milliseconds
       temperature = 0,
-      max_tokens = 4096,
+      max_tokens = 8000,
       ["local"] = false,
     },
   },
