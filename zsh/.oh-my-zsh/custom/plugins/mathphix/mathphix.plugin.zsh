@@ -183,3 +183,105 @@ pdf2md() {
 
     echo "Conversion successful! Markdown saved to '$OUTPUT_FILE'."
 }
+
+# Function: link2img
+# Description: download images at links in a MD file
+
+link2img() {
+    local INPUT_FILE=""
+    local OUTPUT_DIR="assets"
+    local REPLACE=false
+
+    # Function to display help message
+    local show_help
+    show_help() {
+        echo "Usage: link2img [options]"
+        echo
+        echo "Options:"
+        echo "  -h, --help               Show this help message and exit."
+        echo "  -i, --input <file>       Specify the input Markdown file."
+        echo "  -o, --output <dir>       Specify the output directory for images (default: assets)."
+        echo "  -r, --replace            Replace links in the Markdown file with local links."
+    }
+
+    # Parse options
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                show_help
+                return 0
+                ;;
+            -i|--input)
+                INPUT_FILE="$2"
+                shift 2
+                ;;
+            -o|--output)
+                OUTPUT_DIR="$2"
+                shift 2
+                ;;
+            -r|--replace)
+                REPLACE=true
+                shift
+                ;;
+            *)
+                echo "Error: Unknown option: $1"
+                show_help
+                return 1
+                ;;
+        esac
+    done
+
+    # Check if input file is provided
+    if [[ -z "$INPUT_FILE" ]]; then
+        echo "Error: Input file is required."
+        show_help
+        return 1
+    fi
+
+    # Check if input file exists
+    if [[ ! -f "$INPUT_FILE" ]]; then
+        echo "Error: Input file '$INPUT_FILE' not found."
+        return 1
+    fi
+
+    # Create output directory if it doesn't exist
+    mkdir -p "$OUTPUT_DIR"
+
+    # Process the Markdown file
+    local temp_file=$(mktemp)
+    local link_count=0
+    local download_count=0
+
+    while IFS= read -r line; do
+        if [[ $line =~ "!\[\]\(https:\/\/cdn\.mathpix\.com\/.*\)" ]]; then
+            link_count=$((link_count + 1))
+            local img_url=$(echo "$line" | grep -oP '(?<=\()https://cdn\.mathpix\.com/[^)]+')
+            local img_filename=$(basename "${img_url%%\?*}")
+            local img_path="$OUTPUT_DIR/$img_filename"
+
+            # Download the image
+            if curl -s -o "$img_path" "$img_url"; then
+                download_count=$((download_count + 1))
+                echo "Downloaded: $img_filename"
+
+                # Replace the link if -r option is set
+                if [[ "$REPLACE" = true ]]; then
+                    line=${line//$img_url/$img_path}
+                fi
+            else
+                echo "Failed to download: $img_filename"
+            fi
+        fi
+        echo "$line" >> "$temp_file"
+    done < "$INPUT_FILE"
+
+    # Replace the original file if -r option is set
+    if [[ "$REPLACE" = true ]]; then
+        mv "$temp_file" "$INPUT_FILE"
+        echo "Updated links in '$INPUT_FILE'"
+    else
+        rm "$temp_file"
+    fi
+
+    echo "Processed $link_count links, downloaded $download_count images."
+}
