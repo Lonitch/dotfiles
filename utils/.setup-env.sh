@@ -70,22 +70,47 @@ snap install nvim --classic
 snap install firefox
 echo "nvim and firefox installed"
 
-# install bun, rust, cargo
+# install node, bun, rust, cargo
+snap install node
 curl -fsSL https://bun.sh/install | bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-echo "bun, rust, and cargo installed"
+echo "node, bun, rust, and cargo installed"
 
 # install lsp for nvim
 bun install -g vscode-langservers-extracted @tailwindcss/language-server typescript typescript-language-server prettier eslint_d
 cargo install stylua
+apt install pipx
+pipx ensurepath --global
+pipx install jedi-language-server
+echo "LSP for NVim installed"
 
-# install quarto, marp, mermaid-cli, presenterm
+# install debugger for nvim
+wget https://github.com/vadimcn/codelldb/releases/download/v1.10.0/codelldb-x86_64-linux.vsix
+unzip codelldb-x86_64-linux.vsix -d codelldb
+rm codelldb-x86_64-linux.vsix
+echo "codelldb installed"
+
+# install utils: blueman fzf ripgrep flameshot sioyek
+apt-get install -y blueman ripgrep flameshot
+wget https://github.com/ahrm/sioyek/releases/download/v2.0.0/sioyek-release-linux.zip
+unzip sioyek-release-linux.zip
+cd sioyek-release-linux
+mv sioyek /usr/local/bin/
+cd ..
+rm -rf sioyek-release-linux.zip sioyek-release-linux
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+echo "blueman, fzf, ripgrep, flameshot, and sioyek installed"
+
+# install quarto, marp, mermaid-cli, rustfmt, presenterm
 wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.5.57/quarto-1.5.57-linux-amd64.deb
 dpkg -i quarto-1.5.57-linux-amd64.deb
 bun install -g @marp-team/marp-cli
 bun install -g @mermaid-js/mermaid-cli
+rustup component add rustfmt
+rustup component add rust-analyzer
 cargo install presenterm
-echo "quarto, marp, mermaid-cli, and presenterm installed"
+echo "quarto, marp, mermaid-cli, rustfmt, and presenterm installed"
 
 # install i3wm
 apt-get install -y i3

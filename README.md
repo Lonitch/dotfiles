@@ -13,15 +13,18 @@
 
 Managed by [GNU Stow](https://www.gnu.org/software/stow/), this repo gives configs for the following tools:
 
-- `nvim` for Neovim(>0.9.4)
-- `tmux` TMUX (>=3.3)
+- `nvim` for daily drive(>0.9.4)
+- `tmux` for multi-pane view(>=3.3)
 - `rust` for Rust dev(formatting)
 - `zsh` for zsh(and oh-my-zsh)
 - `kitty` for kitty terminal emulator
 - `i3` for i3wm
 - `picom` for stopping screen tearing
-- `yazi` for previewer-enabled file explorer
+- `yazi`, a previewer-enabled file sys exploration
 - `utils` for shell scripts that improve life quality
+- `marp`, a md2pdf/pptx presentation cli
+- `presenterm` for presenting things in terminal
+- `quarto` for data science
 
 To use config for anyone of the tools above, simply run the following:
 
@@ -31,27 +34,10 @@ stow <foldername>
 
 >**Mod1** versus **Mod4**: The window key is **Mod1** on mac keyboard, change it to **Mod4** on win keyboard in `i3/.config/i3/config` as your command prefix in i3wm.
 
+>you need to change the absolute path to `codelldb` in [debugging.lua](./nvim/.config/nvim/lua/plugins/debugging.lua)
+
 ## Prerequisites
-
-Other than the tools listed above, you may consider install the tools below as well:
-
-- `blueman` for bluetooth mgmt gui
-- `node` for running mermaid-cli and tree-sitter-cli
-- `fcitx5` for dual input method
-- `fzf` and `bat` for fuzzy search/preview
-- `ripgrep` for live text grep
-- `flameshot` for screenshot
-- [`rustfmt`](https://github.com/rust-lang/rustfmt)
-- `bun` (see [lsp config](./nvim/.config/nvim/lua/plugins/lsp-config.lua)) for JS/TS runtime/pkg mgmt
-- `vscode-langservers-extracted` for JS/TS Linting
-- `bash-language-server` for sh linting
-- `stylua` for lua formatting
-- [ `python-mode` ](https://github.com/python-mode/python-mode.git) and [ `jedi-languaga-server` ](https://github.com/pappasam/jedi-language-server) for Python Linting and LSP
-- [ `quarto` ](https://quarto.org)  for Code-block report generator
-- [`marp-cli`](https://github.com/marp-team/marp-cli?tab=readme-ov-file#readme) for MD to Presentation
-- [sioyek](https://sioyek-documentation.readthedocs.io/en/latest/) for Vim-like PDF viewer
-- [ codelldb debugging ](<https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)>)
-  - you need to change the absolute path to `codelldb` in [debugging.lua](/lua/plugins/debugging.lua)
+A full list can be found at [setup-env.sh](./utils/.setup-env.sh)
 
 ## Cheat sheet for fcixit 5
 
