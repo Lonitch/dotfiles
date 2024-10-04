@@ -4,15 +4,16 @@ function qc() {
 
     # Function to display help message
     show_help() {
-        echo "Usage: qc [OPTION] [TEMPLATE_NAME]"
+        echo "Usage: qc [OPTION] [TEMPLATE_NAME | FILE]"
         echo "Options:"
-        echo "  -i|--input FILE       Specify input file (default: latest modified .qmd file)"
-        echo "  -l|--list           List all available templates"
-        echo "  --pdf            Convert input qmd file to PDF"
-        echo "  --preview        Watch input qmd file"
-        echo "  --create [FILE]  Create a new qmd by copying the yaml header in the input file"
-        echo "  --copy TEMPLATE  Copy the specified template to the current directory"
-        echo "  -h               Display this help message"
+        echo "  -i|--input FILE : Specify input file (default is latest modified .qmd file)"
+        echo "  -l|--list       : List all available templates"
+        echo "  --pdf           : Convert input qmd file to PDF"
+        echo "  --preview       : Watch input qmd file"
+        echo "  --create [FILE] : Create a new qmd by copying the yaml header in the input file"
+        echo "  --copy TEMPLATE : Copy the specified template to the current directory"
+        echo "  --marp [FILE]   : Render .qmd to a [FILE].md for marp presentation rendering"
+        echo "  -h              : Display this help message"
     }
 
     # Check for no arguments or -h
@@ -27,7 +28,9 @@ function qc() {
     local pdf_mode=false
     local preview_mode=false
     local create_mode=false
+    local marp_mode=false
     local new_file=""
+    local marp_file=""
 
     # Parse arguments
     while [ "$#" -gt 0 ]; do
@@ -56,6 +59,11 @@ function qc() {
                 create_mode=true
                 shift
                 new_file="$1"
+                ;;
+            --marp)
+                marp_mode=true
+                shift
+                marp_file="$1"
                 ;;
             *)
                 template_name="$1"
@@ -106,6 +114,14 @@ function qc() {
         echo "Creating new file $new_file with YAML header from $input_file..."
         sed -n '/^---$/,/^---$/p; /^#\{1,2\} Intro/,/^#/p' "$input_file" | sed '$d' > "$new_file"
         echo "New file created successfully."
+    elif $marp_mode; then
+        if [ -z "$marp_file" ]; then
+            marp_file="${input_file%.*}.md"
+        fi
+        echo "Rendering $input_file to $marp_file for marp presentation..."
+        python3 $ZSH_CUSTOM/plugins/quarto/marp.py -i $input_file -o $marp_file
+        echo "Marp-compatible markdown file created at _output/$marp_file."
+
     elif [ -z "$input_file" ]; then
         echo "Error: No input file found."
     else
@@ -113,4 +129,3 @@ function qc() {
         return 1
     fi
 }
-

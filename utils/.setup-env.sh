@@ -90,7 +90,7 @@ unzip codelldb-x86_64-linux.vsix -d codelldb
 rm codelldb-x86_64-linux.vsix
 echo "codelldb installed"
 
-# install utils: blueman fzf ripgrep flameshot sioyek
+# install utils: blueman yq fzf ripgrep flameshot sioyek
 apt-get install -y blueman ripgrep flameshot
 wget https://github.com/ahrm/sioyek/releases/download/v2.0.0/sioyek-release-linux.zip
 unzip sioyek-release-linux.zip
@@ -100,6 +100,8 @@ cd ..
 rm -rf sioyek-release-linux.zip sioyek-release-linux
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
+wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+chmod +x /usr/bin/yq
 echo "blueman, fzf, ripgrep, flameshot, and sioyek installed"
 
 # install quarto, marp, mermaid-cli, rustfmt, presenterm

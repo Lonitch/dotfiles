@@ -316,7 +316,7 @@ function venv() {
   esac
 }
 # marp terminal tool
-marpterm() {
+function marpterm() {
     local input_file=""
     local output_format=""
     local preview=true
@@ -392,12 +392,16 @@ marpterm() {
     if [[ -n "$final_theme" ]]; then
         local theme_file="$HOME/.config/marp/themes/${final_theme}.css"
         if [[ -f "$theme_file" ]]; then
-            local local_theme_file="${final_theme}.css"
+            local input_dir=$(dirname "$input_file")
+            local local_theme_file="$input_dir/${final_theme}.css"
             cp "$theme_file" "$local_theme_file"
             theme_option="--theme $local_theme_file"
+            echo "Info: Using theme file $theme_file"
         else
             echo "Warning: Theme file $theme_file not found. Using default theme."
         fi
+    else
+      echo "Warning: Theme was not set in $input_file!"
     fi
     # Construct Marp command
     local marp_cmd="marp --html $theme_option"
