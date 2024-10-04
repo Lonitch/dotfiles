@@ -447,17 +447,18 @@ marpterm() {
     if [[ -n "$final_theme" ]]; then
         local theme_file="$HOME/.config/marp/themes/${final_theme}.css"
         if [[ -f "$theme_file" ]]; then
-            theme_option="--theme $theme_file"
+            local local_theme_file="${final_theme}.css"
+            cp "$theme_file" "$local_theme_file"
+            theme_option="--theme $local_theme_file"
         else
             echo "Warning: Theme file $theme_file not found. Using default theme."
         fi
     fi
-
     # Construct Marp command
     local marp_cmd="marp --html $theme_option"
     
     if $preview; then
-        marp_cmd+=" --preview --watch"
+        marp_cmd+=" --watch --preview"
     fi
     
     if $allow_local; then
