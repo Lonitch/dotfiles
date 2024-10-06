@@ -92,10 +92,10 @@ def main():
         content = read_input_file(input_file)
         full_content = process_content(content)
 
-        temp_md_file = create_temp_file(output_file, full_content)
-        process_mermaid_graphs(temp_md_file, full_content)
-        generate_output_file(temp_md_file, output_file)
-        print(f"Output file generated: {output_file}")
+        create_temp_file(full_content)
+        process_python_block(full_content)
+        process_mermaid_graphs()
+        generate_output_file(output_file)
 
     except Exception as error:
         print("An error occurred:", str(error))
@@ -146,27 +146,62 @@ def process_content(content):
     return content
 
 
-def create_temp_file(output_file, content):
-    temp_md_file = os.path.join(os.path.dirname(output_file), "temp_output.md")
+def create_temp_file(content):
+    temp_md_file = "temp_output.qmd"
     with open(temp_md_file, 'w') as f:
         f.write(content)
     return temp_md_file
 
 
-def process_mermaid_graphs(temp_md_file, content):
+def process_python_block(content):
+    import re
+
+    print("Render python figures")
+    subprocess.run(
+        ["quarto", "render", "temp_output.qmd"], check=True
+    )
+    filename = "temp_output"
+    figure_dir = f"_output/{filename}_files/figure-html"
+
+    python_blocks = re.findall(r'```\{python\}(.*?)```', content, re.DOTALL)
+
+    if os.path.exists(figure_dir):
+        figures = [f for f in os.listdir(figure_dir) if f.endswith('.png')]
+
+        if len(figures) == len(python_blocks):
+            for i, block in enumerate(python_blocks):
+                figure_path = f"{figure_dir}/{figures[i]}"
+                replacement = f"![Python output]({figure_path})"
+                content = content.replace(
+                    f"```{{python}}{block}```", replacement, 1)
+
+            with open("temp_output.qmd", 'w') as f:
+                f.write(content)
+            subprocess.run([
+                "mv", "temp_output.qmd", "temp_output.md"
+            ])
+            print("Python figure replaced.")
+        else:
+            print("Warning: Not all Python figure are generated")
+
+
+def process_mermaid_graphs():
+
+    with open("temp_output.md", 'r') as f:
+        content = f.read()
     if "```{mermaid}" in content:
         modified_content = content.replace("```{mermaid}", "```mermaid")
-        with open(temp_md_file, 'w') as f:
+        with open("temp_output.md", 'w') as f:
             f.write(modified_content)
         subprocess.run(
-            ["mmdc", "-i", temp_md_file, "-o", temp_md_file],
+            ["mmdc", "-i", "temp_output.md", "-o", "temp_output.md"],
             check=True)
         print("Mermaid graphs generated.")
 
 
-def generate_output_file(temp_md_file, output_file):
+def generate_output_file(output_file):
     subprocess.run(
-        ["mv", temp_md_file, output_file],
+        ["mv", "temp_output.md", output_file],
         check=True)
 
 

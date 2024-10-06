@@ -120,7 +120,7 @@ function qc() {
         fi
         echo "Rendering $input_file to $marp_file for marp presentation..."
         python3 $ZSH_CUSTOM/plugins/quarto/marp.py -i $input_file -o $marp_file
-        echo "Marp-compatible markdown file created at _output/$marp_file."
+        echo "Marp-compatible markdown file created at $marp_file."
 
     elif [ -z "$input_file" ]; then
         echo "Error: No input file found."
