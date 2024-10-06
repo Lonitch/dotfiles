@@ -119,7 +119,19 @@ function qc() {
             marp_file="${input_file%.*}.md"
         fi
         echo "Rendering $input_file to $marp_file for marp presentation..."
+        # check if we are in a "molten" virtual environment
+        if [[ "$VIRTUAL_ENV" != *"molten"* ]]; then
+            # check if molten environment exists
+            if venv -l | grep -q "molten"; then
+                echo "Activating molten environment..."
+                venv -a molten
+            else
+                echo "Error: molten venv not found. Please install it and try again."
+                return 1
+            fi
+        fi
         python3 $ZSH_CUSTOM/plugins/quarto/marp.py -i $input_file -o $marp_file
+        deactivate
         echo "Marp-compatible markdown file created at $marp_file."
 
     elif [ -z "$input_file" ]; then

@@ -142,7 +142,7 @@ def process_content(content):
     if len(yaml_match) >= 3:
         yaml_data = yaml.safe_load(yaml_match[1])
         front_page = generate_front_page(yaml_data)
-        return front_page + yaml_match[2].replace("\n\n## ", "\n\n---\n\n## ")
+        return front_page + yaml_match[2].replace("\n## ", "\n\n---\n\n## ")
     return content
 
 
