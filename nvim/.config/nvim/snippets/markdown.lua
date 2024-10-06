@@ -12,9 +12,50 @@ return {
     t({ "", "```" }),
   }),
 
-  --- ```{mermaid}
-  --- gantt
-  --- ```
+  s("typst-slide", {
+    t({ "```typst +render +width:100%", "#set page(width:500pt)", "#set text(size:12pt,fill:white,font:\"DejaVu Sans Mono\")"}),
+    t({ "", "" }),
+    i(1),
+    t({ "", "```" }),
+  }),
+
+  s("typst-highlight", {
+      t("#highlight(fill:"),
+      i(1, "red"),
+      t(")["),
+      i(2, "text"),
+      t("]"),
+    }),
+
+  s("typst-highlight-wrap", {
+      t("#highlight(fill:"),
+      i(1, "red"),
+      t(")[**"),
+      f(function(_, snip)
+        return snip.env.LS_SELECT_RAW or {}
+      end),
+      t("**]"),
+    }),
+
+  s("typst-strike", {
+      t("#strike(stroke:"),
+      i(1, "red"),
+      t(")["),
+      i(2, "text"),
+      t("]"),
+    }),
+
+  s("typst-strike-wrap", {
+      t("#stike(stroke:"),
+      i(1, "red"),
+      t(")[**"),
+      f(function(_, snip)
+        return snip.env.LS_SELECT_RAW or {}
+      end),
+      t("**]"),
+    }),
+
+
   s("mermaid-gantt", {
     t("```mermaid"),
     t({ "", "gantt" }),

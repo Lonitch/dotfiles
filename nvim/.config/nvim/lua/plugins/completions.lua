@@ -15,6 +15,8 @@ return {
     config = function()
       -- load custom snippets from $HOME/.config/nvim/snippets
       require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets" })
+      -- store selected text before creating snippet
+      require("luasnip").config.setup({store_selection_keys="<Tab>"})
     end,
   },
   {
