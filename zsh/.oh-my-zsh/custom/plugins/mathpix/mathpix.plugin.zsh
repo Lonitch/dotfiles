@@ -395,20 +395,6 @@ function md2sec() {
     # Create output directory if it doesn't exist
     mkdir -p "$OUTPUT_DIR"
 
-    # Process the Markdown file
-    local section_number=0
-    local current_file=""
-    local title_pattern="^#{'$LEVEL'}[^#]"
-
-    while IFS= read -r line; do
-        if [[ $line =~ $title_pattern ]]; then
-            ((section_number++))
-            current_file="${OUTPUT_DIR}/$(basename "$INPUT_FILE" .md).${section_number}.md"
-            echo "$line" > "$current_file"
-        elif [[ -n "$current_file" ]]; then
-            echo "$line" >> "$current_file"
-        fi
-    done < "$INPUT_FILE"
-
-    echo "Divided '$INPUT_FILE' into $section_number sections in '$OUTPUT_DIR'."
+    # Run the Python script
+    python3 $ZSH_CUSTOM/plugins/mathpix/md2sec.py "$INPUT_FILE" --level "$LEVEL" --output "$OUTPUT_DIR"
 }

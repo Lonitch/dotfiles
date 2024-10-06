@@ -63,7 +63,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathphix quarto)
+plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathpix quarto)
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
