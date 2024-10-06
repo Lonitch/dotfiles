@@ -2,6 +2,8 @@ local ls = require("luasnip")
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
+local f = ls.function_node
+local fmt = require("luasnip.extras.fmt").fmt
 
 return {
   -- imports
@@ -122,7 +124,55 @@ return {
     t({ "", "  }" }),
   }),
 
+  -- section settings
+  s("pb", t("#pagebreak(weak: true)")),
+
+  s(
+    "apdx",
+    t([[
+#pagebreak(weak: true)
+// appendix
+#let appendix(body) = {
+  set heading(numbering: "A.1"/*, supplement: [Appendices]*/)
+  counter(heading).update(0)
+  body
+}
+#show: appendix
+// appendices hereon
+  ]])
+  ),
+
+  s(
+    "ref",
+    fmt('#bibliography(title: "References", "{filename}.bib")', {
+      filename = i(1, "filename_incl_path"),
+    })
+  ),
+
   -- object creation
+  s("code-from-file", {
+    t({ "", '#let content = read("' }),
+    i(1,"file.rs"),
+    t('")'),
+    t({ "", '#box(stroke:white,inset:20pt,raw(content, lang: "' }),
+    i(2,"rust"),
+    t('"))', ""),
+  }),
+
+  s("fig-from-file", {
+    t({ "#figure(", "" }),
+    t('  image("'),
+    i(1,"fig.png"),
+    t('"),'),
+    t({ "", "  caption: [" }),
+    i(2, "caption"),
+    t({ "]," }),
+    t({ "", ")<" }),
+    i(3, "fig-tag"),
+    t(">"),
+  }),
+
+
   s("cetz-fig", {
     t({ "#figure(", "" }),
     t("  cetz.canvas({"),
@@ -134,6 +184,95 @@ return {
     i(3, "fig-tag"),
     t(">"),
   }),
+
+  s(
+    "cetz-stroke",
+    fmt('set-style(stroke:(paint:{}, thickness:{}, dash:"{}"))', {
+      i(1, "black"),
+      i(2, "2pt"),
+      i(3, "solid"),
+    })
+  ),
+
+  s("cetz-fill",fmt("set-style(fill:{})",{i(1,"blue")})),
+
+  s(
+    "cetz-mark",
+    fmt(
+      'set-style(mark:(start:{},end:"{}",width:{},length:{}))',
+      { i(1, "none"), i(2, ">"), i(3, "2pt"), i(4, "2pt") }
+    )
+  ),
+
+  s(
+    "cetz-line",
+    fmt("line(({}, {}), ({}, {}))", {
+      i(1, "x1"),
+      i(2, "y1"),
+      i(3, "x2"),
+      i(4, "y2"),
+    })
+  ),
+
+  s(
+    "cetz-rect",
+    fmt("rect(({}, {}), ({}, {}), radius: {}, name:{})", {
+      i(1, "1"),
+      i(2, "1"),
+      i(3, "5"),
+      i(4, "5"),
+      i(5, "0"),
+      i(6, "none"),
+    })
+  ),
+
+  s(
+    "cetz-circ",
+    fmt("circle(({},{}),radius:{}, name:{})", {
+      i(1, "1"),
+      i(2, "1"),
+      i(3, "5"),
+      i(4, "none"),
+    })
+  ),
+
+  s(
+    "cetz-oval",
+    fmt("circle(({},{}),radius:({},{}), name:{})", {
+      i(1, "1"),
+      i(2, "1"),
+      i(3, "5"),
+      i(4, "5"),
+      i(5, "none"),
+    })
+  ),
+
+  s(
+    "cetz-bezier",
+    fmt("bezier(({},{}),({},{}),({},{}))", {
+      i(1, "1"),
+      i(2, "1"),
+      i(3, "5"),
+      i(4, "5"),
+      i(5, "2"),
+      i(6, "3"),
+    })
+  ),
+
+  s(
+    "cetz-content",
+    fmt("content(({},{}),\n  box(width:{}, height:{}, inset:{}, outset:{},\n    text({},[[{}]])))", {
+      i(1, "1"),
+      i(2, "1"),
+      i(3, "100pt"),
+      i(4, "50pt"),
+      i(5, "5pt"),
+      i(6, "0pt"),
+      i(7, "16pt"),
+      i(8, ""),
+    })
+  ),
+
 
   s("theorem-tag", {
     t("#theorem["),
