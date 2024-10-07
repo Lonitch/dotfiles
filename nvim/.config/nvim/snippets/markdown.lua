@@ -133,7 +133,7 @@ return {
     })
   ),
 
-  s("typst-slide", {
+  s("typ-slide", {
     t({
       "```typst +render +width:100%",
       "#set page(width:500pt)",
@@ -144,7 +144,7 @@ return {
     t({ "", "```" }),
   }),
 
-  s("typst-highlight", {
+  s("typ-highlight", {
     t("#highlight(fill:"),
     i(1, "red"),
     t(")["),
@@ -152,17 +152,17 @@ return {
     t("]"),
   }),
 
-  s("typst-highlight-wrap", {
+  s("typ-highlight-wrap", {
     t("#highlight(fill:"),
     i(1, "red"),
-    t(")[**"),
+    t(")[*"),
     f(function(_, snip)
       return snip.env.LS_SELECT_RAW or {}
     end),
-    t("**]"),
+    t("*]"),
   }),
 
-  s("typst-strike", {
+  s("typ-strike", {
     t("#strike(stroke:"),
     i(1, "red"),
     t(")["),
@@ -170,14 +170,14 @@ return {
     t("]"),
   }),
 
-  s("typst-strike-wrap", {
+  s("typ-strike-wrap", {
     t("#strike(stroke:"),
     i(1, "red"),
-    t(")[**"),
+    t(")[*"),
     f(function(_, snip)
       return snip.env.LS_SELECT_RAW or {}
     end),
-    t("**]"),
+    t("*]"),
   }),
 
   s("code-from-file", {
