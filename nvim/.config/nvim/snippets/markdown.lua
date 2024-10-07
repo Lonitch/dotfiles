@@ -262,6 +262,18 @@ return {
     i(2, "7d"),
   }),
 
+  s("mmd-gantt-milestone", {
+    i(1, "New Milestone"),
+    t(" :milestone, "),
+    i(2, "new-id"),
+    t(", "),
+    f(function()
+      return os.date("%Y-%m-%d")
+    end),
+    t(", "),
+    i(2, "7d"),
+  }),
+
   s("mmd-gantt-task-wrap", {
     f(function(_, snip)
       return snip.env.LS_SELECT_DEDENT or {}

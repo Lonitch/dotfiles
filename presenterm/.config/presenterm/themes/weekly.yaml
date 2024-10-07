@@ -1,7 +1,7 @@
 ---
 default:
   margin:
-    percent: 8
+    percent: 2
   colors:
     foreground: "c0caf5"
     background: "24283b"
@@ -68,7 +68,7 @@ intro_slide:
     alignment: center
     colors:
       foreground: "9ece6a"
-    positioning: page_bottom
+    positioning: below_title
   footer: true
 
 headings:
