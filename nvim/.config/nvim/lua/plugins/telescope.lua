@@ -7,6 +7,11 @@ return  {
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()-- keymap for telescope 
       require("telescope").setup({
+        pickers = {
+          find_files = {
+            hidden = true
+          }
+        },
         extensions = {
           ["ui-select"] = {
             require("telescope.themes").get_dropdown({}),

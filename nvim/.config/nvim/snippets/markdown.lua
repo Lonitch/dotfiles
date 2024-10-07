@@ -203,7 +203,7 @@ return {
   }),
 
   -- mermaid in marp
-  s("mermaid-gantt", {
+  s("mmd-gantt", {
     t("```mermaid"),
     t({ "", "gantt" }),
     t({ "", "    title " }),
@@ -228,7 +228,7 @@ return {
   }),
 
   -- mermaid in presenterm
-  s("mermaid-gantt-render", {
+  s("mmd-gantt-render", {
     t("```mermaid +render +width:100%"),
     t({ "", "gantt" }),
     t({ "", "    title " }),
@@ -252,8 +252,20 @@ return {
     t({ "", "```" }),
   }),
 
-  s("gantt-item", {
+  s("mmd-gantt-task", {
     i(1, "NewTask"),
+    t(" :active, "),
+    f(function()
+      return os.date("%Y-%m-%d")
+    end),
+    t(", "),
+    i(2, "7d"),
+  }),
+
+  s("mmd-gantt-task-wrap", {
+    f(function(_, snip)
+      return snip.env.LS_SELECT_DEDENT or {}
+    end),
     t(" :active, "),
     f(function()
       return os.date("%Y-%m-%d")
