@@ -63,7 +63,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathpix quarto)
+plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathpix quarto marpterm)
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -315,107 +315,4 @@ function venv() {
       ;;
   esac
 }
-# marp terminal tool
-function marpterm() {
-    local input_file=""
-    local output_format=""
-    local preview=true
-    local allow_local=false
-    local help=false
-    local list_themes=false
 
-    # Parse arguments
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-            *.md)
-                input_file="$1"
-                ;;
-            --pdf)
-                output_format="--pdf"
-                preview=false
-                ;;
-            --pptx)
-                output_format="--pptx"
-                preview=false
-                ;;
-            --local)
-                allow_local=true
-                ;;
-            --list)
-                list_themes=true
-                ;;
-            -h)
-                help=true
-                ;;
-            *)
-                echo "Unknown option: $1"
-                return 1
-                ;;
-        esac
-        shift
-    done
-
-    # Display help
-    if $help; then
-        echo "Usage: marpterm [filename.md] [--pdf] [--pptx] [--local] [--list] [-h]"
-        echo "  filename.md : Input markdown file (optional)"
-        echo "  --pdf       : Render to PDF"
-        echo "  --pptx      : Render to PPTX"
-        echo "  --local     : Allow local file access"
-        echo "  --list      : List available theme CSS files"
-        echo "  -h          : Display this help message"
-        return 0
-    fi
-
-    # List theme CSS files
-    if $list_themes; then
-        echo "Available theme CSS files:"
-        ls -1 "$HOME/.config/marp/themes/"*.css 2>/dev/null | sed 's/.*\///' | sed 's/\.css$//'
-        return 0
-    fi
-
-    # Find latest markdown file if not specified
-    if [[ -z "$input_file" ]]; then
-        input_file=$(ls -t *.md | head -n1)
-        if [[ -z "$input_file" ]]; then
-            echo "No markdown file found in the current directory."
-            return 1
-        fi
-    fi
-
-    # Read theme from YAML header
-    local yaml_header=$(sed -n '/^---/,/^---/p' "$input_file")
-    local marp_theme=$(echo "$yaml_header" | grep 'marp-theme:' | awk '{print $2}')
-    local theme=$(echo "$yaml_header" | grep 'theme:' | awk '{print $2}')
-    local final_theme=${marp_theme:-$theme}
-    local theme_option=""
-    if [[ -n "$final_theme" ]]; then
-        local theme_file="$HOME/.config/marp/themes/${final_theme}.css"
-        if [[ -f "$theme_file" ]]; then
-            local input_dir=$(dirname "$input_file")
-            local local_theme_file="$input_dir/${final_theme}.css"
-            cp "$theme_file" "$local_theme_file"
-            theme_option="--theme $local_theme_file"
-            echo "Info: Using theme file $theme_file"
-        else
-            echo "Warning: Theme file $theme_file not found. Using default theme."
-        fi
-    else
-      echo "Warning: Theme was not set in $input_file!"
-    fi
-    # Construct Marp command
-    local marp_cmd="marp --html $theme_option"
-    
-    if $preview; then
-        marp_cmd+=" --watch --preview"
-    fi
-    
-    if $allow_local; then
-        marp_cmd+=" --allow-local-files"
-    fi
-    
-    marp_cmd+=" $output_format $input_file"
-
-    # Execute Marp command
-    eval $marp_cmd
-}
