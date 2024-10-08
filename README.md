@@ -204,6 +204,13 @@ We use `rope` in `python-mode` for `goto_definition` functionality.
 
 </details>
 
+<details><summary>Snippets</summary>
+
+- `<C-u>`: show options for choice node
+- `<Tab>`: jump to next node
+
+</details>
+
 <details><summary>Tabs and Windows</summary>
 
 - `<A-h/j/k/l>`: switch windows of tmux and neovim interchangeably

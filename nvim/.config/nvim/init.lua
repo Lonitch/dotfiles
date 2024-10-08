@@ -71,6 +71,7 @@ end
 
 -- lazy.vim set up plugins with options here
 require("lazy").setup("plugins")
+-- avante library loading
 require('avante_lib').load()
 vim.opt.laststatus = 3
 -- run leptosfmt before saving .rs files
@@ -79,7 +80,7 @@ local function format_with_leptosfmt()
   local save_cursor = vim.api.nvim_win_get_cursor(0)
   -- Run leptosfmt on the current file
   vim.cmd("silent !leptosfmt " .. vim.fn.expand("%"))
-  formatting = true
+  local formatting = true
   -- Reload the file in the buffer
   vim.cmd("edit!")
   -- Restore the cursor position
