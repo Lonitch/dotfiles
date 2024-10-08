@@ -98,7 +98,7 @@ function pdf2md() {
     # If input PDF has more than 20 pages, and no page range is set 
     # Wait for confirmation from user to proceed
     if [[ -z "$PAGE_RANGE" ]]; then
-        local page_count=$( pdfinfo file.pdf | grep -Po 'Pages:[[:space:]]+\K[[:digit:]]+' )
+        local page_count=$( pdfinfo "$INPUT_FILE" | grep -Po 'Pages:[[:space:]]+\K[[:digit:]]+' )
         if [[ $page_count -gt 20 ]]; then
             echo "Warning: The PDF file has $page_count pages."
             echo "Converting large files may take a long time and consume more API credits."
