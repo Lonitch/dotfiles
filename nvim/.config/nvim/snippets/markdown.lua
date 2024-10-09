@@ -5,14 +5,36 @@ local i = ls.insert_node
 local f = ls.function_node
 local c = ls.choice_node
 local fmt = require("luasnip.extras.fmt").fmt
--- local d = ls.dynamic_node
 -- local sn = ls.snippet_node
+-- local d = ls.dynamic_node
 -- local k = require("luasnip.nodes.key_indexer").new_key
 
--- LLM summary options' details
-local sum_opts = {}
-sum_opts["bullet"] = "<!-- The bullet points should capture as many details as possible and use layman terms as much as possible.-->"
-sum_opts["story"] = "<!-- Please make a story for each section and make sure smooth transitions between different stories. Each story should at least be composed of: 1. explanations of concepts/methods/objects in the section in layman terms; 2. examples of using relevant concepts/methods/objects; 3. analysis of advantages/limitations of using those concepts/methods/objects. -->"
+local function populate_options(arg)
+  local rules_path = vim.fn.stdpath("config") .. "/snippets/opts/" .. arg .. ".lua"
+  local ok, rules = pcall(dofile, rules_path)
+  if not ok then
+    print("Error loading mermaid rules: " .. rules)
+    return {}
+  end
+  local options = {}
+  for opt_name, opt in pairs(rules) do
+    local option = {}
+    table.insert(option, " " .. opt_name)
+    if type(opt) == "table" then
+      for _, item in ipairs(opt) do
+        table.insert(option, item)
+      end
+    elseif type(opt) == "string" and opt:find("\n") then
+      for line in opt:gmatch("([^\n]*)\n?") do
+        table.insert(option, line)
+      end
+    else
+      table.insert(option, opt)
+    end
+    table.insert(options, t(option))
+  end
+  return options
+end
 
 return {
   -- code blocks
@@ -298,11 +320,7 @@ return {
   -- prompts
   s("llm-summary-file", {
     t({ "", "---", "<!-- please summarize this file" }),
-    c(1, {
-      t(". -->"),
-      t({ " by bullet points. -->", sum_opts["bullet"] }),
-      t({ " by creating stories. -->", sum_opts["story"] }),
-    }, { key = "sum-typ" }),
+    c(1, populate_options("llm-sum"), { key = "sum-typ" }),
     t({
       "",
       "<!-- If there are math expressions, try to use latex to explain them. If there are abbreviatons, try to first explain what they are. If there are picutures, try to use them in your summary as much as possible. -->",
@@ -311,7 +329,7 @@ return {
     }),
   }),
 
-  s("llm-explain-file", {
+  s("llm-explain", {
     t(
       "<!-- based on the content of current file, please use layman examples or math(prepared in latex) to explain "
     ),
@@ -323,25 +341,17 @@ return {
     t({
       "```mermaid",
       "",
-      "%% base on the content in the following commented lines, create a mermaid chart by using its ",
+      "%% Based on the syntax rules and the <content> below, create a mermaid ",
     }),
-    c(1, {
-      t("flowchart"),
-      t("state diagram"),
-      t("quadrant chart"),
-      t("pie chart"),
-      t("gantt"),
-      t("mindmap"),
-      t("sankey"),
-    }, {key="chart-opt"}),
-    t({ " syntax", "" }),
+    c(1, populate_options("llm-mmd"), { key = "chart-opt" }),
+    t({ "", "<content>", "" }),
     f(function(_, snip)
       local res, env = {}, snip.env
       for _, ele in ipairs(env.LS_SELECT_RAW) do
-        table.insert(res, "%% " .. ele)
+        table.insert(res, ele)
       end
       return res
     end, {}),
-    t({ "", "```", "" }),
+    t({ "", "</content>", "```", "" }),
   }),
 }
