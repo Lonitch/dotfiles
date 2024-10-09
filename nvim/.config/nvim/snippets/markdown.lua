@@ -9,31 +9,11 @@ local fmt = require("luasnip.extras.fmt").fmt
 -- local d = ls.dynamic_node
 -- local k = require("luasnip.nodes.key_indexer").new_key
 
-local function populate_options(arg)
-  local rules_path = vim.fn.stdpath("config") .. "/snippets/opts/" .. arg .. ".lua"
-  local ok, rules = pcall(dofile, rules_path)
-  if not ok then
-    print("Error loading mermaid rules: " .. rules)
-    return {}
-  end
-  local options = {}
-  for opt_name, opt in pairs(rules) do
-    local option = {}
-    table.insert(option, " " .. opt_name)
-    if type(opt) == "table" then
-      for _, item in ipairs(opt) do
-        table.insert(option, item)
-      end
-    elseif type(opt) == "string" and opt:find("\n") then
-      for line in opt:gmatch("([^\n]*)\n?") do
-        table.insert(option, line)
-      end
-    else
-      table.insert(option, opt)
-    end
-    table.insert(options, t(option))
-  end
-  return options
+local util_path = vim.fn.stdpath("config") .. "/snippets/snippet-utils.lua"
+local ok, utils= pcall(dofile, util_path)
+if not ok then
+  print("Error loading utils: " .. util_path)
+  return {}
 end
 
 return {
@@ -320,10 +300,10 @@ return {
   -- prompts
   s("llm-summary-file", {
     t({ "", "---", "<!-- please summarize this file" }),
-    c(1, populate_options("llm-sum"), { key = "sum-typ" }),
+    c(1, utils.populate_options("llm-sum"), { key = "sum-typ" }),
     t({
       "",
-      "<!-- If there are math expressions, try to use latex to explain them. If there are abbreviatons, try to first explain what they are. If there are picutures, try to use them in your summary as much as possible. -->",
+      "<!-- If there are exact numbers, use them as much as possible to in the summary. If there are math expressions, try to use latex to explain them. If there are abbreviatons, try to first explain what they are. If there are picutures, try to use them in your summary as much as possible. -->",
       "---",
       "",
     }),
@@ -343,7 +323,7 @@ return {
       "",
       "%% Based on the syntax rules and the <content> below, create a mermaid ",
     }),
-    c(1, populate_options("llm-mmd"), { key = "chart-opt" }),
+    c(1, utils.populate_options("llm-mmd"), { key = "chart-opt" }),
     t({ "", "<content>", "" }),
     f(function(_, snip)
       local res, env = {}, snip.env
