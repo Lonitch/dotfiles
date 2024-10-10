@@ -1,4 +1,41 @@
 return {
+  ["sequence diagram"] = [[
+1. Basic syntax:
+   - Participants are defined implicitly or explicitly using "participant" keyword
+   - Messages are defined as: [Actor][Arrow][Actor]:Message text
+   - Actors can be created with "actor" keyword for stick figure representation
+2. Arrows:
+   - Various arrow types are available (e.g. ->, -->, ->>, -x, -)
+   - Solid or dotted lines with different arrowheads or crosses
+3. Activations:
+   - Use "activate" and "deactivate" to show lifelines
+   - Shorthand: append +/- to message arrows
+4. Notes:
+   - Add notes with "Note [right of | left of | over] [Actor]: Text"
+   - Spanning notes possible with "Note over Actor1,Actor2: Text"
+5. Loops, Alt, and Parallel:
+   - Use "loop", "alt"/"else", and "par" to show repetition, alternatives, and parallel actions
+6. Critical regions:
+   - Use "critical" to highlight required actions with optional circumstances
+7. Background highlighting:
+   - Use "rect COLOR" to add colored background sections
+9. Special characters:
+   - Escape characters using HTML entity codes (e.g. #35; for #)
+10. Sequence numbers:
+    - Can be added to arrows via configuration
+11. Actor menus:
+    - Add clickable links to actors using "link" keyword
+12. Styling:
+    - Customizable using CSS classes
+13. Configuration:
+    - Adjust margins and other parameters via mermaid.sequenceConfig
+Caveats:
+- The word "end" in actor names can break the diagram; use parentheses or quotes if necessary
+- Semicolons in message text must be escaped as #59;
+- Some features (like actor creation/destruction) require specific Mermaid versions
+- Complex diagrams may require careful use of syntax to avoid errors
+  ]],
+
   ["state diagram"] = [[
 Syntax:
 1. Basic State: `stateName` or `state "Description" as stateName`
