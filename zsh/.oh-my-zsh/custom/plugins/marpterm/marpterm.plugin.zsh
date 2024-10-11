@@ -3,7 +3,7 @@ function marpterm() {
     local input_file=""
     local output_format=""
     local preview=true
-    local allow_local=true
+    local no_local=false
     local help=false
     local list_themes=false
     local archive=false
@@ -24,7 +24,7 @@ function marpterm() {
                 preview=false
                 ;;
             --no-local|-nl)
-                allow_local=false
+                no_local=true
                 ;;
             --list|-l)
                 list_themes=true
@@ -120,14 +120,10 @@ function marpterm() {
       echo "Warning: Theme was not set in $input_file!"
     fi
     # Construct Marp command
-    local marp_cmd="marp --html $theme_option"
+    local marp_cmd="python3 $ZSH_CUSTOM/plugins/marpterm/marpterm.py $theme_option"
     
-    if $preview; then
-        marp_cmd+=" --watch --preview"
-    fi
-    
-    if $allow_local; then
-        marp_cmd+=" --allow-local-files"
+    if $no_local; then
+        marp_cmd+=" --no-local"
     fi
     
     marp_cmd+=" $output_format $input_file"
