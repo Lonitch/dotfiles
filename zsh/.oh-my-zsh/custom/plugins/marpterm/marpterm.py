@@ -135,11 +135,13 @@ def watch_file(filename):
     observer.join()
 
 
-def cleanup():
+def cleanup(args):
     if os.path.exists(TEMP_FILE):
         os.remove(TEMP_FILE)
     if os.path.exists(TEMP_HTML):
         os.remove(TEMP_HTML)
+    if os.path.exists(args.theme):
+        os.remove(args.theme)
     for file in os.listdir():
         if file.startswith("marpterm-mmd-") and file.endswith(".png"):
             os.remove(file)
@@ -169,9 +171,9 @@ def main():
         else:
             run_marp(args)
     except KeyboardInterrupt:
-        cleanup()
+        cleanup(args)
     finally:
-        cleanup()
+        cleanup(args)
 
 
 if __name__ == "__main__":
