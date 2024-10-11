@@ -142,6 +142,9 @@ def cleanup(args):
         os.remove(TEMP_HTML)
     if os.path.exists(args.theme):
         os.remove(args.theme)
+    gen_html = args.filename.split('.')[0] + ".html"
+    if os.path.exists(gen_html):
+        os.remove(gen_html)
     for file in os.listdir():
         if file.startswith("marpterm-mmd-") and file.endswith(".png"):
             os.remove(file)
@@ -170,6 +173,7 @@ def main():
             marp_thread.join()
         else:
             run_marp(args)
+            cleanup(args)
     except KeyboardInterrupt:
         cleanup(args)
     finally:
