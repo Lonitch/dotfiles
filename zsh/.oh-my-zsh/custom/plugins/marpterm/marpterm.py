@@ -112,7 +112,7 @@ class FileChangeHandler(FileSystemEventHandler):
         self.filename = filename
 
     def on_modified(self, event):
-        if event.src_path == self.filename:
+        if event.src_path.endswith(self.filename):
             print(
                 f"File {self.filename} has been modified. Updating...")
             generate_temp_markdown(self.filename)
@@ -123,7 +123,7 @@ def watch_file(filename):
     observer = Observer()
     observer.schedule(
         event_handler,
-        path=filename,
+        path=os.path.abspath(os.path.dirname(filename) or "."),
         recursive=False)
     observer.start()
 
