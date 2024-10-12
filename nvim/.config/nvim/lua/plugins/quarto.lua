@@ -72,7 +72,8 @@ return {
 		})
 		-- Activate otter for both Quarto and Markdown files
 		vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-			pattern = { "*.qmd" },
+			pattern = { "*.qmd", "*.md" },
+      filetype = { "quarto", "markdown" },
 			callback = function()
 				otter.activate({ "r", "python", "julia", "bash", "html", "rust" })
 			end,
