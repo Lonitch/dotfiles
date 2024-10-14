@@ -16,27 +16,27 @@ vim.cmd("set clipboard+=unnamedplus")
 vim.opt.foldmethod = "indent"
 vim.opt.foldenable = true
 local function set_folding_for_filetype()
-    local filetype = vim.bo.filetype
-    if filetype == "neo-tree" then
-        vim.wo.foldenable = false
-        vim.wo.foldmethod = "manual"
-        vim.cmd("normal! zR")
-    else
-        vim.wo.foldenable = true
-        vim.wo.foldmethod = "indent"
-    end
+  local filetype = vim.bo.filetype
+  if filetype == "neo-tree" then
+    vim.wo.foldenable = false
+    vim.wo.foldmethod = "manual"
+    vim.cmd("normal! zR")
+  else
+    vim.wo.foldenable = true
+    vim.wo.foldmethod = "indent"
+  end
 end
-vim.api.nvim_create_autocmd({"FileType", "BufEnter"}, {
-    pattern = "*",
-    callback = set_folding_for_filetype
+vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
+  pattern = "*",
+  callback = set_folding_for_filetype,
 })
 vim.api.nvim_create_autocmd("User", {
-    pattern = "NeotreeBufferOpened",
-    callback = function()
-        vim.cmd("normal! zR")
-    end
+  pattern = "NeotreeBufferOpened",
+  callback = function()
+    vim.cmd("normal! zR")
+  end,
 })
--- global leader 
+-- global leader
 vim.g.mapleader = " "
 -- install lazy.vim pkg manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -53,7 +53,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 vim.lsp.set_log_level("debug")
-require('vim.lsp.log').set_format_func(vim.inspect)
+require("vim.lsp.log").set_format_func(vim.inspect)
 
 -- install ripgrep on ubuntu, you might change it on
 -- different OS.
@@ -72,7 +72,7 @@ end
 -- lazy.vim set up plugins with options here
 require("lazy").setup("plugins")
 -- avante library loading
-require('avante_lib').load()
+require("avante_lib").load()
 vim.opt.laststatus = 3
 -- run leptosfmt before saving .rs files
 local function format_with_leptosfmt()
@@ -98,8 +98,24 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   callback = format_with_leptosfmt,
 })
 
+-- for tinymist
+vim.api.nvim_create_autocmd({
+  "BufNewFile",
+  "BufRead",
+}, {
+  pattern = "*.typ",
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
+    vim.api.nvim_buf_set_option(buf, "filetype", "typst")
+  end,
+})
+-- pin the main file
+vim.lsp.buf.execute_command({ command = 'tinymist.pinMain', arguments = { vim.api.nvim_buf_get_name(0) } })
+-- unpin the main file
+vim.lsp.buf.execute_command({ command = 'tinymist.pinMain', arguments = { nil } })
+
 -- '<leader>wd' to set pwd to where the file is located
-vim.api.nvim_set_keymap('n', '<leader>wd', ':cd %:p:h<CR>:pwd<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>wd", ":cd %:p:h<CR>:pwd<CR>", { noremap = true, silent = true })
 -- '-' goes to the line end
 vim.keymap.set("n", "-", "<End>")
 vim.keymap.set("n", "<leader>h", ":nohlsearch<CR>")
@@ -133,7 +149,7 @@ end, {})
 -- LSP KEY REMAPPING
 -- <space> + k to show documentation of hovered word
 vim.keymap.set("n", "<leader>k", function()
-    vim.lsp.buf.hover()
+  vim.lsp.buf.hover()
 end, {})
 -- <space>+g+d: go to definition
 -- custom function to toggle pymode_rope and trigger goto_definition

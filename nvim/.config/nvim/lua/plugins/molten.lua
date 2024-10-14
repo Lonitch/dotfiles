@@ -1,5 +1,5 @@
 return {
-  {
+  --[[ {
     "benlubas/molten-nvim",
     version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
     dependencies = { "3rd/image.nvim" },
@@ -57,7 +57,7 @@ return {
       window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
       window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
     },
-  },
+  }, ]]
   {
     "GCBallesteros/jupytext.nvim",
     config = function()

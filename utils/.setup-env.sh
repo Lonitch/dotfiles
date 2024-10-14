@@ -79,9 +79,11 @@ echo "node, bun, rust, and cargo installed"
 # install lsp for nvim
 bun install -g vscode-langservers-extracted @tailwindcss/language-server typescript typescript-language-server prettier eslint_d
 cargo install stylua
+cargo install typstyle --locked
 apt install pipx
 pipx ensurepath --global
 pipx install jedi-language-server
+pipx pptx2typ
 echo "LSP for NVim installed"
 
 # install debugger for nvim
