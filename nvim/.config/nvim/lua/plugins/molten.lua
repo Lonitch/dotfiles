@@ -51,7 +51,7 @@ return {
     branch = "feat/toggle-rendering",
     opts = {
       backend = "kitty", -- whatever backend you would like to use
-      max_width = 300,
+      max_width = 500,
       max_height = 22,
       max_height_window_percentage = math.huge,
       max_width_window_percentage = math.huge,
@@ -63,8 +63,10 @@ return {
       vim.keymap.set("n", "<leader>ti", function()
         if image.is_enabled() then
           image.disable()
+          print("Image rendering disabled")
         else
           image.enable()
+          print("Image rendering enabled")
         end
       end, {})
     end,
