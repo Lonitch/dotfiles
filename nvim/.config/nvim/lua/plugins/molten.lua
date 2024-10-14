@@ -44,20 +44,31 @@ return {
       vim.keymap.set("n", "<leader>bh", ":MoltenHideOutput<CR>", { desc = "close output window", silent = true })
       vim.keymap.set("n", "<leader>bd", ":MoltenDelete<CR>", { desc = "delete Molten cell", silent = true })
     end,
-  },
+  }, ]]
   {
     -- see the image.nvim readme for more information about configuring this plugin
     "3rd/image.nvim",
+    branch = "feat/toggle-rendering",
     opts = {
       backend = "kitty", -- whatever backend you would like to use
-      max_width = 500,
+      max_width = 300,
       max_height = 22,
       max_height_window_percentage = math.huge,
       max_width_window_percentage = math.huge,
       window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
       window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
     },
-  }, ]]
+    config = function()
+      local image = require("image")
+      vim.keymap.set("n", "<leader>ti", function()
+        if image.is_enabled() then
+          image.disable()
+        else
+          image.enable()
+        end
+      end, {})
+    end,
+  },
   {
     "GCBallesteros/jupytext.nvim",
     config = function()
