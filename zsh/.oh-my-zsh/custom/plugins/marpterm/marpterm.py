@@ -8,6 +8,7 @@ import threading
 import uuid
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import yaml
 
 TEMP_FILE = "marpterm-tmp.md"
 TEMP_HTML = "marpterm-tmp.html"
@@ -34,6 +35,47 @@ def parse_arguments():
         action="store_true",
         help="No Use of Local Files")
     return parser.parse_args()
+
+
+def generate_front_and_layout(content):
+    yaml_header_pattern = r'^---\n(.*?)\n---\n'
+    match = re.search(yaml_header_pattern, content, re.DOTALL)
+
+    if not match:
+        return content
+    yaml_content = match.group(1)
+    yaml_data = yaml.safe_load(yaml_content)
+
+    title = yaml_data.get("title", "")
+    subtitle = yaml_data.get("subtitle", "")
+    author = yaml_data.get("author", "")
+    authors = yaml_data.get("authors", [])
+    affiliations = yaml_data.get("affili", [])
+
+    front_page = "<!-- _class: front-page -->\n"
+    if title:
+        front_page += f"# {title}\n"
+    if subtitle:
+        front_page += f"## {subtitle}\n"
+    if authors:
+        front_page += f"## {', '.join(authors)}\n"
+    elif author:
+        front_page += f"## {author}\n"
+    if affiliations:
+        front_page += f"### {', '.join(affiliations)}\n"
+    front_page += f"### {time.strftime('%B %d, %Y')}\n"
+    front_page += "---\n"
+
+    return match.group(0) + front_page + column_layout(content[match.end():])
+
+
+def check_and_box(content):
+    # find "[x]" and "[ ]" in the content,
+    # and replace them into a green check mark and empty box
+    # separately.
+    content = content.replace('[x]', '✅')
+    content = content.replace('[ ]', '☐')
+    return content
 
 
 def process_typst_charts(content):
@@ -169,11 +211,69 @@ def process_mermaid_charts(content):
     return re.sub(pattern, replace_mermaid, content)
 
 
+def process_columns(column_content, current_columns, processed_lines):
+    if current_columns and column_content:
+        total = sum(current_columns)
+        widths = [f"{col/total*100:.2f}%" for col in current_columns]
+        column_html = '<div style="display: flex;">'
+        for i, width in enumerate(widths):
+            if i < len(column_content):
+                column_html += f'<div style="width: {width};">\n' +\
+                    f'{column_content[i]}</div>\n'
+        column_html += '</div>\n'
+        processed_lines.append(column_html)
+    return [], 0
+
+
+def column_layout(content):
+    columns_pattern = r'<!-- columns:\s*(\[[\d,\s]+\])\s*-->'
+    column_pattern = r'<!-- column:\s*(\d+)\s*-->'
+    reset_pattern = r'<!-- reset -->'
+    slide_separator = '---'
+
+    lines = content.split('\n')
+    processed_lines = []
+    current_columns = None
+    current_column = 0
+    column_content = []
+
+    for line in lines:
+        columns_match = re.search(columns_pattern, line)
+        column_match = re.search(column_pattern, line)
+        reset_match = re.search(reset_pattern, line)
+
+        if columns_match:
+            column_content, current_column = process_columns(
+                column_content, current_columns, processed_lines)
+            current_columns = eval(columns_match.group(1))
+            column_content = ['\n'] * len(current_columns)
+        elif column_match:
+            current_column = int(column_match.group(1)) - 1
+        elif reset_match:
+            column_content, current_column = process_columns(
+                column_content, current_columns, processed_lines)
+            current_columns = None
+        elif line.strip() == slide_separator:
+            column_content, current_column = process_columns(
+                column_content, current_columns, processed_lines)
+            current_columns = None
+            processed_lines.append("\n" + line)
+        elif current_columns is not None:
+            column_content[current_column] += line + '\n'
+        else:
+            processed_lines.append(line)
+    process_columns(column_content, current_columns, processed_lines)
+
+    return '\n'.join(processed_lines)
+
+
 def generate_temp_markdown(input_file):
     with open(input_file, 'r') as f:
         content = f.read()
 
-    processed_content = process_mermaid_charts(content)
+    processed_content = generate_front_and_layout(content)
+    processed_content = check_and_box(processed_content)
+    processed_content = process_mermaid_charts(processed_content)
     processed_content = process_typst_charts(processed_content)
 
     with open(TEMP_FILE, 'w') as f:
