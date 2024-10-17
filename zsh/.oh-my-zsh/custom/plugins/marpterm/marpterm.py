@@ -32,6 +32,50 @@ def parse_arguments():
     return parser.parse_args()
 
 
+def process_typst_charts(content):
+    pattern = \
+        r'```typst\s*\+render\s*(?:\+width:(\d+(?:px|%)))?' +\
+        r'\s*(?:\+height:(\d+(?:px|%)))?\s*([\s\S]*?)```'
+
+    def replace_typst(match):
+        width = match.group(1)
+        if width and not (width.endswith('%') or width.endswith('px')):
+            print(f"Warning: Width '{width}' should end with '%' or 'px'")
+        width = width or '100%'
+        height = match.group(2) or 'auto'
+        typst_code = match.group(3)
+        return render_typst(typst_code, width, height)
+
+    def render_typst(typst_code, width, height):
+        with tempfile.NamedTemporaryFile(mode='w',
+                                         suffix='.typ',
+                                         delete=False) as temp_typ:
+            temp_typ.write(typst_code)
+            temp_typ_path = temp_typ.name
+
+        output_filename = f"marpterm-typ-{uuid.uuid4()}.png"
+        typst_command = [
+            "typst",
+            "compile",
+            "--format",
+            "png",
+            "--ppi",
+            "400",
+            temp_typ_path,
+            output_filename
+        ]
+
+        try:
+            subprocess.run(typst_command, check=True)
+            os.remove(temp_typ_path)
+            return f'<img src="{output_filename}" width="{width}"/>\n'
+
+        except subprocess.CalledProcessError:
+            return f"Error rendering Typst chart: {typst_code}"
+
+    return re.sub(pattern, replace_typst, content)
+
+
 def process_mermaid_charts(content):
 
     pattern = \
@@ -79,6 +123,7 @@ def generate_temp_markdown(input_file):
         content = f.read()
 
     processed_content = process_mermaid_charts(content)
+    processed_content = process_typst_charts(processed_content)
 
     with open(TEMP_FILE, 'w') as f:
         f.write(processed_content)
@@ -146,6 +191,8 @@ def cleanup(args):
     if os.path.exists(gen_html):
         os.remove(gen_html)
     for file in os.listdir():
+        if file.startswith("marpterm-typ-") and file.endswith(".png"):
+            os.remove(file)
         if file.startswith("marpterm-mmd-") and file.endswith(".png"):
             os.remove(file)
 
