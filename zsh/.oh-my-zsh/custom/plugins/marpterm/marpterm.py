@@ -11,6 +11,10 @@ from watchdog.events import FileSystemEventHandler
 
 TEMP_FILE = "marpterm-tmp.md"
 TEMP_HTML = "marpterm-tmp.html"
+TEMP_MMDC = []
+TEMP_MMDI = []
+TEMP_TYPC = []
+TEMP_TYPI = []
 
 
 def parse_arguments():
@@ -37,23 +41,47 @@ def process_typst_charts(content):
         r'```typst\s*\+render\s*(?:\+width:(\d+(?:px|%)))?' +\
         r'\s*(?:\+height:(\d+(?:px|%)))?\s*([\s\S]*?)```'
 
+    temp_counter = 0
+
     def replace_typst(match):
+        global TEMP_TYPC, TEMP_TYPI
+        nonlocal temp_counter
         width = match.group(1)
         if width and not (width.endswith('%') or width.endswith('px')):
             print(f"Warning: Width '{width}' should end with '%' or 'px'")
         width = width or '100%'
         height = match.group(2) or 'auto'
         typst_code = match.group(3)
-        return render_typst(typst_code, width, height)
+        typi = uuid.uuid4()
 
-    def render_typst(typst_code, width, height):
+        if len(TEMP_TYPC) < temp_counter + 1:
+            print("render new typst chart...")
+            TEMP_TYPC.append(typst_code)
+            TEMP_TYPI.append(typi)
+            temp_counter += 1
+            return render_typst(typst_code, typi, width, height)
+        elif typst_code != TEMP_TYPC[temp_counter]:
+            print(f"update {temp_counter}th typst chart...")
+            TEMP_TYPC[temp_counter] = typst_code
+            last_pic = f"marpterm-typ-{TEMP_TYPI[temp_counter]}.png"
+            os.remove(last_pic)
+            TEMP_TYPI[temp_counter] = typi
+            temp_counter += 1
+            return render_typst(typst_code, typi, width, height)
+        else:
+            temp_counter += 1
+            id_name = TEMP_TYPI[temp_counter - 1]
+            return f'<img src="marpterm-typ-{id_name}.png"' +\
+                f' width="{width}" height="{height}"/>\n'
+
+    def render_typst(typst_code, typi, width, height):
         with tempfile.NamedTemporaryFile(mode='w',
                                          suffix='.typ',
                                          delete=False) as temp_typ:
             temp_typ.write(typst_code)
             temp_typ_path = temp_typ.name
 
-        output_filename = f"marpterm-typ-{uuid.uuid4()}.png"
+        output_filename = f"marpterm-typ-{typi}.png"
         typst_command = [
             "typst",
             "compile",
@@ -77,28 +105,51 @@ def process_typst_charts(content):
 
 
 def process_mermaid_charts(content):
-
     pattern = \
         r'```mermaid\s*\+render\s*(?:\+width:(\d+(?:px|%)))?' +\
         r'\s*(?:\+height:(\d+(?:px|%)))?\s*([\s\S]*?)```'
 
+    temp_counter = 0
+
     def replace_mermaid(match):
+        global TEMP_MMDC, TEMP_MMDI
+        nonlocal temp_counter
         width = match.group(1)
         if width and not (width.endswith('%') or width.endswith('px')):
             print(f"Warning: Width '{width}' should end with '%' or 'px'")
         width = width or '100%'
         height = match.group(2) or 'auto'
         mermaid_code = match.group(3)
-        return render_mermaid(mermaid_code, width, height)
+        mmdi = uuid.uuid4()
 
-    def render_mermaid(mermaid_code, width, height):
+        if len(TEMP_MMDC) < temp_counter + 1:
+            print("render new mmd chart...")
+            TEMP_MMDC.append(mermaid_code)
+            TEMP_MMDI.append(mmdi)
+            temp_counter += 1
+            return render_mermaid(mermaid_code, mmdi, width, height)
+        elif mermaid_code != TEMP_MMDC[temp_counter]:
+            print(f"update {temp_counter}th mmd chart...")
+            TEMP_MMDC[temp_counter] = mermaid_code
+            last_pic = f"marpterm-mmd-{TEMP_MMDI[temp_counter]}.png"
+            os.remove(last_pic)
+            TEMP_MMDI[temp_counter] = mmdi
+            temp_counter += 1
+            return render_mermaid(mermaid_code, mmdi, width, height)
+        else:
+            temp_counter += 1
+            id_name = TEMP_MMDI[temp_counter - 1]
+            return f'<img src="marpterm-mmd-{id_name}.png"' +\
+                f' width="{width}" height="{height}"/>\n'
+
+    def render_mermaid(mermaid_code, mmdi, width, height):
         with tempfile.NamedTemporaryFile(mode='w',
                                          suffix='.mmd',
                                          delete=False) as temp_mmd:
             temp_mmd.write(mermaid_code)
             temp_mmd_path = temp_mmd.name
 
-        output_filename = f"marpterm-mmd-{uuid.uuid4()}.png"
+        output_filename = f"marpterm-mmd-{mmdi}.png"
         mmdc_command = [
             "mmdc",
             "-i", temp_mmd_path,
@@ -160,6 +211,7 @@ class FileChangeHandler(FileSystemEventHandler):
         if event.src_path.endswith(self.filename):
             print(
                 f"File {self.filename} has been modified. Updating...")
+            time.sleep(0.1)
             generate_temp_markdown(self.filename)
 
 
