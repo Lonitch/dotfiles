@@ -25,7 +25,7 @@ font pango:DejaVu Sans Mono 12
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id picom
-exec --no-startup-id blueman-applet
+# exec --no-startup-id blueman-applet
 # exec --no-startup-id ibus-daemon -drx
 
 exec --no-startup-id fcitx5 -d

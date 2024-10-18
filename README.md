@@ -156,6 +156,8 @@ Use `:Flog` to open a new tab that shows results of `git log`. The new tab conta
 - `g;`: go to last changed place
 - `gi`: go to last place and insert
 - `gt`: go to the last tab
+- `<Ctrl-p>`: go to previous buffer
+- `<Ctrl-n>`: go to next buffer
 - `<space>j`: jump to the bottom line and centers the window at the line(page-down)
 - `<space>m`: jump to the top line and centers the window(page-up)
 - `<space>gd`: go to definition
