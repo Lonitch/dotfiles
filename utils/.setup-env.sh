@@ -82,8 +82,7 @@ cargo install stylua
 cargo install typstyle --locked
 apt install pipx
 pipx ensurepath --global
-pipx install jedi-language-server
-pipx pptx2typ
+pipx install jedi-language-server pptx2typ jupytext
 echo "LSP for NVim installed"
 
 # install debugger for nvim
