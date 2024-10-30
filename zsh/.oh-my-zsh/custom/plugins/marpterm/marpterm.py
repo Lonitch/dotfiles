@@ -105,8 +105,8 @@ def process_typst_charts(content):
         elif typst_code != TEMP_TYPC[temp_counter]:
             print(f"update {temp_counter}th typst chart...")
             TEMP_TYPC[temp_counter] = typst_code
-            last_pic = f"marpterm-typ-{TEMP_TYPI[temp_counter]}.png"
-            os.remove(last_pic)
+            # last_pic = f"marpterm-typ-{TEMP_TYPI[temp_counter]}.png"
+            # os.remove(last_pic)
             TEMP_TYPI[temp_counter] = typi
             temp_counter += 1
             return render_typst(typst_code, typi, width, height)
@@ -119,6 +119,7 @@ def process_typst_charts(content):
     def render_typst(typst_code, typi, width, height):
         with tempfile.NamedTemporaryFile(mode='w',
                                          suffix='.typ',
+                                         dir=os.getcwd(),
                                          delete=False) as temp_typ:
             temp_typ.write(typst_code)
             temp_typ_path = temp_typ.name
@@ -173,8 +174,8 @@ def process_mermaid_charts(content):
         elif mermaid_code != TEMP_MMDC[temp_counter]:
             print(f"update {temp_counter}th mmd chart...")
             TEMP_MMDC[temp_counter] = mermaid_code
-            last_pic = f"marpterm-mmd-{TEMP_MMDI[temp_counter]}.png"
-            os.remove(last_pic)
+            # last_pic = f"marpterm-mmd-{TEMP_MMDI[temp_counter]}.png"
+            # os.remove(last_pic)
             TEMP_MMDI[temp_counter] = mmdi
             temp_counter += 1
             return render_mermaid(mermaid_code, mmdi, width, height)
@@ -187,6 +188,7 @@ def process_mermaid_charts(content):
     def render_mermaid(mermaid_code, mmdi, width, height):
         with tempfile.NamedTemporaryFile(mode='w',
                                          suffix='.mmd',
+                                         dir=os.getcwd(),
                                          delete=False) as temp_mmd:
             temp_mmd.write(mermaid_code)
             temp_mmd_path = temp_mmd.name
@@ -343,9 +345,11 @@ def cleanup(args):
     if os.path.exists(gen_html):
         os.remove(gen_html)
     for file in os.listdir():
-        if file.startswith("marpterm-typ-") and file.endswith(".png"):
+        if file.startswith("marpterm-typ-"):
             os.remove(file)
-        if file.startswith("marpterm-mmd-") and file.endswith(".png"):
+        if file.startswith("marpterm-mmd-"):
+            os.remove(file)
+        if file.startswith("tmp"):
             os.remove(file)
 
 
