@@ -205,6 +205,10 @@ return {
 		t(">"),
 	}),
 
+  s("touying-ctx", {
+    t({ "#[", "#set text(size: 22pt)", "#set align(center)", "", "]"})
+  }),
+
 	s("cetz-fig", {
 		t({ "#figure(", "" }),
 		t("  cetz.canvas({"),
@@ -215,6 +219,13 @@ return {
 		t({ "", "])<" }),
 		i(3, "fig-tag"),
 		t(">"),
+	}),
+
+	s("cetz-canvas", {
+		t({ "#cetz.canvas(", "length:1pt,", "padding:none," }),
+		t({ "{", "import cetz.draw: *", "" }),
+		i(1, ""),
+		t({ "", "})", "" }),
 	}),
 
 	s(
