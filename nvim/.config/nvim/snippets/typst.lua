@@ -11,20 +11,22 @@ return {
 		t({ '#import "@preview/cetz:0.3.1"', "" }),
 	}),
 
-	s("touying-import", {
-		t({
-			'#import "@preview/touying:0.5.2": *',
-			'#import "@preview/numbly:0.1.0": numbly',
-		}),
-	}),
-
 	s("touying-univ-theme", {
 		t({
+			'#import "@preview/cetz:0.3.1"',
+			'#import "@preview/touying:0.5.2": *',
+			'#import "@preview/numbly:0.1.0": numbly',
 			"#import themes.university: *",
 			"#show: university-theme.with(",
 			'  aspect-ratio: "16-9",',
 			"  footer: self => self.info.institution,",
 			'  navigation: "mini-slides",',
+			"config-page(margin: (left: 20pt, right: 20pt, top: 60pt)),",
+			"config-colors(",
+			"primary: rgb(10, 100, 200),",
+			"secondary: rgb(10, 55, 150),",
+			"tertiary: rgb(10, 10, 100),",
+			"),",
 			"  config-info(",
 			"    title: [",
 		}),
@@ -41,7 +43,7 @@ return {
 			")",
 			'#set heading(numbering: numbly("{1:1}.", default: "1.1"))',
 			"#title-slide()",
-			'#components.adaptive-columns(outline(title: "Agenda", indent: 1em))',
+			'#components.adaptive-columns(outline(title: "Table of Contents", indent: 1em))',
 		}),
 	}),
 
@@ -205,9 +207,9 @@ return {
 		t(">"),
 	}),
 
-  s("touying-ctx", {
-    t({ "#[", "#set text(size: 22pt)", "#set align(center)", "", "]"})
-  }),
+	s("touying-ctx", {
+		t({ "#[", "#set text(size: 22pt)", "#set align(center)", "", "]" }),
+	}),
 
 	s("cetz-fig", {
 		t({ "#figure(", "" }),
