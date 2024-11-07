@@ -123,8 +123,8 @@ vim.keymap.set("n", "<C-n>", ":bn<CR>", { noremap = true, silent = true })
 -- '-' goes to the line end
 vim.keymap.set("n", "-", "<End>")
 vim.keymap.set("n", "<leader>h", ":nohlsearch<CR>")
-vim.keymap.set("v", "<A-f>", "<C-[>")
-vim.keymap.set("t", "<A-f>", "<C-[>")
+-- vim.keymap.set("v", "<A-f>", "<C-[>")
+-- vim.keymap.set("t", "<A-f>", "<C-[>")
 -- <space>+tab to switch windows
 vim.keymap.set("n", "<leader><Tab>", "<C-w><C-w>")
 -- auto-cmd of centering window after line jumping to window bottom/top
@@ -211,7 +211,7 @@ function _G.jump_to_next_special_char()
   end
 end
 
-vim.api.nvim_set_keymap("i", "<A-f>", "<Esc>:lua jump_to_next_special_char()<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("i", "<A-f>", "<Esc>:lua jump_to_next_special_char()<CR>", { noremap = true, silent = true })
 
 -- Disable jedi-vim default mappings
 vim.g["jedi#goto_command"] = ""
