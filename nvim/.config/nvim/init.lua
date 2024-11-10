@@ -211,7 +211,7 @@ function _G.jump_to_next_special_char()
   end
 end
 
--- vim.api.nvim_set_keymap("i", "<A-f>", "<Esc>:lua jump_to_next_special_char()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<A-f>", "", { noremap = true, silent = true })
 
 -- Disable jedi-vim default mappings
 vim.g["jedi#goto_command"] = ""
