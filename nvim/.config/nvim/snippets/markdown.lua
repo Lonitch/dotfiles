@@ -317,6 +317,20 @@ return {
     t(" in more detail without imagining the connections between this file and your previous knowledge -->"),
   }),
 
+  s("llm-summary-wrap",{
+    t({ "", "---", "<!-- please summarize the texts in <content>" }),
+    c(1, utils.populate_options("llm-sum"), { key = "sum-typ" }),
+    t({ "", "<content>", "" }),
+    f(function(_, snip)
+      local res, env = {}, snip.env
+      for _, ele in ipairs(env.LS_SELECT_RAW) do
+        table.insert(res, ele)
+      end
+      return res
+    end, {}),
+    t({ "", "</content>", "", "---", "" }),
+  }),
+
   s("llm-mmd-wrap", {
     t({
       "```mermaid",
