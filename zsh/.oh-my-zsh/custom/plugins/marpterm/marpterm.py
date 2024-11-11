@@ -198,6 +198,7 @@ def process_mermaid_charts(content):
             "mmdc",
             "-i", temp_mmd_path,
             "-o", output_filename,
+            "-w", "1200",
             "-b", "transparent"
         ]
 
