@@ -156,8 +156,12 @@ Use `:Flog` to open a new tab that shows results of `git log`. The new tab conta
 - `g;`: go to last changed place
 - `gi`: go to last place and insert
 - `gt`: go to the last tab
-- `<Ctrl-p>`: go to previous buffer
-- `<Ctrl-n>`: go to next buffer
+- `<space>e`: show harpoon list in telescope UI
+- `<space>a`: add buffer to harpoon list
+- `<space>r`: remove buffer on harpoon list
+- `<space>c`: clear harpoon list
+- `<A-n>`: go to previous buffer on harpoon list
+- `<A-m>`: go to next buffer on harpoon list
 - `<space>j`: jump to the bottom line and centers the window at the line(page-down)
 - `<space>m`: jump to the top line and centers the window(page-up)
 - `<space>gd`: go to definition

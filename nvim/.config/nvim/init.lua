@@ -116,13 +116,9 @@ vim.lsp.buf.execute_command({ command = "tinymist.pinMain", arguments = { nil } 
 
 -- '<leader>wd' to set pwd to where the file is located
 vim.api.nvim_set_keymap("n", "<leader>wd", ":cd %:p:h<CR>:pwd<CR>", { noremap = true, silent = true })
--- go to previous buffer
-vim.keymap.set("n", "<C-p>", ":bp<CR>", { noremap = true, silent = true })
--- go to next buffer
-vim.keymap.set("n", "<C-n>", ":bn<CR>", { noremap = true, silent = true })
 -- '-' goes to the line end
 vim.keymap.set("n", "-", "<End>")
-vim.keymap.set("n", "<leader>h", ":nohlsearch<CR>")
+vim.keymap.set("n", "<leader>h", ":nohlsearch<CR>", { noremap = true, silent = true })
 -- vim.keymap.set("v", "<A-f>", "<C-[>")
 -- vim.keymap.set("t", "<A-f>", "<C-[>")
 -- <space>+tab to switch windows
@@ -172,7 +168,7 @@ vim.keymap.set("n", "<leader>gd", function()
   end
 end, {})
 -- <space>+a: selects a code action available at the current position
-vim.keymap.set("n", "<space>a", vim.lsp.buf.code_action, {})
+-- vim.keymap.set("n", "<space>a", vim.lsp.buf.code_action, {})
 -- <space>gp for preview hunk
 vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", { noremap = true, silent = true })
 
