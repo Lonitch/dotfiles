@@ -97,6 +97,9 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # for a full list of active aliases, run `alias`.
 
+# list sizes of all the folders at pwd
+alias doosh="du --max-depth=1 -h | sort -h"
+
 # Fuzzy search for file using bat preview to open it in nvim
 alias bvim="nvim \$(fzf -m --preview='bat --color=always {}')"
 
