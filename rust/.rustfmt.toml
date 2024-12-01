@@ -1,9 +1,13 @@
 edition = "2021"
 tab_spaces = 2
-max_width = 70
+max_width = 120
+comment_width = 100
+match_block_trailing_comma = true
+error_on_line_overflow = true
+imports_granularity = "Module"
+style_edition = "2021"
 array_width = 50
 chain_width = 50
-comment_width = 65
 wrap_comments = true
 fn_call_width = 50
 fn_params_layout = "Vertical"
