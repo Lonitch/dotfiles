@@ -30,6 +30,7 @@ return {
 			lspconfig.jedi_language_server.setup({
 				capabilities = capabilities,
 			})
+
 			lspconfig.tinymist.setup({
 				single_file_support = true,
 				offset_encoding = "utf-8",
@@ -49,6 +50,7 @@ return {
 			-- 		-- serverPath = "" -- Normally, there is no need to uncomment it.
 			-- 	},
 			-- })
+
 			lspconfig.tailwindcss.setup({
 				capabilities = capabilities,
 				cmd = { "bun", "run", "--bun", "tailwindcss-language-server", "--stdio" },

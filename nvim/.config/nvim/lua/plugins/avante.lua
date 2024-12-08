@@ -14,11 +14,10 @@ return {
     },
     openai = {
       endpoint = "https://api.openai.com/v1",
-      model = "gpt-4o-2024-08-06",
+      model = "gpt-4o-latest",
       timeout = 80000, -- Timeout in milliseconds
       temperature = 0,
       max_tokens = 8000,
-      ["local"] = false,
     },
     windows = {
       ---@alias AvantePosition "right" | "left" | "top" | "bottom"
