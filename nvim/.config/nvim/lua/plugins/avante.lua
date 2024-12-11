@@ -14,7 +14,7 @@ return {
     },
     openai = {
       endpoint = "https://api.openai.com/v1",
-      model = "gpt-4o-latest",
+      model = "o1-mini-2024-09-12",
       timeout = 80000, -- Timeout in milliseconds
       temperature = 0,
       max_tokens = 8000,
