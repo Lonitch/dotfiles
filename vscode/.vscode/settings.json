@@ -1,0 +1,43 @@
+{
+  "files.autoSave": "onFocusChange",
+  "editor.minimap.enabled": false,
+  "editor.wrappingIndent": "indent",
+  "editor.overviewRulerBorder": false,
+  "editor.lineHeight": 24,
+  "editor.cursorStyle": "block",
+  "editor.cursorBlinking": "solid",
+  "[markdown]": {
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": false
+    }
+  },
+  "git.enableSmartCommit": true,
+  "git.postCommitCommand": "sync",
+  "files.exclude": {
+    "_site/**": true
+  },
+  "files.insertFinalNewline": true,
+  "vim.leader": "<space>",
+  "vim.cursorStylePerMode.insert": "line",
+  "vim.cursorStylePerMode.normal": "block",
+  "vim.useSystemClipboard": true,
+  "vim.hlsearch": true,
+  "vim.handleKeys": {
+    "<C-d>": true,
+    "<C-f>": true,
+    "<C-h>": false,
+    "<C-w>": false
+  },
+  "editor.lineNumbers": "relative",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.folding": true,
+  "editor.foldingStrategy": "indentation",
+  "vim.mouseSelectionGoesIntoVisualMode": true,
+  "dvc.dvcPath": "dvc",
+  "files.associations": {
+    "*.md": "markdown"
+  },
+}
