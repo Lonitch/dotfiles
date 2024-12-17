@@ -243,6 +243,10 @@ function venv() {
         venv_name="$2"
         shift 2
         ;;
+      --deactivate|-d)
+        action="deactivate"
+        shift
+        ;;
       -h|--help)
         action="help"
         shift
@@ -303,17 +307,27 @@ function venv() {
       source "$VENV_HOME/$venv_name/bin/activate"
       echo "Virtual environment '$venv_name' activated."
       ;;
+    deactivate)
+      if command -v deactivate >/dev/null 2>&1; then
+        deactivate
+        echo "Virtual environment deactivated."
+      else
+        echo "No active virtual environment to deactivate."
+        return 1
+      fi
+      ;;
     help)
-      echo "Usage: venv [--list|-l] [--create|-c <venv_name>] [--remove|-r <venv_name>] [--activate|-a <venv_name>] [-h|--help]"
+      echo "Usage: venv [--list|-l] [--create|-c <venv_name>] [--remove|-r <venv_name>] [--activate|-a <venv_name>] [--deactivate|-d] [-h|--help]"
       echo "Options:"
       echo "  --list, -l                       List all virtual environments"
       echo "  --create, -c [requirements.txt]  Create a new virtual environment"
       echo "  --remove, -r                     Remove a virtual environment"
       echo "  --activate, -a                   Activate a virtual environment"
+      echo "  --deactivate, -d                 Deactivate the current virtual environment"
       echo "  -h, --help                       Display this help message"
       ;;
     *)
-      echo "Usage: venv [--list|-l] [--create|-c <venv_name>] [--remove|-r <venv_name>] [--activate|-a <venv_name>] [-h|--help]"
+      echo "Usage: venv [--list|-l] [--create|-c <venv_name>] [--remove|-r <venv_name>] [--activate|-a <venv_name>] [--deactivate|-d] [-h|--help]"
       return 1
       ;;
   esac
