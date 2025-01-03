@@ -72,7 +72,7 @@ install_snap_package() {
   local opts="$2"   # e.g. --classic
   if ! snap list | awk '{print $1}' | grep -q "^$pkg$"; then
     echo "Installing missing snap package: $pkg $opts"
-    snap install "$pkg" $opts
+    snap install "$pkg" $opts --classic
     # Quick check
     if ! snap list | awk '{print $1}' | grep -q "^$pkg$"; then
       echo "Failed to install snap package $pkg."
@@ -132,7 +132,7 @@ APT_PACKAGES=(
   stow
   # For fcitx5
   fcitx5
-  fcitx5-chinese-addon
+  fcitx5-chinese-addons
   im-config
   xinput
   # For magick
@@ -274,7 +274,7 @@ install_zsh_and_oh_my_zsh() {
   # Install kitty if missing
   if ! is_command_installed kitty; then
     echo "Installing kitty from source..."
-    sudo -u "$SUDO_USER" curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    sudo -u "$SUDO_USER" -H bash -c "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
   else
     echo "Already installed: kitty"
   fi
@@ -300,10 +300,11 @@ fi
 prompt_to_proceed
 
 ################################################################################
-# STEP 4: Install Tmux from source
+# STEP 4: Install Tmux from source and Rust/Cargo
 ################################################################################
 echo "=== STEP 4: Tmux ==="
 if ! is_command_installed tmux; then
+  install_apt_package "libevent-dev"
   git clone https://github.com/tmux/tmux.git tmux_src_temp
   cd tmux_src_temp || exit 1
   sh autogen.sh
@@ -320,6 +321,30 @@ if ! is_command_installed tmux; then
   fi
 else
   echo "Already installed: tmux"
+fi
+
+if ! is_command_installed cargo; then
+  echo "Installing Rust toolchain using rustup..."
+  sudo -u "$SUDO_USER" -H bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+
+  # Check whether cargo is now installed
+  if ! is_command_installed cargo; then
+    echo "Failed to install Rust and cargo."
+    FAILED_STEPS+=("rust-cargo")
+  else
+    echo "Rust and cargo installed successfully."
+    echo "Note: You may need to source ~/.cargo/env in your shell or reload your terminal."
+  fi
+else
+  echo "Already installed: cargo"
+fi
+
+# (Optional) Install some Cargo-based tools
+if is_command_installed cargo; then
+  echo "Installing some useful cargo utilities..."
+  cargo install stylua
+  cargo install typstyle --locked
+  # etc.
 fi
 
 # Checkpoint
@@ -353,7 +378,7 @@ echo "Installing node-based global packages (bun + LSP servers)..."
 if ! is_command_installed bun; then
   echo "It appears bun is not installed. Attempting installation again..."
   # Re-run Bun installer
-  sudo -u "$SUDO_USER" bash -c "curl -fsSL https://bun.sh/install | bash"
+  sudo -u "$SUDO_USER" -H bash -c "curl -fsSL https://bun.sh/install | bash"
   # You may need to source .bashrc or .zshrc afterwards for $HOME/.bun/bin to be in PATH
 fi
 
@@ -383,7 +408,7 @@ fi
 
 # pipx-based
 if is_command_installed pipx; then
-  pipx ensurepath --global
+  pipx ensurepath
   # Force shell rehash might be needed
   pipx install jedi-language-server
   pipx install pptx2typ
