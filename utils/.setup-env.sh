@@ -244,6 +244,35 @@ prompt_to_proceed
 ################################################################################
 echo "=== STEP 3: ZSH / OH-MY-ZSH / KITTY ==="
 
+install_zsh_plugins() {
+  # Directory where oh-my-zsh is installed for the non-root user
+  OMZ_CUSTOM_DIR="/home/$SUDO_USER/.oh-my-zsh/custom/plugins"
+
+  # zsh-autosuggestions
+  if [ ! -d "$OMZ_CUSTOM_DIR/zsh-autosuggestions" ]; then
+    echo "Installing zsh-autosuggestions..."
+    sudo -u "$SUDO_USER" -H git clone \
+      https://github.com/zsh-users/zsh-autosuggestions \
+      "$OMZ_CUSTOM_DIR/zsh-autosuggestions"
+  else
+    echo "zsh-autosuggestions is already installed."
+  fi
+
+  # zsh-history-substring-search
+  if [ ! -d "$OMZ_CUSTOM_DIR/zsh-history-substring-search" ]; then
+    echo "Installing zsh-history-substring-search..."
+    sudo -u "$SUDO_USER" -H git clone \
+      https://github.com/zsh-users/zsh-history-substring-search \
+      "$OMZ_CUSTOM_DIR/zsh-history-substring-search"
+  else
+    echo "zsh-history-substring-search is already installed."
+  fi
+
+  # sudo -u "$SUDO_USER" -H zsh -c "source ~/.zshrc"
+
+  echo "Done installing Zsh plugins."
+}
+
 install_zsh_and_oh_my_zsh() {
   if ! is_command_installed zsh; then
     apt-get update
@@ -270,6 +299,8 @@ install_zsh_and_oh_my_zsh() {
   else
     echo "Already installed: oh-my-zsh"
   fi
+
+  install_zsh_plugins
 
   # Install kitty if missing
   if ! is_command_installed kitty; then
