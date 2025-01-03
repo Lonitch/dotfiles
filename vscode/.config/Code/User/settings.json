@@ -49,4 +49,9 @@
     "*.md": "markdown"
   },
   "dvc.doNotShowCliUnavailable": true,
+  "dvc.doNotRecommendRedHatExtension": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
 }
