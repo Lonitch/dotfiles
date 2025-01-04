@@ -40,7 +40,7 @@ prompt_to_proceed() {
 # Utility: check if user has command in PATH
 # ------------------------------------------------------------------------------
 is_user_command_installed() {
-  command -v "$1" &>/dev/null
+  which "$1" &>/dev/null
 }
 
 # ------------------------------------------------------------------------------
@@ -51,8 +51,6 @@ USER_TOOLS=(
   "kitty"
   "cargo"
   "bun"
-  # "tmux" is now system-level
-  # anything else you'd like
 )
 
 report_user_tools() {
@@ -139,9 +137,7 @@ if ! is_user_command_installed fzf; then
   echo "Installing fzf in ~/.fzf..."
   git clone --depth 1 https://github.com/junegunn/fzf.git "$USER_HOME/.fzf"
   # The installer will place fzf binary in ~/.fzf/bin and can update your shell config
-  "$USER_HOME/.fzf/install" --all --no-bash --no-fish --no-zsh  # minimal
-  # If you want it appended to .zshrc automatically, remove the `--no-zsh`
-  # or just manually add:
+  "$USER_HOME/.fzf/install" --key-bindings --completion --update-rc
   if ! is_user_command_installed fzf; then
     echo "Failed to install fzf to PATH"
     FAILED_STEPS+=("fzf")

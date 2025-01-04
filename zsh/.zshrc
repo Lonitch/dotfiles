@@ -63,7 +63,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathpix quarto marpterm)
+plugins=(git zsh-history-substring-search zsh-autosuggestions mathpix quarto marpterm)
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -96,6 +96,8 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 # Alias
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # for a full list of active aliases, run `alias`.
+
+alias bat="batcat"
 
 # list sizes of all the folders at pwd
 alias doosh="du --max-depth=1 -h | sort -h"
@@ -333,3 +335,4 @@ function venv() {
   esac
 }
 
+export PATH="$HOME/.local/kitty.app/bin:$PATH"

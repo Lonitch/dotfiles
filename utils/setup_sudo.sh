@@ -152,6 +152,8 @@ APT_PACKAGES=(
   unzip
   wget
   curl
+  zsh
+  zsh-syntax-highlighting
 )
 
 SNAP_PACKAGES=(
