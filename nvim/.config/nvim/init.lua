@@ -5,7 +5,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 -- allow paste from clipboard
-vim.cmd("set paste")
+-- vim.cmd("set paste")
 
 -- make tab to be 2*space
 vim.cmd("set expandtab")
