@@ -2,4 +2,3 @@
 /fcitx/.config/fcitx/dbus/
 /vscode/
 !/vscode/.config/Code/User/extensions.json
-!/vscode/.config/Code/User/settings.json
