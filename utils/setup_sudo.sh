@@ -113,6 +113,14 @@ APT_PACKAGES=(
   ripgrep
   flameshot
   i3
+  ffmpeg 
+  7zip 
+  jq 
+  poppler-utils 
+  fd-find 
+  ripgrep 
+  zoxide 
+  imagemagick
   # Dependencies for building tmux
   libevent-dev
   # Dependencies for building picom
