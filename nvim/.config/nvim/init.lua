@@ -3,6 +3,10 @@ vim.api.nvim_create_autocmd("VimEnter", {
   pattern = "*",
   command = "set mouse=n",
 })
+
+-- allow paste from clipboard
+vim.cmd("set paste")
+
 -- make tab to be 2*space
 vim.cmd("set expandtab")
 vim.cmd("set tabstop=2")
@@ -11,6 +15,7 @@ vim.cmd("set shiftwidth=2")
 -- show relative line numbers
 vim.cmd("set relativenumber")
 -- use clipboard for copy and paste
+vim.cmd("set clipboard+=unnamed")
 vim.cmd("set clipboard+=unnamedplus")
 -- global folding method
 vim.opt.foldmethod = "indent"
