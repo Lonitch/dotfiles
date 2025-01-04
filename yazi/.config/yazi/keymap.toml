@@ -1,6 +1,6 @@
 [[manager.prepend_keymap]]
 on   = "<Tab>"
-run  = "select --status=none"
+run  = "toggle --status=none"
 desc = "Select items like in fzf"
 
 [[manager.prepend_keymap]]
