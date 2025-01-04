@@ -187,6 +187,7 @@ if is_user_command_installed cargo; then
   echo "Installing cargo-based tools: stylua, typstyle, rustfmt, rust-analyzer..."
   cargo install stylua
   cargo install typstyle --locked
+  cargo install --locked yazi-fm yazi-cli
   rustup component add rustfmt
   rustup component add rust-analyzer
 else
