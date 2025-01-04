@@ -109,6 +109,7 @@ APT_PACKAGES=(
   libgraphicsmagick1-dev
   luarocks
   pipx
+  python3-pip
   blueman
   ripgrep
   flameshot
