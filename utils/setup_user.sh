@@ -245,3 +245,21 @@ fi
 echo "Please open a new terminal or 'source ~/.zshrc' to load environment variables."
 exit 0
 
+echo
+echo
+echo "=== STEP G: Pip install ==="
+
+pkgs=(
+  "pynvim"
+)
+
+if ! is_user_command_installed pip; then
+  echo "pip not found in PATH, skipping Python package installation..."
+else
+  echo "Installing Python packages via pip..."
+  for pkg in "${pkgs[@]}"; do
+    pip install "$pkg"
+  done
+fi
+
+prompt_to_proceed
