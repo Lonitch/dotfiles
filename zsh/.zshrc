@@ -1,6 +1,10 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
+# CUDA ( changes required for diff comp )
+export PATH=/usr/local/cuda-12.6/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-12.6/lib64\
+                         ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 # export DISPLAY=:1.0
@@ -322,7 +326,8 @@ function venv() {
       echo "Usage: venv [--list|-l] [--create|-c <venv_name>] [--remove|-r <venv_name>] [--activate|-a <venv_name>] [--deactivate|-d] [-h|--help]"
       echo "Options:"
       echo "  --list, -l                       List all virtual environments"
-      echo "  --create, -c [requirements.txt]  Create a new virtual environment"
+      echo "  --create, -c <venv_name> [requirements.txt]  
+                                   Create a new virtual environment"
       echo "  --remove, -r                     Remove a virtual environment"
       echo "  --activate, -a                   Activate a virtual environment"
       echo "  --deactivate, -d                 Deactivate the current virtual environment"
