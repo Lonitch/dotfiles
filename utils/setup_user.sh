@@ -247,7 +247,7 @@ exit 0
 
 echo
 echo
-echo "=== STEP G: Pip install ==="
+echo "=== STEP G: Pip install & node ==="
 
 pkgs=(
   "pynvim"
@@ -261,5 +261,11 @@ else
     pip install "$pkg"
   done
 fi
+
+echo "Installing Node.js(22)"
+# Download and install nvm:
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+# Download and install Node.js:
+nvm install 22
 
 prompt_to_proceed

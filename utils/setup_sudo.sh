@@ -160,7 +160,6 @@ APT_PACKAGES=(
 SNAP_PACKAGES=(
   "nvim:--classic"
   "firefox"
-  "node:--classic"
 )
 
 # ------------------------------------------------------------------------------
