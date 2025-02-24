@@ -128,7 +128,7 @@ section.front-page h2 {
   margin-top: 3em;
   font-size: 20px
 }
-.added {
+.ahead {
   color: #4CAF50;  /* Green color */
   font-weight: bold;
   background-color: #E8F5E9;  /* Light green background */
@@ -146,7 +146,7 @@ section.front-page h2 {
   font-weight: bold;
 }
 
-.deleted {
+.delay {
   color: #F44336;  /* Red color */
   text-decoration: line-through;
   background-color: #FFEBEE;  /* Light red background */
