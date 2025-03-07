@@ -56,12 +56,32 @@ p, li {
   padding: 0em;
 }
 
-ul {
+ol, ul {
   padding-left: 20px;
 }
 
-ul>li>ol>li {
-  font-size: 18px;
+/* Top-level lists use 1em spacing */
+ol, ul {
+  --spacing: 0.6em;
+}
+
+ol li,
+ul li {
+  margin-bottom: var(--spacing);
+}
+
+/* Nested lists get a reduced spacing */
+li > ol,
+li > ul {
+  margin-top: 0.3em;
+  /* Override spacing for children */
+  --spacing: 0.3em;
+}
+
+/* But for the last child of a nested list, reset the margin to 1em */
+li > ol li:last-child,
+li > ul li:last-child {
+  margin-bottom: 0.6em;
 }
 
 /* Slide title styling */
@@ -126,7 +146,7 @@ section.front-page h4 {
 }
 section.front-page h2 {
   margin-top: 3em;
-  font-size: 20px
+  font-size: 22px
 }
 .ahead {
   color: #4CAF50;  /* Green color */
@@ -142,7 +162,6 @@ section.front-page h2 {
   background-color: #FFF3E0;  /* Light orange background */
   padding: 2px 4px;
   border-radius: 4px;
-  font-size: 25px;
   font-weight: bold;
 }
 
@@ -156,5 +175,25 @@ section.front-page h2 {
 
 .tiny {
   font-size: 12px;
+  line-height: 100% 
+}
+
+.small {
+  font-size: 14px;
+  line-height: 100% 
+}
+
+.normal {
+  font-size: 16px;
+  line-height: 100% 
+}
+
+.large {
+  font-size: 18px;
+  line-height: 100% 
+}
+
+.huge {
+  font-size: 20px;
   line-height: 100% 
 }
