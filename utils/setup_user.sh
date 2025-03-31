@@ -114,7 +114,7 @@ fi
 prompt_to_proceed
 
 echo
-echo "=== STEP B: kitty ==="
+echo "=== STEP B: kitty and Commit Mono Nerd Font ==="
 if ! is_user_command_installed kitty; then
   echo "Installing Kitty to $USER_HOME/.local/kitty.app..."
   curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
@@ -125,6 +125,25 @@ if ! is_user_command_installed kitty; then
 else
   echo "Kitty is already installed."
 fi
+
+# Download and install Commit Mono Nerd Font
+echo "Installing Commit Mono Nerd Font..."
+FONT_DIR="$USER_HOME/.local/share/fonts"
+mkdir -p "$FONT_DIR"
+
+# Download the font
+FONT_ZIP="$USER_HOME/commit-mono-nerd-font.zip"
+echo "Downloading Commit Mono Nerd Font..."
+curl -L -o "$FONT_ZIP" "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/CommitMono.zip"
+
+# Unzip the font to the fonts directory
+echo "Extracting font files..."
+unzip -o "$FONT_ZIP" -d "$FONT_DIR/CommitMono" "*.ttf"
+rm "$FONT_ZIP"
+
+# Update font cache
+echo "Updating font cache..."
+fc-cache -f
 
 prompt_to_proceed
 
@@ -234,18 +253,6 @@ else
   echo "codelldb folder already exists, skipping download."
 fi
 
-# No "link" or stow section here; removed as requested.
-
-echo
-echo "User-level setup complete!"
-if [ ${#FAILED_STEPS[@]} -gt 0 ]; then
-  echo "Some steps failed: ${FAILED_STEPS[*]}"
-fi
-
-echo "Please open a new terminal or 'source ~/.zshrc' to load environment variables."
-exit 0
-
-echo
 echo
 echo "=== STEP G: Pip install & node ==="
 
@@ -269,3 +276,70 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 nvm install 22
 
 prompt_to_proceed
+
+echo
+echo "=== STEP H: Check default shell and terminal ==="
+
+# Check if ZSH is default shell
+if [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+  echo "ZSH is already set as default shell."
+else
+  echo "ZSH is not set as default shell. Current shell: $SHELL"
+  echo "To set ZSH as default shell, run manually:"
+  echo "  chsh -s $(which zsh)"
+  echo "This requires your password and cannot be automated in this script."
+fi
+
+# Check if Kitty is set as default terminal
+if [ -n "$XDG_CONFIG_HOME" ]; then
+  CONFIG_DIR="$XDG_CONFIG_HOME"
+else
+  CONFIG_DIR="$HOME/.config"
+fi
+
+default_term_found=false
+# Check common default terminal configuration locations
+if [ -f "$CONFIG_DIR/mimeapps.list" ] && grep -q "kitty" "$CONFIG_DIR/mimeapps.list"; then
+  echo "Kitty appears to be set as default terminal in mimeapps.list"
+  default_term_found=true
+elif [ -f "$HOME/.local/share/applications/mimeapps.list" ] && grep -q "kitty" "$HOME/.local/share/applications/mimeapps.list"; then
+  echo "Kitty appears to be set as default terminal in user mimeapps.list"
+  default_term_found=true
+fi
+
+if ! $default_term_found; then
+  echo "Kitty is not detected as default terminal emulator."
+  echo "To set Kitty as default terminal, you can run:"
+  echo "  xdg-mime default kitty.desktop x-scheme-handler/terminal"
+  echo "Or use your desktop environment's settings application."
+  
+  # Create desktop entry if it doesn't exist
+  mkdir -p "$HOME/.local/share/applications"
+  desktop_file="$HOME/.local/share/applications/kitty.desktop"
+  
+  if [ ! -f "$desktop_file" ]; then
+    echo "Creating Kitty desktop entry at $desktop_file"
+    cat > "$desktop_file" << EOF
+[Desktop Entry]
+Name=Kitty
+GenericName=Terminal Emulator
+Comment=Fast, feature-rich, GPU based terminal
+Exec=kitty
+Terminal=false
+Type=Application
+Icon=kitty
+Categories=System;TerminalEmulator;
+MimeType=x-scheme-handler/terminal;
+EOF
+  fi
+fi
+
+
+echo
+echo "User-level setup complete!"
+if [ ${#FAILED_STEPS[@]} -gt 0 ]; then
+  echo "Some steps failed: ${FAILED_STEPS[*]}"
+fi
+
+echo "Please open a new terminal or 'source ~/.zshrc' to load environment variables."
+exit 0
