@@ -109,6 +109,57 @@ else
   else
     echo "zsh-history-substring-search plugin already installed."
   fi
+  
+  if [ ! -d "$OMZ_CUSTOM_DIR/zsh-syntax-highlighting" ]; then
+    echo "Installing zsh-syntax-highlighting plugin..."
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$OMZ_CUSTOM_DIR/zsh-syntax-highlighting"
+  else
+    echo "zsh-syntax-highlighting plugin already installed."
+  fi
+  
+  # Update .zshrc to enable the plugins if not already enabled
+  ZSHRC="$USER_HOME/.zshrc"
+  if [ -f "$ZSHRC" ]; then
+    echo "Checking if plugins are enabled in .zshrc..."
+    
+    # Check if plugins line exists
+    if grep -q "^plugins=(" "$ZSHRC"; then
+      # Check if our plugins are already in the list
+      PLUGINS_NEEDED=0
+      
+      if ! grep -q "plugins=(.*zsh-autosuggestions.*)" "$ZSHRC"; then
+        PLUGINS_NEEDED=1
+        echo "Need to add zsh-autosuggestions to plugins"
+      fi
+      
+      if ! grep -q "plugins=(.*zsh-history-substring-search.*)" "$ZSHRC"; then
+        PLUGINS_NEEDED=1
+        echo "Need to add zsh-history-substring-search to plugins"
+      fi
+      
+      if ! grep -q "plugins=(.*zsh-syntax-highlighting.*)" "$ZSHRC"; then
+        PLUGINS_NEEDED=1
+        echo "Need to add zsh-syntax-highlighting to plugins"
+      fi
+      
+      if [ $PLUGINS_NEEDED -eq 1 ]; then
+        echo "Updating plugins in .zshrc..."
+        # Create a backup of the original file
+        cp "$ZSHRC" "$ZSHRC.bak"
+        # Update the plugins line to include our plugins
+        sed -i 's/^plugins=(/plugins=(zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting /' "$ZSHRC"
+        echo "Updated plugins in .zshrc. Backup saved at $ZSHRC.bak"
+      else
+        echo "All required plugins are already enabled in .zshrc"
+      fi
+    else
+      echo "No plugins line found in .zshrc, adding one..."
+      echo "plugins=(git zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)" >> "$ZSHRC"
+      echo "Added plugins line to .zshrc"
+    fi
+  else
+    echo "Warning: .zshrc file not found. Plugins won't be automatically enabled."
+  fi
 fi
 
 prompt_to_proceed
