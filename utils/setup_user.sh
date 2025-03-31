@@ -92,30 +92,60 @@ else
     echo "oh-my-zsh is already installed."
   fi
 
-  # zsh plugins
-  OMZ_CUSTOM_DIR="$USER_HOME/.oh-my-zsh/custom/plugins"
-  mkdir -p "$OMZ_CUSTOM_DIR"
-
-  if [ ! -d "$OMZ_CUSTOM_DIR/zsh-autosuggestions" ]; then
-    echo "Installing zsh-autosuggestions plugin..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$OMZ_CUSTOM_DIR/zsh-autosuggestions"
-  else
-    echo "zsh-autosuggestions plugin already installed."
-  fi
-
-  if [ ! -d "$OMZ_CUSTOM_DIR/zsh-history-substring-search" ]; then
-    echo "Installing zsh-history-substring-search plugin..."
-    git clone https://github.com/zsh-users/zsh-history-substring-search "$OMZ_CUSTOM_DIR/zsh-history-substring-search"
-  else
-    echo "zsh-history-substring-search plugin already installed."
+  # ZSH plugins
+  # First, verify that oh-my-zsh is properly installed
+  if [ ! -d "$USER_HOME/.oh-my-zsh" ]; then
+    echo "Error: oh-my-zsh directory not found at $USER_HOME/.oh-my-zsh"
+    echo "Plugin installation may fail. Check oh-my-zsh installation."
+    FAILED_STEPS+=("oh-my-zsh-verification")
   fi
   
-  if [ ! -d "$OMZ_CUSTOM_DIR/zsh-syntax-highlighting" ]; then
-    echo "Installing zsh-syntax-highlighting plugin..."
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$OMZ_CUSTOM_DIR/zsh-syntax-highlighting"
+  # Make sure we have the correct custom plugins directory
+  # Try multiple possible locations
+  OMZ_CUSTOM_DIR=""
+  
+  if [ -d "$USER_HOME/.oh-my-zsh/custom/plugins" ]; then
+    OMZ_CUSTOM_DIR="$USER_HOME/.oh-my-zsh/custom/plugins"
+    echo "Found oh-my-zsh plugins directory at: $OMZ_CUSTOM_DIR"
+  elif [ -d "$ZSH/custom/plugins" ]; then 
+    OMZ_CUSTOM_DIR="$ZSH/custom/plugins"
+    echo "Found oh-my-zsh plugins directory using ZSH variable: $OMZ_CUSTOM_DIR"
+  elif [ -d "$USER_HOME/.oh-my-zsh/plugins" ]; then
+    # Fallback to non-custom plugins dir
+    OMZ_CUSTOM_DIR="$USER_HOME/.oh-my-zsh/plugins"
+    echo "Using fallback plugins directory: $OMZ_CUSTOM_DIR"
   else
-    echo "zsh-syntax-highlighting plugin already installed."
+    echo "Warning: Could not find oh-my-zsh plugins directory!"
+    echo "Creating default location: $USER_HOME/.oh-my-zsh/custom/plugins"
+    OMZ_CUSTOM_DIR="$USER_HOME/.oh-my-zsh/custom/plugins"
   fi
+  
+  # Create the directory if it doesn't exist
+  mkdir -p "$OMZ_CUSTOM_DIR"
+  
+  # Function to install a plugin
+  install_zsh_plugin() {
+    local plugin_name="$1"
+    local plugin_url="$2"
+    local plugin_dir="$OMZ_CUSTOM_DIR/$plugin_name"
+    
+    if [ ! -d "$plugin_dir" ]; then
+      echo "Installing $plugin_name plugin..."
+      if git clone "$plugin_url" "$plugin_dir"; then
+        echo "$plugin_name installed successfully to $plugin_dir"
+      else
+        echo "Failed to install $plugin_name plugin!"
+        FAILED_STEPS+=("$plugin_name-install")
+      fi
+    else
+      echo "$plugin_name plugin already installed at $plugin_dir"
+    fi
+  }
+  
+  # Install each plugin using the function
+  install_zsh_plugin "zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions"
+  install_zsh_plugin "zsh-history-substring-search" "https://github.com/zsh-users/zsh-history-substring-search"
+  install_zsh_plugin "zsh-syntax-highlighting" "https://github.com/zsh-users/zsh-syntax-highlighting.git"
   
   # Update .zshrc to enable the plugins if not already enabled
   ZSHRC="$USER_HOME/.zshrc"
