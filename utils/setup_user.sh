@@ -85,19 +85,27 @@ if ! is_user_command_installed zsh; then
   echo "WARNING: zsh not found in PATH. Perhaps it's installed system-wide but not in your PATH? Skipping oh-my-zsh..."
 else
   # Install oh-my-zsh if not present
-  if [ ! -d "$USER_HOME/.oh-my-zsh" ] || [ ! -f "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
+  if [ ! -d "$USER_HOME/.oh-my-zsh" ]; then
     echo "Installing oh-my-zsh..."
-    # Use the install script with --unattended to avoid shell switching
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    # Using the simplest method to install oh-my-zsh
+    git clone https://github.com/ohmyzsh/ohmyzsh.git "$USER_HOME/.oh-my-zsh"
     
-    # Verify oh-my-zsh.sh exists
-    if [ ! -f "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
-      echo "Error: oh-my-zsh.sh not found after installation. Attempting direct download..."
-      curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/oh-my-zsh.sh -o "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh"
-      chmod +x "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh"
+    # Create a .zshrc if it doesn't exist (based on template)
+    if [ ! -f "$USER_HOME/.zshrc" ]; then
+      cp "$USER_HOME/.oh-my-zsh/templates/zshrc.zsh-template" "$USER_HOME/.zshrc"
+      # Set the ZSH path in .zshrc
+      sed -i "s|^export ZSH=.*|export ZSH=\"$USER_HOME/.oh-my-zsh\"|" "$USER_HOME/.zshrc"
     fi
   else
-    echo "oh-my-zsh is already installed."
+    echo "oh-my-zsh directory exists."
+    # Make sure oh-my-zsh.sh is present
+    if [ ! -f "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
+      echo "oh-my-zsh.sh missing, repairing installation..."
+      rm -rf "$USER_HOME/.oh-my-zsh"
+      git clone https://github.com/ohmyzsh/ohmyzsh.git "$USER_HOME/.oh-my-zsh"
+    else
+      echo "oh-my-zsh is already installed properly."
+    fi
   fi
 
   # ZSH plugins
