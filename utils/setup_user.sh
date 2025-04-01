@@ -85,9 +85,17 @@ if ! is_user_command_installed zsh; then
   echo "WARNING: zsh not found in PATH. Perhaps it's installed system-wide but not in your PATH? Skipping oh-my-zsh..."
 else
   # Install oh-my-zsh if not present
-  if [ ! -d "$USER_HOME/.oh-my-zsh" ]; then
+  if [ ! -d "$USER_HOME/.oh-my-zsh" ] || [ ! -f "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
     echo "Installing oh-my-zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    # Use the install script with --unattended to avoid shell switching
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    
+    # Verify oh-my-zsh.sh exists
+    if [ ! -f "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
+      echo "Error: oh-my-zsh.sh not found after installation. Attempting direct download..."
+      curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/oh-my-zsh.sh -o "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh"
+      chmod +x "$USER_HOME/.oh-my-zsh/oh-my-zsh.sh"
+    fi
   else
     echo "oh-my-zsh is already installed."
   fi
@@ -267,7 +275,8 @@ prompt_to_proceed
 
 echo
 echo "=== STEP D: Rust (cargo) and cargo-based tools ==="
-if ! is_user_command_installed cargo; then
+# Check if Rust is already installed (either cargo, rustc, or rustup)
+if ! is_user_command_installed cargo && ! is_user_command_installed rustc && ! is_user_command_installed rustup; then
   echo "Installing Rust via rustup..."
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
   if ! grep -q '.cargo/env' "$USER_HOME/.zshrc" 2>/dev/null; then
@@ -275,17 +284,41 @@ if ! is_user_command_installed cargo; then
   fi
   source "$HOME/.cargo/env" 2>/dev/null || true
 else
-  echo "Cargo is already installed."
+  echo "Rust is already installed in the system."
+  read -rp "Do you want to reinstall Rust? [y/N] " reinstall_rust
+  case "$reinstall_rust" in
+    [yY][eE][sS]|[yY])
+      echo "This script should not be run with sudo privileges."
+      echo "To reinstall Rust, please follow these steps manually:"
+      echo "  1. If installed via system package manager:"
+      echo "     sudo apt remove rust cargo rustc   # For Debian/Ubuntu"
+      echo "     sudo dnf remove rust cargo rustc   # For Fedora/RHEL"
+      echo "     sudo pacman -R rust cargo rustc    # For Arch Linux"
+      echo "  2. If installed via rustup:"
+      echo "     rustup self uninstall"
+      echo "  3. Then run this script again to install Rust via rustup"
+      exit 0
+      ;;
+    *)
+      echo "Keeping existing Rust installation."
+      ;;
+  esac
 fi
 
-# If cargo is present, install cargo-based dev tools
+# If cargo is available, install cargo-based dev tools
 if is_user_command_installed cargo; then
   echo "Installing cargo-based tools: stylua, typstyle, rustfmt, rust-analyzer..."
   cargo install stylua
   cargo install typstyle --locked
   cargo install --locked yazi-fm yazi-cli
-  rustup component add rustfmt
-  rustup component add rust-analyzer
+  
+  # Only run rustup commands if rustup is available
+  if is_user_command_installed rustup; then
+    rustup component add rustfmt
+    rustup component add rust-analyzer
+  else
+    echo "Note: rustup not found, skipping rustfmt and rust-analyzer installation."
+  fi
 else
   echo "Cargo not found, skipping cargo-based tools."
 fi
