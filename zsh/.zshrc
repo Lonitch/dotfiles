@@ -8,9 +8,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" 
 
 # CUDA ( changes required for diff comp )
-export PATH=/usr/local/cuda-12.6/bin${PATH:+:${PATH}}
-export LD_LIBRARY_PATH=/usr/local/cuda-12.6/lib64\
-                         ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+# export PATH=/usr/local/cuda-12.6/bin${PATH:+:${PATH}}
+# export LD_LIBRARY_PATH=/usr/local/cuda-12.6/lib64\
+                         # ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 # export DISPLAY=:1.0
