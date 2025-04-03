@@ -159,6 +159,7 @@ APT_PACKAGES=(
 
 SNAP_PACKAGES=(
   "nvim:--classic"
+  "dvc:--classic"
   "firefox"
   "yazi:--classic"
 )
