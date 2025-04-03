@@ -377,7 +377,7 @@ fi
 echo
 echo "=== STEP G: Pip install & node ==="
 
-pkgs=(
+pip_pkgs=(
   "pynvim"
   "dvc-ssh"
 )
@@ -386,10 +386,27 @@ if ! is_user_command_installed pip; then
   echo "pip not found in PATH, skipping Python package installation..."
 else
   echo "Installing Python packages via pip..."
-  for pkg in "${pkgs[@]}"; do
+  for pkg in "${pip_pkgs[@]}"; do
     pip install "$pkg"
   done
 fi
+
+pipx_pkgs=(
+  "poetry"
+  "pdf2s"
+)
+
+if ! is_user_command_installed pipx; then
+  echo "pipx not found in PATH, skipping Python standalone installation..."
+else
+  echo "Installing packages via pipx..."
+  for pkg in "${pipx_pkgs[@]}"; do
+    pipx install "$pkg"
+  done
+fi
+
+mkdir $ZSH_CUSTOM/plugins/poetry
+poetry completions zsh > $ZSH_CUSTOM/plugins/poetry/_poetry
 
 echo "Installing Node.js(22)"
 # Download and install nvm:
