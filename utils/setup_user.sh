@@ -408,6 +408,7 @@ fi
 
 mkdir $ZSH_CUSTOM/plugins/poetry
 poetry completions zsh > $ZSH_CUSTOM/plugins/poetry/_poetry
+poetry self add poetry-plugin-shell
 
 echo "Installing Node.js(22)"
 # Download and install nvm:
