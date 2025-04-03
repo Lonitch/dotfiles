@@ -9,7 +9,6 @@
 #   - marp, mermaid, presenterm
 #   - user-level installs of sioyek, fzf, yq (in ~/.local/bin)
 #
-# We have removed the "link/stow dotfiles" section as requested.
 # Usage: ./setup_user.sh
 ################################################################################
 
@@ -394,8 +393,10 @@ fi
 echo "Installing Node.js(22)"
 # Download and install nvm:
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-# Download and install Node.js:
+# Download and install Node.js 22:
 nvm install 22
+# Download ruff python linter
+curl -LsSf https://astral.sh/ruff/install.sh | sh
 
 prompt_to_proceed
 
