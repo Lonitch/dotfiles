@@ -380,6 +380,7 @@ echo "=== STEP G: Pip install & node ==="
 pip_pkgs=(
   "pynvim"
   "dvc-ssh"
+  "pre-commit"
 )
 
 if ! is_user_command_installed pip; then
