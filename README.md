@@ -3,8 +3,6 @@
 <!-- mtoc-start -->
 
 * [Intro](#intro)
-* [Prerequisites](#prerequisites)
-* [Cheat sheet for fcixit 5](#cheat-sheet-for-fcixit-5)
 * [Cheat Sheet for Neovim and Tmux](#cheat-sheet-for-neovim-and-tmux)
 
 <!-- mtoc-end -->
@@ -18,12 +16,9 @@ Managed by [GNU Stow](https://www.gnu.org/software/stow/), this repo gives confi
 - `rust` for Rust dev(formatting)
 - `zsh` for zsh(and oh-my-zsh)
 - `kitty` for kitty terminal emulator
-- `i3` for i3wm
-- `picom` for stopping screen tearing
 - `yazi`, a previewer-enabled file sys exploration
 - `utils` for shell scripts that improve life quality
 - `marp`, a md2pdf/pptx presentation cli
-- `presenterm` for presenting things in terminal
 - `quarto` for data science
 
 To use config for anyone of the tools above, simply run the following:
@@ -31,18 +26,6 @@ To use config for anyone of the tools above, simply run the following:
 ```shell
 stow <foldername>
 ```
-
->**Mod1** versus **Mod4**: The window key is **Mod1** on mac keyboard, change it to **Mod4** on win keyboard in `i3/.config/i3/config` as your command prefix in i3wm.
-
->you need to change the absolute path to `codelldb` in [debugging.lua](./nvim/.config/nvim/lua/plugins/debugging.lua)
-
-## Prerequisites
-A full list can be found at [setup-env.sh](./utils/.setup-env.sh)
-
-## Cheat sheet for fcixit 5
-
-- Use keybinding `<C-shift>` to switch btw different input methods
-- `<C-shift-f>` while on Chinese input to switch btw simplified and traditional
 
 ## Cheat Sheet for Neovim and Tmux
 
