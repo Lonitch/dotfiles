@@ -311,7 +311,10 @@ else
   echo "No system-level failures detected."
 fi
 
+update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $HOME/.local/kitty.app/bin/kitty 50
+
 echo
-echo "You can now run './setup_user.sh' (without sudo) to install user-level tools."
+echo "Please run \"chsh -s $(which zsh)\" to change default shell and re-login"
+echo "Afterwards,you may run './setup_user.sh' (without sudo) to install user-level tools."
 exit 0
 
