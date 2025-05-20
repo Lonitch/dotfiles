@@ -464,17 +464,21 @@ if ! $default_term_found; then
     echo "Creating Kitty desktop entry at $desktop_file"
     cat > "$desktop_file" << EOF
 [Desktop Entry]
+Version=1.0
 Name=Kitty
 GenericName=Terminal Emulator
-Comment=Fast, feature-rich, GPU based terminal
-Exec=kitty
-Terminal=false
+Comment=A fast, feature-rich, GPU-based terminal emulator
+Exec=$HOME/.local/kitty.app/bin/kitty
+Icon=$HOME/.local/kitty.app/lib/kitty/logo/kitty-128.png
+
 Type=Application
-Icon=kitty
-Categories=System;TerminalEmulator;
+Terminal=false
+Categories=Utility;TerminalEmulator;System;
+StartupWMClass=kitty
 MimeType=x-scheme-handler/terminal;
 EOF
   fi
+  chmod +x $desktop_file
 fi
 
 
@@ -484,5 +488,5 @@ if [ ${#FAILED_STEPS[@]} -gt 0 ]; then
   echo "Some steps failed: ${FAILED_STEPS[*]}"
 fi
 
-echo "Please open a new terminal or 'source ~/.zshrc' to load environment variables."
+echo "Please log out to load environment variables."
 exit 0
