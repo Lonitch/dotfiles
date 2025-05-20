@@ -1,0 +1,184 @@
+/* @theme briefing */
+
+/* Briefing theme - based on business connection monthly report style */
+section {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #ffffff;
+  background-color: #121c2b; /* Dark navy blue background */
+  text-align: left;
+  padding: 40px;
+}
+
+h1, h2, h3 {
+  font-weight: 500;
+  color: #ffffff;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 28px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: #3dd1d4; /* Teal/cyan accent color */
+}
+
+h3 {
+  font-size: 24px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+ul {
+  padding-left: 20px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+li {
+  font-size: 20px;
+  line-height: 1.5;
+  margin-bottom: 0.3em;
+  list-style-type: none;
+  position: relative;
+  padding-left: 10px;
+}
+
+li::before {
+  content: "•";
+  color: #3dd1d4; /* Teal/cyan bullet points */
+  font-weight: bold;
+  display: inline-block; 
+  width: 1em;
+  margin-left: -1em;
+}
+
+p {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  color: #ffffff;
+}
+
+th, td {
+  border: 1px solid #334155; /* Darker border color */
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #1e3a5f; /* Slightly lighter than background */
+  font-weight: bold;
+  color: #ffffff;
+}
+
+tr:nth-child(even) {
+  background-color: #1a2639; /* Subtle alternating rows */
+}
+
+tr:hover {
+  background-color: #2a3c56; /* Hover effect */
+}
+
+/* Code blocks */
+code {
+  font-family: 'Consolas', 'Monaco', monospace;
+  background-color: #1a2639;
+  color: #e2e8f0;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+pre {
+  background-color: #1a2639;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+/* Front page styling */
+section.front-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+section.front-page h1,
+section.front-page h2,
+section.front-page h3 {
+  text-align: center;
+  margin: 0.3em 0;
+  color: #ffffff;
+}
+
+/* Status markers */
+.added {
+  color: #4ade80; /* Green */
+  font-weight: bold;
+  background-color: rgba(74, 222, 128, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.todo {
+  color: #fbbf24; /* Amber */
+  font-style: italic;
+  background-color: rgba(251, 191, 36, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.deleted {
+  color: #f87171; /* Red */
+  text-decoration: line-through;
+  background-color: rgba(248, 113, 113, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Footer */
+footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 16px;
+  color: #94a3b8; /* Light gray */
+}
+
+/* Slide numbers */
+section::after {
+  content: counter(section);
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 16px;
+  color: #94a3b8; /* Light gray */
+}
+
+/* Two column layout */
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+/* Small text */
+.tiny {
+  font-size: 14px;
+  line-height: 1.2;
+}

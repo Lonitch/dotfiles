@@ -1,6 +1,6 @@
 {
   "files.autoSave": "onFocusChange",
-  "workbench.colorTheme": "Catppuccin Mocha",
+  "workbench.colorTheme": "Catppuccin Latte",
   "workbench.editorAssociations": {
       "*.pdf": "pdf.preview"
   },
@@ -54,4 +54,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "diffEditor.ignoreTrimWhitespace": false,
+  "python.defaultInterpreterPath": "/home/sizhe/.virtualenvs/spm",
+  "roo-cline.allowedCommands": [
+    "npm test",
+    "npm install",
+    "tsc",
+    "git log",
+    "git diff",
+    "git show"
+  ],
 }
