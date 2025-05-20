@@ -1,1 +1,7 @@
 /.ropeproject/
+/fcitx/.config/fcitx/dbus/
+/nvim/.config/nvim/lazy-lock.json
+/vscode/
+!/vscode/.config/Code/User/extensions.json
+zsh/.oh-my-zsh/custom/plugins/zsh-*/
+zsh/.oh-my-zsh/oh-my-zsh.sh

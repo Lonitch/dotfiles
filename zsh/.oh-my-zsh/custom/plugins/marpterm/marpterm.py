@@ -6,6 +6,7 @@ import time
 import tempfile
 import threading
 import uuid
+from datetime import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import yaml
@@ -51,6 +52,7 @@ def generate_front_and_layout(content):
     author = yaml_data.get("author", "")
     authors = yaml_data.get("authors", [])
     affiliations = yaml_data.get("affili", [])
+    date = yaml_data.get("date", "")
 
     front_page = "<!-- _class: front-page -->\n"
     if title:
@@ -63,10 +65,38 @@ def generate_front_and_layout(content):
         front_page += f"## {author}\n"
     if affiliations:
         front_page += f"### {', '.join(affiliations)}\n"
-    front_page += f"### {time.strftime('%B %d, %Y')}\n"
+    if date:
+        dt = flexible_parse(date)
+        date = dt.strftime("%B %d, %Y")
+        front_page += f"### {date}\n"
+    else:
+        front_page += f"### {time.strftime('%B %d, %Y')}\n"
     front_page += "---\n"
 
     return match.group(0) + front_page + column_layout(content[match.end():])
+
+
+def flexible_parse(date_str):
+    # List your candidate date formats here.
+    # Add or remove formats as needed.
+    formats = [
+        "%Y-%m-%d",      # e.g., 2025-01-19
+        "%Y/%m/%d",      # e.g., 2025/01/19
+        "%m/%d/%Y",      # e.g., 01/19/2025
+        "%d/%m/%Y",      # e.g., 19/01/2025
+        "%B %d, %Y",     # e.g., January 19, 2025
+        "%b %d, %Y",     # e.g., Jan 19, 2025
+        # Add more formats as necessary...
+    ]
+
+    for fmt in formats:
+        try:
+            return datetime.strptime(date_str, fmt)
+        except ValueError:
+            # Try the next format
+            continue
+    # If none of the formats match, raise an error.
+    raise ValueError(f"Date format for '{date_str}' not recognized.")
 
 
 def check_and_box(content):

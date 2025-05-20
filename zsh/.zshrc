@@ -1,6 +1,16 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/pipx/venvs:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" 
+
+# CUDA ( changes required for diff comp )
+# export PATH=/usr/local/cuda-12.6/bin${PATH:+:${PATH}}
+# export LD_LIBRARY_PATH=/usr/local/cuda-12.6/lib64\
+                         # ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 # export DISPLAY=:1.0
@@ -63,7 +73,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-history-substring-search zsh-autosuggestions exercism mathpix quarto marpterm)
+plugins=(git zsh-history-substring-search zsh-autosuggestions poetry mathpix quarto marpterm)
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -96,6 +106,8 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 # Alias
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # for a full list of active aliases, run `alias`.
+
+alias bat="batcat"
 
 # list sizes of all the folders at pwd
 alias doosh="du --max-depth=1 -h | sort -h"
@@ -320,7 +332,8 @@ function venv() {
       echo "Usage: venv [--list|-l] [--create|-c <venv_name>] [--remove|-r <venv_name>] [--activate|-a <venv_name>] [--deactivate|-d] [-h|--help]"
       echo "Options:"
       echo "  --list, -l                       List all virtual environments"
-      echo "  --create, -c [requirements.txt]  Create a new virtual environment"
+      echo "  --create, -c <venv_name> [requirements.txt]  
+                                   Create a new virtual environment"
       echo "  --remove, -r                     Remove a virtual environment"
       echo "  --activate, -a                   Activate a virtual environment"
       echo "  --deactivate, -d                 Deactivate the current virtual environment"
@@ -333,3 +346,8 @@ function venv() {
   esac
 }
 
+export PATH="$HOME/.local/kitty.app/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
