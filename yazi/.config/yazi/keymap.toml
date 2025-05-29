@@ -1,14 +1,14 @@
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "<Tab>"
 run  = "toggle --status=none"
 desc = "Select items like in fzf"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "M"
 run  = "plugin --sync max-preview"
 desc = "Maximize or restore preview"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "H"
 run  = "plugin --sync hide-preview"
 desc = "Hide or show preview"
