@@ -160,7 +160,6 @@ else
   # Install each plugin using the function
   install_zsh_plugin "zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions"
   install_zsh_plugin "zsh-history-substring-search" "https://github.com/zsh-users/zsh-history-substring-search"
-  install_zsh_plugin "zsh-syntax-highlighting" "https://github.com/zsh-users/zsh-syntax-highlighting.git"
   
   # Update .zshrc to enable the plugins if not already enabled
   ZSHRC="$USER_HOME/.zshrc"
@@ -192,7 +191,7 @@ else
         # Create a backup of the original file
         cp "$ZSHRC" "$ZSHRC.bak"
         # Update the plugins line to include our plugins
-        sed -i 's/^plugins=(/plugins=(zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting /' "$ZSHRC"
+        sed -i 's/^plugins=(/plugins=(zsh-autosuggestions zsh-history-substring-search /' "$ZSHRC"
         echo "Updated plugins in .zshrc. Backup saved at $ZSHRC.bak"
       else
         echo "All required plugins are already enabled in .zshrc"
@@ -337,12 +336,12 @@ echo "=== STEP E: Bun, plus marp, mermaid-cli, LSP servers ==="
 if ! is_user_command_installed bun; then
   echo "Installing Bun..."
   curl -fsSL https://bun.sh/install | bash
+  source $HOME/.zshrc
 fi
 
 if is_user_command_installed bun; then
   # If needed, source ~/.zshrc to ensure ~/.bun/bin is in PATH
   echo "Installing Node-based packages via Bun: LSP servers, marp, mermaid..."
-  source $HOME/.zshrc
   bun install -g \
     vscode-langservers-extracted \
     @tailwindcss/language-server \
