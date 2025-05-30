@@ -147,6 +147,8 @@ APT_PACKAGES=(
   libxcb-util-dev 
   libxcb-xfixes0-dev 
   uthash-dev
+  # dependency for zoom
+  libxcb-xtest0
   # for downloads, building, etc.
   xz-utils
   libssl-dev
@@ -162,6 +164,7 @@ SNAP_PACKAGES=(
   "dvc:--classic"
   "firefox"
   "yazi:--classic"
+  "teams-for-linux:--classic"
 )
 
 # ------------------------------------------------------------------------------
@@ -311,7 +314,6 @@ else
   echo "No system-level failures detected."
 fi
 
-update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $HOME/.local/kitty.app/bin/kitty 50
 
 echo
 echo "Please run \"chsh -s $(which zsh)\" to change default shell and re-login"

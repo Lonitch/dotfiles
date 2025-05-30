@@ -317,7 +317,7 @@ if is_user_command_installed cargo; then
   echo "Installing cargo-based tools: stylua, typstyle, rustfmt, rust-analyzer..."
   cargo install stylua
   cargo install typstyle --locked
-  cargo install --locked yazi-fm yazi-cli
+  # cargo install --locked yazi-fm yazi-cli
   
   # Only run rustup commands if rustup is available
   if is_user_command_installed rustup; then
@@ -342,6 +342,7 @@ fi
 if is_user_command_installed bun; then
   # If needed, source ~/.zshrc to ensure ~/.bun/bin is in PATH
   echo "Installing Node-based packages via Bun: LSP servers, marp, mermaid..."
+  source ~/.zshrc
   bun install -g \
     vscode-langservers-extracted \
     @tailwindcss/language-server \
@@ -375,7 +376,7 @@ else
 fi
 
 echo
-echo "=== STEP G: Pip install & node ==="
+echo "=== STEP G: Pip install, uv, & node ==="
 
 pip_pkgs=(
   "pynvim"
@@ -410,13 +411,18 @@ mkdir $ZSH_CUSTOM/plugins/poetry
 poetry completions zsh > $ZSH_CUSTOM/plugins/poetry/_poetry
 poetry self add poetry-plugin-shell
 
+echo
+echo "Installing uv"
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Download ruff python linter
+curl -LsSf https://astral.sh/ruff/install.sh | sh
+
+echo
 echo "Installing Node.js(22)"
 # Download and install nvm:
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 # Download and install Node.js 22:
 nvm install 22
-# Download ruff python linter
-curl -LsSf https://astral.sh/ruff/install.sh | sh
 
 prompt_to_proceed
 
@@ -488,5 +494,7 @@ if [ ${#FAILED_STEPS[@]} -gt 0 ]; then
   echo "Some steps failed: ${FAILED_STEPS[*]}"
 fi
 
-echo "Please log out to load environment variables."
+echo "To make kitty your default terminal emulator, run:"
+echo "sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $HOME/.local/kitty.app/bin/kitty 50"
+echo "Afterwards, please log out to load environment variables."
 exit 0

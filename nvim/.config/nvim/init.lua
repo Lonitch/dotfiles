@@ -77,7 +77,7 @@ end
 -- lazy.vim set up plugins with options here
 require("lazy").setup("plugins")
 -- avante library loading
-require("avante_lib").load()
+-- require("avante_lib").load()
 vim.opt.laststatus = 3
 -- run leptosfmt before saving .rs files
 local function format_with_leptosfmt()
@@ -114,10 +114,30 @@ vim.api.nvim_create_autocmd({
     vim.api.nvim_buf_set_option(buf, "filetype", "typst")
   end,
 })
+
+local clients = vim.lsp.get_clients({ bufnr = 0 })
+-- Helper to run the command
+local function pin_main(arg)
+  local params = {
+    command   = "tinymist.pinMain",
+    arguments = { arg },
+  }
+  local opts = { bufnr = 0 }
+
+  for _, client in ipairs(clients) do
+    client:exec_cmd(params, opts)
+  end
+end
+
+-- Pin current buffer
+pin_main(vim.api.nvim_buf_get_name(0))
+-- Unpin
+pin_main(vim.NIL)
+
 -- pin the main file
-vim.lsp.buf.execute_command({ command = "tinymist.pinMain", arguments = { vim.api.nvim_buf_get_name(0) } })
+-- vim.lsp.buf.execute_command({ command = "tinymist.pinMain", arguments = { vim.api.nvim_buf_get_name(0) } })
 -- unpin the main file
-vim.lsp.buf.execute_command({ command = "tinymist.pinMain", arguments = { nil } })
+-- vim.lsp.buf.execute_command({ command = "tinymist.pinMain", arguments = { nil } })
 
 -- '<leader>wd' to set pwd to where the file is located
 vim.api.nvim_set_keymap("n", "<leader>wd", ":cd %:p:h<CR>:pwd<CR>", { noremap = true, silent = true })
