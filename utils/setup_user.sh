@@ -342,7 +342,7 @@ fi
 if is_user_command_installed bun; then
   # If needed, source ~/.zshrc to ensure ~/.bun/bin is in PATH
   echo "Installing Node-based packages via Bun: LSP servers, marp, mermaid..."
-  source ~/.zshrc
+  source $HOME/.zshrc
   bun install -g \
     vscode-langservers-extracted \
     @tailwindcss/language-server \
@@ -422,6 +422,7 @@ echo "Installing Node.js(22)"
 # Download and install nvm:
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 # Download and install Node.js 22:
+source $HOME/.zshrc
 nvm install 22
 
 prompt_to_proceed
