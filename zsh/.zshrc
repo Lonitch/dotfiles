@@ -90,7 +90,7 @@ source $HOME/.api_keys
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+  export EDITOR='nvim'
 else
   export EDITOR='nvim'
 fi
@@ -119,42 +119,11 @@ alias bvim="nvim \$(fzf -m --preview='bat --color=always {}')"
 alias mmdc="bun run --bun mmdc"
 
 # Application Settings
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/$USER/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/$USER/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/$USER/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/$USER/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# VHACD
-export PATH="$HOME/VHACD/build/linux/test:$PATH"
-export PATH="$HOME/VHACD/com.unity.robotics.vhacd/Runtime:$PATH"
-
-# Install Ruby Gems to ~/gems
-export GEM_HOME="$HOME/gems"
-export PATH="$HOME/gems/bin:$PATH"
-
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 # bun completions
 [ -s "/home/$USER/.bun/_bun" ] && source "/home/$USER/.bun/_bun"
-
-# fly.io
-export FLYCTL_INSTALL="/home/$USER/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
-
-# Turso
-export PATH="/home/$USER/.turso:$PATH"
-. "$HOME/.cargo/env"
 
 # Snap
 export PATH="/snap/bin:$PATH"
@@ -347,7 +316,3 @@ function venv() {
 }
 
 export PATH="$HOME/.local/kitty.app/bin:$PATH"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

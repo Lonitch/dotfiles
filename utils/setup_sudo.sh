@@ -157,6 +157,8 @@ APT_PACKAGES=(
   curl
   zsh
   zsh-syntax-highlighting
+  xclip
+  bat
 )
 
 SNAP_PACKAGES=(
