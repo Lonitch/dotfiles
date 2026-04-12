@@ -25,8 +25,7 @@ font pango:DejaVu Sans Mono 12
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id picom
-# exec --no-startup-id blueman-applet
-# exec --no-startup-id ibus-daemon -drx
+exec --no-startup-id xrandr --output DP-3 --auto --right-of eDP-1
 
 exec --no-startup-id fcitx5 -d
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
@@ -121,6 +120,18 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
+set $fm eDP-1
+set $sm DP-3
+workspace 1 output $fm
+workspace 2 output $fm
+workspace 4 output $fm
+workspace 5 output $fm
+workspace 6 output $fm
+workspace 7 output $sm
+workspace 8 output $sm
+workspace 9 output $sm
+workspace 10 output $sm
+
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -139,10 +150,10 @@ bindsym $mod+3 workspace number $ws3
 bindsym $mod+4 workspace number $ws4
 bindsym $mod+5 workspace number $ws5
 bindsym $mod+6 workspace number $ws6
-bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 workspace number $ws8
-bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
+bindsym Mod1+7 workspace number $ws7
+bindsym Mod1+8 workspace number $ws8
+bindsym Mod1+9 workspace number $ws9
+bindsym Mod1+0 workspace number $ws10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1

@@ -118,6 +118,8 @@ alias bvim="nvim \$(fzf -m --preview='bat --color=always {}')"
 # use bun to run mermaid cli
 alias mmdc="bun run --bun mmdc"
 
+alias tt="taskwarrior-tui"
+
 # Application Settings
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -316,3 +318,6 @@ function venv() {
 }
 
 export PATH="$HOME/.local/kitty.app/bin:$PATH"
+
+# uv
+export UV_ENV_FILE=".env"

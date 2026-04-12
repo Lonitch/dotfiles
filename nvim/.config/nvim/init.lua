@@ -57,7 +57,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.lsp.set_log_level("debug")
+vim.lsp.log.set_level("debug")
 require("vim.lsp.log").set_format_func(vim.inspect)
 
 -- install ripgrep on ubuntu, you might change it on

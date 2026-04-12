@@ -26,60 +26,57 @@ return {
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 			-- Capabilities required for the visualstudio lsps (css, html, etc)
 			capabilities.textDocument.completion.completionItem.snippetSupport = true
-			local lspconfig = require("lspconfig")
-			lspconfig.jedi_language_server.setup({
-				capabilities = capabilities,
-			})
-
-			lspconfig.tinymist.setup({
-				single_file_support = true,
-				offset_encoding = "utf-8",
-				root_dir = function()
-					return vim.fn.getcwd()
-				end,
-				--- See [Configuration](https://github.com/Myriad-Dreamin/tinymist/blob/main/Configuration.md) for references.
-				settings = {
-					semanticTokens = "enable",
-					formatterMode = "typstyle",
+			local servers = {
+				jedi_language_server = {
+					capabilities = capabilities,
 				},
-			})
-			-- require("lspconfig").typst_lsp.setup({
-			--      filetypes = { "typst" },
-			-- 	settings = {
-			-- 		exportPdf = "never", -- Choose onType, onSave or never.
-			-- 		-- serverPath = "" -- Normally, there is no need to uncomment it.
-			-- 	},
-			-- })
+				tinymist = {
+					single_file_support = true,
+					offset_encoding = "utf-8",
+					root_dir = function()
+						return vim.fn.getcwd()
+					end,
+					--- See [Configuration](https://github.com/Myriad-Dreamin/tinymist/blob/main/Configuration.md) for references.
+					settings = {
+						semanticTokens = "enable",
+						formatterMode = "typstyle",
+					},
+				},
+				tailwindcss = {
+					capabilities = capabilities,
+					cmd = { "bun", "run", "--bun", "tailwindcss-language-server", "--stdio" },
+					filetypes = { "javascriptreact", "typescriptreact" },
+				},
+				cssls = {
+					capabilities = capabilities,
+					cmd = { "bun", "run", "--bun", "vscode-css-language-server", "--stdio" },
+				},
+				html = {
+					capabilities = capabilities,
+					cmd = { "bun", "run", "--bun", "vscode-html-language-server", "--stdio" },
+				},
+				eslint = {
+					capabilities = capabilities,
+					cmd = { "bun", "run", "--bun", "vscode-eslint-language-server", "--stdio" },
+				},
+				lua_ls = {
+					capabilities = capabilities,
+				},
+				ts_ls = {
+					capabilities = capabilities,
+					cmd = { "bun", "run", "--bun", "typescript-language-server", "--stdio" },
+				},
+				bashls = {
+					capabilities = capabilities,
+					cmd = { "bun", "run", "--bun", "bash-language-server", "start" },
+					filetypes = { "sh", "zsh" },
+				},
+			}
 
-			lspconfig.tailwindcss.setup({
-				capabilities = capabilities,
-				cmd = { "bun", "run", "--bun", "tailwindcss-language-server", "--stdio" },
-				filetypes = { "javascriptreact", "typescriptreact" },
-			})
-			lspconfig.cssls.setup({
-				capabilities = capabilities,
-				cmd = { "bun", "run", "--bun", "vscode-css-language-server", "--stdio" },
-			})
-			lspconfig.html.setup({
-				capabilities = capabilities,
-				cmd = { "bun", "run", "--bun", "vscode-html-language-server", "--stdio" },
-			})
-			lspconfig.eslint.setup({
-				capabilities = capabilities,
-				cmd = { "bun", "run", "--bun", "vscode-eslint-language-server", "--stdio" },
-			})
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.ts_ls.setup({
-				capabilities = capabilities,
-				cmd = { "bun", "run", "--bun", "typescript-language-server", "--stdio" },
-			})
-			lspconfig.bashls.setup({
-				capabilities = capabilities,
-				cmd = { "bun", "run", "--bun", "bash-language-server", "start" },
-				filetypes = { "sh", "zsh" },
-			})
+			for server, config in pairs(servers) do
+				vim.lsp.config(server, config)
+				vim.lsp.enable(server)
+			end
 		end,
 	},
 }
